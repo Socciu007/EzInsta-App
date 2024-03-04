@@ -6,6 +6,8 @@ import iconIncrease from '../../../assets/icon/icon-Increase.svg';
 import backButton from '../../../assets/icon/icon-back.svg';
 import iconQuestion from '../../../assets/icon/icon-question.svg';
 import Editor from 'react-simple-code-editor';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
@@ -102,60 +104,9 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
               />
               <p>Watch Story</p>
             </div>
-            <div className="component-item numberOfStory">
-              <p className="component-item__header">Number of stories:</p>
-              <div className="component-item__number">
-                <div className="component-item__number__icon">
-                  <img
-                    src={iconIncrease}
-                    alt="Increase icon"
-                    onClick={() => {
-                      changeNumberStoryStart(values.numberStoryStart + 1);
-                    }}
-                  />
-                  <img
-                    src={iconDecrease}
-                    alt="Decrease icon"
-                    onClick={() => {
-                      changeNumberStoryStart(values.numberStoryStart - 1);
-                    }}
-                  />
-                </div>
-                <input
-                  type="text"
-                  name="Start"
-                  value={values.numberStoryStart}
-                  onChange={(event) => changeNumberStoryStart(event.target.value)}
-                />
-              </div>
-              <span>to</span>
-              <div className="component-item__number">
-                <div className="component-item__number__icon">
-                  <img
-                    src={iconIncrease}
-                    alt="Increase icon"
-                    onClick={() => {
-                      changeNumberStoryEnd(values.numberStoryEnd + 1);
-                    }}
-                  />
-                  <img
-                    src={iconDecrease}
-                    alt="Decrease icon"
-                    onClick={() => {
-                      changeNumberStoryEnd(values.numberStoryEnd - 1);
-                    }}
-                  />
-                </div>
-                <input
-                  type="text"
-                  name="End"
-                  value={values.numberStoryEnd}
-                  onChange={(event) => changeNumberStoryEnd(event.target.value)}
-                />
-              </div>
-            </div>
+
             <div className="component-item watchingTime">
-              <p className="component-item__header">Watching time/story (s):</p>
+              <p className="component-item__header">Watching time (s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
@@ -206,6 +157,58 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 />
               </div>
             </div>
+            <div className="component-item numberOfStory">
+              <p className="component-item__header">Delay time(s):</p>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeNumberStoryStart(values.numberStoryStart + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeNumberStoryStart(values.numberStoryStart - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="Start"
+                  value={values.numberStoryStart}
+                  onChange={(event) => changeNumberStoryStart(event.target.value)}
+                />
+              </div>
+              <span>to</span>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeNumberStoryEnd(values.numberStoryEnd + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeNumberStoryEnd(values.numberStoryEnd - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="End"
+                  value={values.numberStoryEnd}
+                  onChange={(event) => changeNumberStoryEnd(event.target.value)}
+                />
+              </div>
+            </div>
             <div className="component-item_react">
               <div className="component-item__header">
                 <input
@@ -216,72 +219,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     changeReact(event.target.checked);
                   }}
                 />
-                <p>Randomly react:</p>
-              </div>
-              <div className={`component-item__content ${values.isReact ? 'show' : 'hide'}`}>
-                <div className="likeButton">
-                  <input
-                    type="checkbox"
-                    name="likeButton"
-                    checked={values.isLike}
-                    onChange={(event) => changeLike(event.target.checked)}
-                  />
-                  <span>Like</span>
-                </div>
-                <div className="loveButton">
-                  <input
-                    type="checkbox"
-                    name="loveButton"
-                    checked={values.isLove}
-                    onChange={(event) => changeLove(event.target.checked)}
-                  />
-                  <span>Love</span>
-                </div>
-                <div className="careButton">
-                  <input
-                    type="checkbox"
-                    name="careButton"
-                    checked={values.isCare}
-                    onChange={(event) => changeCare(event.target.checked)}
-                  />
-                  <span>Care</span>
-                </div>
-                <div className="wowButton">
-                  <input
-                    type="checkbox"
-                    name="wowButton"
-                    checked={values.isWow}
-                    onChange={(event) => changeWow(event.target.checked)}
-                  />
-                  <span>Wow</span>
-                </div>
-                <div className="hahaButton">
-                  <input
-                    type="checkbox"
-                    name="hahaButton"
-                    checked={values.isHaha}
-                    onChange={(event) => changeHaha(event.target.checked)}
-                  />
-                  <span>Haha</span>
-                </div>
-                <div className="sadButton">
-                  <input
-                    type="checkbox"
-                    name="sadButton"
-                    checked={values.isSad}
-                    onChange={(event) => changeSad(event.target.checked)}
-                  />
-                  <span>Sad</span>
-                </div>
-                <div className="angryButton">
-                  <input
-                    type="checkbox"
-                    name="angryButton"
-                    checked={values.isAngry}
-                    onChange={(event) => changeAngry(event.target.checked)}
-                  />
-                  <span>Angry</span>
-                </div>
+                <p>Random Like:</p>
               </div>
             </div>
             <div className="component-item comment">
@@ -294,38 +232,52 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     changeComment(event.target.checked);
                   }}
                 />
-                <p>Randomly Comment</p>
+                <p>Reply</p>
                 {/* <img src={iconQuestion} alt="icon Question" /> */}
               </div>
               <div className={`commentContent Text ${values.isComment ? 'show' : 'hide'}`}>
-                <div className="component-item " style={{ position: 'relative' }}>
-                  <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="text">
-                    <Editor
-                      value={textContent}
-                      onValueChange={(text) => {
-                        setTextContent(text);
-                      }}
-                      highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
-                      padding={15}
-                      className="editor"
-                      textareaId="codeArea"
-                      style={{
-                        background: '#f5f5f5',
-                        fontSize: 15,
-                      }}
-                    />
-                  </div>
-                  <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
-                    <p>
-                      <span>1</span>Enter the content here
-                    </p>
-                    <p>
-                      <span>2</span>Each content/line
-                    </p>
-                    <p>
-                      <span>3</span>If the content has multiple paragraphs, each content needs to be separated by the
-                      character /
-                    </p>
+                <div className="component-item postOption">
+                  <Select
+                    name="postOption"
+                    className="PostType"
+                    onChange={(event) => changeOption(event.target.value)}
+                    value={values.option}
+                    bordered={false}
+                    MuiButtonBase-root
+                  >
+                    <MenuItem value="text">Text</MenuItem>
+                  </Select>
+                </div>
+                <div className="component-content">
+                  <p style={{ fontWeight: 700 }}>Comment</p>
+                  <div style={{ position: 'relative' }} className="component-item editor">
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                      <Editor
+                        value={textContent}
+                        onValueChange={(text) => {
+                          setTextContent(text);
+                        }}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js)}
+                        padding={15}
+                        className={`editor`}
+                        textareaId="codeArea"
+                        onClick={handleDivClick}
+                        style={{
+                          background: '#FFFFFF',
+                          fontSize: 15,
+                        }}
+                      />
+                      {textContent.length ? null : (
+                        <div onClick={handleDivClick} className={`placeholder`}>
+                          <p>
+                            <span>1</span>Enter the content here
+                          </p>
+                          <p>
+                            <span>2</span>Each content/line
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

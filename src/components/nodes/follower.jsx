@@ -8,7 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function followerNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function directMsgNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -49,7 +49,7 @@ function followerNode({ data: { label, onButtonClick, onDeleteNode }, isConnecta
           <img src={followerIcon} alt="like comment" />
           <div className="content-right">
             <div className="right-top">
-              <p>Boost followers</p>
+              <p>Direct message</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function followerNode({ data: { label, onButtonClick, onDeleteNode }, isConnecta
   );
 }
 
-export default followerNode;
+export default directMsgNode;

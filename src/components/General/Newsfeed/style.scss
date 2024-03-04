@@ -66,6 +66,7 @@
         justify-content: space-between;
         align-items: center;
         margin: 5% 0;
+        background-color: #ffffff;
         &__header {
           width: 45%;
           display: flex;
@@ -209,7 +210,16 @@
           p {
             font-weight: 400;
           }
+          background-color: #f5f5f5;
+          padding: 19px;
+          margin-top: 15px;
+          margin-bottom: 15px;
+          border-radius: 5px;
         }
+      }
+      .editor {
+        margin-top: 15px;
+        margin-bottom: 10px;
       }
       .Like .component-item__content,
       .share .component-item__content,

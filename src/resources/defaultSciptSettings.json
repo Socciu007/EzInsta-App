@@ -6,13 +6,8 @@
     "delayTimeEnd": 15,
     "isReact": false,
     "isLike": false,
-    "isLove": false,
-    "isWow": false,
-    "isHaha": false,
-    "isCare": false,
-    "isSad": false,
-    "isAngry": false,
     "isComment": false,
+    "option": "text",
     "text": []
   },
   "watchVideo": {

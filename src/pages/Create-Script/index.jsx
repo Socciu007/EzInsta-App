@@ -4,23 +4,20 @@ import './style.scss';
 import { v4 as uuidv4 } from 'uuid';
 import DnDFlow from '../../components/drag/drag';
 import WatchStory from '../../components/General/WatchStory/WatchStory.jsx';
-import WatchVideo from '../../components/General/WatchVideo/WatchVideo.jsx';
+
 import CancelFriend from '../../components/General/Cancel_Friend/CancelFriend.jsx';
 import Newsfeed from '../../components/General/Newsfeed/Newsfeed.jsx';
 import CreatePost from '../../components/General/CreatePost/CreatePost.jsx';
 import Post_Interaction from '../../components/General/Post_Interaction/Post_Interaction.jsx';
 import Delete_Post from '../../components/General/Delete_Post/Delete_Post.jsx';
 import View_Notifications from '../../components/General/View_Notifications/View_Notifications.jsx';
-import Send_Message from '../../components/General/Send_Message/Send_Message.jsx';
-import Reply_Message from '../../components/General/Reply_Message/Reply_Message.jsx';
-import AddFriend from '../../components/General/Add_Friends/AddFriend.jsx';
 import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
 import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
 import Invite from '../../components/Group/Invite/Invite.jsx';
 import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
 import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
 import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
-
+import AddFriend from '../../components/General/Add_Friends/AddFriend.jsx';
 import search from '../../assets/icon/icon-search.svg';
 import back from '../../assets/icon/icon-back.svg';
 import newNote from '../../assets/icon/icon-newNote.svg';
@@ -28,19 +25,19 @@ import debug from '../../assets/icon/icon-debug.svg';
 import runTest from '../../assets/icon/icon-runTest.svg';
 import save from '../../assets/icon/icon-save.svg';
 import watchStory from '../../assets/icon/icon-watchStoryGeneral.svg';
-import watchVideo from '../../assets/icon/icon-watchVideoGeneral.svg';
+import watchReel from '../../assets/icon/icon-watchReelGeneral.svg';
 import newsfeed from '../../assets/icon/icon-newsfeedGeneral.svg';
 import createPost from '../../assets/icon/icon-createPostGeneral.svg';
-import postInteract from '../../assets/icon/icon-postInteractGeneral.svg';
 import deletePost from '../../assets/icon/icon-deletePostGeneral.svg';
 import viewNoti from '../../assets/icon/icon-viewNotiGeneral.svg';
-import addFriend from '../../assets/icon/icon-addFriendGeneral.svg';
-import cancel from '../../assets/icon/icon-cancelGeneral.svg';
+import updateProfile from '../../assets/icon/icon-updateProfileGeneral.svg';
+import heart from '../../assets/icon/icon-heartGeneral.svg';
+import hashtag from '../../assets/icon/icon-hashtagGeneral.svg';
 import joinGroup from '../../assets/icon/icon-joinGroup.svg';
 import leftGroup from '../../assets/icon/icon-leftGroup.svg';
 import invite from '../../assets/icon/icon-inviteGroup.svg';
 import likeComment from '../../assets/icon/icon-likeComment.svg';
-import follower from '../../assets/icon/icon-follower.svg';
+import msg from '../../assets/icon/icon-directMsg.svg';
 import viewVideo from '../../assets/icon/icon-viewVideo.svg';
 import CreatePostGroup from '../../components/Group/Create_Post/CreatePost.jsx';
 import { storageScripts } from '../../common/const.config.js';
@@ -307,7 +304,7 @@ const CreateScript = () => {
       //       onGoBackClick={handleGoBackClick}
       //     />
       //   );
-      case 'addFriend':
+      case 'updateProfile':
         return (
           <AddFriend
             currentSetup={currentSetup}
@@ -377,7 +374,7 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'follower':
+      case 'directMsg':
         return (
           <SeedingFollower
             currentSetup={currentSetup}
@@ -430,51 +427,46 @@ const CreateScript = () => {
               </div>
               <div className="left-content__container">
                 <div className={activeCategory === 1 ? 'grid-container' : 'hide'}>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'newsFeed')} draggable>
+                    <img src={newsfeed} alt="Watch Newsfeed General" />
+
+                    <p>Newsfeed</p>
+                  </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'watchStory')} draggable>
-                    <img src={watchStory} alt="watch Story General" />
+                    <img src={watchStory} alt="Watch Story General" />
                     <p>Watch story</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'watchVideo')} draggable>
-                    <img src={watchVideo} alt="watch Video General" />
-                    <p>Watch video</p>
+                    <img src={watchReel} alt="Watch Reels General" />
+                    <p>Watch reels</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'newsFeed')} draggable>
-                    <img src={newsfeed} alt="watch newsfeed General" />
-                    <p>Newsfeed</p>
-                  </div>
+
                   <div className="card" onDragStart={(event) => onDragStart(event, 'createPost')} draggable>
                     <img src={createPost} alt="watch newsfeed General" />
                     <p>Create post</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'postInteract')} draggable>
-                    <img src={postInteract} alt="watch newsfeed General" />
-                    <p>Post interaction</p>
-                  </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'deletePost')} draggable>
-                    <img src={deletePost} alt="watch newsfeed General" />
+                    <img src={deletePost} alt="Delete Post General" />
                     <p>Delete post</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'viewNoti')} draggable>
-                    <img src={viewNoti} alt="watch newsfeed General" />
-                    <p>View notifications</p>
+                    <img src={viewNoti} alt="Notification General" />
+                    <p>Notification</p>
                   </div>
-                  {/* <div className="card" onDragStart={(event) => onDragStart(event, 'sendMsg')} draggable>
-                    <img src={sendMsg} alt="watch newsfeed General" />
-                    <p>Send message</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'updateProfile')} draggable>
+                    <img src={updateProfile} alt="Update Profile General" />
+                    <p>Update Profile</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'replyMsg')} draggable>
-                    <img src={reply} alt="watch newsfeed General" />
-                    <p>Reply message</p>
-                  </div> */}
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'addFriend')} draggable>
-                    <img src={addFriend} alt="watch newsfeed General" />
-                    <p>Add friend</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'updateProfile')} draggable>
+                    <img src={heart} alt="Interact with follower/following General" />
+                    <p style={{ textAlign: 'center' }}>Follow Interaction</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'cancelFriend')} draggable>
-                    <img src={cancel} alt="watch newsfeed General" />
-                    <p>Cancel friend</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'updateProfile')} draggable>
+                    <img src={hashtag} alt="Hashtag Interaction General" />
+                    <p style={{ textAlign: 'center' }}>Hashtag Interaction</p>
                   </div>
                 </div>
+                {/* Seeding */}
                 <div className={activeCategory === 2 ? 'grid-container' : 'hide'}>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'joinGroup')} draggable>
                     <img src={joinGroup} alt="join Group General" />
@@ -493,14 +485,15 @@ const CreateScript = () => {
                     <p>Create post</p>
                   </div>
                 </div>
+
                 <div className={activeCategory === 3 ? 'grid-container' : 'hide'}>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'likeComment')} draggable>
                     <img src={likeComment} alt="Like and Comment" />
                     <p>Like, comment</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'follower')} draggable>
-                    <img src={follower} alt="Followers" />
-                    <p>Followers</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'directMsg')} draggable>
+                    <img src={msg} alt="Direct Message" />
+                    <p>Direct Message</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'viewVideo')} draggable>
                     <img src={viewVideo} alt="View Video" />
