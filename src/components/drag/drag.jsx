@@ -23,10 +23,9 @@ import sendMsgNode from '../nodes/sendMsg';
 import replyMsgNode from '../nodes/replyMsg';
 import updateProfileNode from '../nodes/updateProfile';
 import cancelFriendNode from '../nodes/cancelFriend';
-import leftGroupNode from '../nodes/leftGroup';
+import directMsgNode from '../nodes/leftGroup';
 import inviteGroupNode from '../nodes/invite';
 import likeCommentNode from '../nodes/likeComment';
-import directMsgNode from '../nodes/follower';
 import viewVideoNode from '../nodes/viewVideo';
 import createPostGroupNode from '../nodes/createPostGroup';
 const initialNodes = [
@@ -51,7 +50,7 @@ const nodeTypes = {
   updateProfile: updateProfileNode,
   cancelFriend: cancelFriendNode,
   postInteraction: postInteractNode,
-  leftGroup: leftGroupNode,
+  leftGroup: directMsgNode,
   inviteGroup: inviteGroupNode,
   createPostGroup: createPostGroupNode,
   likeComment: likeCommentNode,
