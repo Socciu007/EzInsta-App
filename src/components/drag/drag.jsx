@@ -21,13 +21,12 @@ import deletePostNode from '../nodes/deletePost';
 import viewNotiNode from '../nodes/viewNoti';
 import sendMsgNode from '../nodes/sendMsg';
 import replyMsgNode from '../nodes/replyMsg';
-import addFriendNode from '../nodes/addFriend';
+import updateProfileNode from '../nodes/updateProfile';
 import cancelFriendNode from '../nodes/cancelFriend';
-import joinGroupNode from '../nodes/joinGroup';
 import leftGroupNode from '../nodes/leftGroup';
 import inviteGroupNode from '../nodes/invite';
 import likeCommentNode from '../nodes/likeComment';
-import followerNode from '../nodes/follower';
+import directMsgNode from '../nodes/follower';
 import viewVideoNode from '../nodes/viewVideo';
 import createPostGroupNode from '../nodes/createPostGroup';
 const initialNodes = [
@@ -49,14 +48,14 @@ const nodeTypes = {
   viewNoti: viewNotiNode,
   sendMsg: sendMsgNode,
   replyMsg: replyMsgNode,
-  addFriend: addFriendNode,
+  updateProfile: updateProfileNode,
   cancelFriend: cancelFriendNode,
-  joinGroup: joinGroupNode,
+  postInteraction: postInteractNode,
   leftGroup: leftGroupNode,
   inviteGroup: inviteGroupNode,
   createPostGroup: createPostGroupNode,
   likeComment: likeCommentNode,
-  follower: followerNode,
+  directMsg: directMsgNode,
   viewVideo: viewVideoNode,
 };
 const nodeMessage = {
@@ -69,14 +68,14 @@ const nodeMessage = {
   viewNoti: 'viewNoti',
   sendMsg: 'sendMsg',
   replyMsg: 'replyMsg',
-  addFriend: 'addFriend',
+  updateProfile: 'updateProfile',
   cancelFriend: 'cancelFriend',
-  joinGroup: 'joinGroup',
+  postInteraction: 'joinGroup',
   leftGroup: 'leftGroup',
   inviteGroup: 'inviteGroup',
   createPostGroup: 'createPostGroup',
   likeComment: 'likeComment',
-  follower: 'follower',
+  directMsg: 'directMsg',
   viewVideo: 'viewVideo',
 };
 

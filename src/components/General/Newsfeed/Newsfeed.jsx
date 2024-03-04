@@ -110,7 +110,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
               <p>Newsfeed</p>
             </div>
             <div className="component-item scrollTime">
-              <p className="component-item__header">View time (s):</p>
+              <p className="component-item__header">Time in newsfeed: (s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
@@ -221,16 +221,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                   checked={values.randomLike}
                   onChange={(event) => handleChangeLiked(event.target.checked)}
                 />
-                <p>
-                  Random Like{' '}
-                  <span
-                    style={{ marginLeft: '2px' }}
-                    className={`span__content ${values.randomLike ? 'show' : 'hide'}`}
-                  >
-                    (post)
-                  </span>
-                  :
-                </p>
+                <p>Random Like :</p>
               </div>
               <div className={`component-item__content ${values.randomLike ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
@@ -276,6 +267,51 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                 </div>
               </div>
             </div>
+            <div className="component-item comment">
+              <div className="component-item__header">
+                <input
+                  type="checkbox"
+                  name="randomComment"
+                  checked={values.randomComment}
+                  onChange={(event) => handleChangeComment(event.target.checked)}
+                />
+                <p>Random Comment</p>
+              </div>
+              <div className={`commentContent ${values.randomComment ? 'show' : 'hide'}`}>
+                <div className="Text">
+                  <p style={{ fontWeight: 700 }}>Comment</p>
+                  <div style={{ position: 'relative' }} className="component-item editor">
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                      <Editor
+                        value={textContent}
+                        onValueChange={(text) => {
+                          setTextContent(text);
+                        }}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js)}
+                        padding={15}
+                        className={`editor`}
+                        textareaId="codeArea"
+                        onClick={handleDivClick}
+                        style={{
+                          background: '#FFFFFF',
+                          fontSize: 15,
+                        }}
+                      />
+                      {textContent.length ? null : (
+                        <div onClick={handleDivClick} className={`placeholder`}>
+                          <p>
+                            <span>1</span>Enter the content here
+                          </p>
+                          <p>
+                            <span>2</span>Each content/line
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="component-item share">
               <div className="component-item__header">
                 <input
@@ -284,16 +320,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                   checked={values.randomShare}
                   onChange={(event) => handleChangeShared(event.target.checked)}
                 />
-                <p>
-                  Share to Feed{' '}
-                  <span
-                    style={{ marginLeft: '2px' }}
-                    className={`span__content ${values.randomShare ? 'show' : 'hide'}`}
-                  >
-                    (post)
-                  </span>
-                  :
-                </p>
+                <p>Random share :</p>
               </div>
               <div className={`component-item__content ${values.randomShare ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
@@ -336,102 +363,6 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                     value={values.shareEnd}
                     onChange={(event) => handleChangeShareEnd(event.target.value)}
                   />
-                </div>
-              </div>
-            </div>
-            <div className="component-item comment">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomComment"
-                  checked={values.randomComment}
-                  onChange={(event) => handleChangeComment(event.target.checked)}
-                />
-                <p>Randomly Comment</p>
-              </div>
-              <div className={`commentContent ${values.randomComment ? 'show' : 'hide'}`}>
-                <div className="component-item comment__numberPost">
-                  <p className="component-item__header">Number of posts:</p>
-                  <div className="component-item__content">
-                    <div className="component-item__number">
-                      <div className="component-item__number__icon">
-                        <img
-                          src={iconIncrease}
-                          alt="Increase icon"
-                          onClick={() => handleChangeCommentStart(values.commentStart + 1)}
-                        />
-                        <img
-                          src={iconDecrease}
-                          alt="Decrease icon"
-                          onClick={() =>
-                            handleChangeCommentStart(values.commentStart - 1 > 0 ? values.commentStart - 1 : 0)
-                          }
-                        />
-                      </div>
-                      <input
-                        type="text"
-                        name="Start"
-                        value={values.commentStart}
-                        onChange={(event) => handleChangeCommentStart(event.target.value)}
-                      />
-                    </div>
-                    <span>to</span>
-                    <div className="component-item__number">
-                      <div className="component-item__number__icon">
-                        <img
-                          src={iconIncrease}
-                          alt="Increase icon"
-                          onClick={() => handleChangeCommentEnd(values.commentEnd + 1)}
-                        />
-                        <img
-                          src={iconDecrease}
-                          alt="Decrease icon"
-                          onClick={() => handleChangeCommentEnd(values.commentEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
-                        />
-                      </div>
-                      <input
-                        type="text"
-                        name="End"
-                        value={values.commentEnd}
-                        onChange={(event) => handleChangeCommentEnd(event.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="Text">
-                  <div className="component-item__header">
-                    <p>Text</p>
-                  </div>
-                  <div style={{ position: 'relative' }} className="component-item">
-                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
-                      <Editor
-                        value={textContent}
-                        onValueChange={(text) => {
-                          setTextContent(text);
-                        }}
-                        highlight={(code) => hightlightWithLineNumbers(code, languages.js)}
-                        padding={15}
-                        className={`editor`}
-                        textareaId="codeArea"
-                        onClick={handleDivClick}
-                        style={{
-                          background: '#f5f5f5',
-                          fontSize: 15,
-                        }}
-                      />
-                      {textContent.length ? null : (
-                        <div onClick={handleDivClick} className={`placeholder`}>
-                          <p>
-                            <span>1</span>Enter the content here
-                          </p>
-                          <p>
-                            <span>2</span>Each content/line
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

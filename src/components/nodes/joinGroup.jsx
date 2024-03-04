@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import joinGroupLeft from '../../assets/icon/icon-joinGroupLeft.svg';
-import joinGroupIcon from '../../assets/icon/icon-joinGroupNode.svg';
+import postInteractionLeft from '../../assets/icon/icon-postInteractLeft.svg';
+import postInteractIcon from '../../assets/icon/icon-postInteractionMain.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function joinGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -44,12 +44,12 @@ function joinGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={joinGroupLeft} alt="join Group Left" />
+        <img src={postInteractionLeft} alt="post interaction Left" />
         <div className="content">
-          <img src={joinGroupIcon} alt="join Group" />
+          <img src={postInteractIcon} alt="post interaction" />
           <div className="content-right">
             <div className="right-top">
-              <p>G-Join group</p>
+              <p>Post interaction</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function joinGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
   );
 }
 
-export default joinGroupNode;
+export default postInteractNode;

@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import addFriendLeft from '../../assets/icon/icon-addFriendLeft.svg';
-import addFriendIcon from '../../assets/icon/icon-addFriend.svg';
+import updateProfileLeft from '../../assets/icon/icon-updateProfileLeft.svg';
+import updateProfileIcon from '../../assets/icon/icon-updateProfile.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function addFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function updateProfileNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -44,12 +44,12 @@ function addFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={addFriendLeft} alt="addFriendLeft" />
+        <img src={updateProfileLeft} alt="updateProfileLeft" />
         <div className="content">
-          <img src={addFriendIcon} alt="addFriendLeft" />
+          <img src={updateProfileIcon} alt="updateProfileLeft" />
           <div className="content-right">
             <div className="right-top">
-              <p>Add friend</p>
+              <p>Update Profile</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function addFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
   );
 }
 
-export default addFriendNode;
+export default updateProfileNode;
