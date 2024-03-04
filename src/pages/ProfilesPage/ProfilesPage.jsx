@@ -183,13 +183,14 @@ const ProfilesPage = () => {
       },
     ];
 
-    if (settings.uid) {
+    if (settings.name) {
       settingsColumns.push({
         title: 'User Name',
+        index: 'name',
         render: (profile) => {
           return (
             <div className="-text-profile">
-              <span>{profile.uid}</span>
+              <span>{profile.name}</span>
               {profile.isPin && <img src={pin} alt="icon-pin"></img>}
             </div>
           );
@@ -197,8 +198,8 @@ const ProfilesPage = () => {
         width: 200,
         sorter: (a, b) => {
           if (!a.isPin && !b.isPin) {
-            const nameA = a.uid ? a.uid.toUpperCase() : '';
-            const nameB = b.uid ? b.uid.toUpperCase() : '';
+            const nameA = a.name ? a.name.toUpperCase() : '';
+            const nameB = b.name ? b.name.toUpperCase() : '';
             if (nameA < nameB) {
               return -1;
             }
@@ -243,32 +244,17 @@ const ProfilesPage = () => {
         },
       });
     }
-    if (settings.friends) {
+    if (settings.follower) {
       settingsColumns.push({
         title: 'Follower/ Following',
-        dataIndex: 'friends',
-        width: 150,
+        dataIndex: 'follower',
+        width: 170,
         ellipsis: {
           showTitle: false,
         },
-        render: (friends) => (
-          <Tooltip placement="topLeft" title={friends}>
-            {friends}
-          </Tooltip>
-        ),
-      });
-    }
-    if (settings.twoFA) {
-      settingsColumns.push({
-        title: '2FA',
-        dataIndex: 'twoFA',
-        width: 200,
-        ellipsis: {
-          showTitle: false,
-        },
-        render: (twoFA) => (
-          <Tooltip placement="topLeft" title={twoFA}>
-            {twoFA}
+        render: (follower) => (
+          <Tooltip placement="topLeft" title={follower}>
+            {follower}
           </Tooltip>
         ),
       });
@@ -312,6 +298,21 @@ const ProfilesPage = () => {
         render: (recoveryPassword) => (
           <Tooltip placement="topLeft" title={recoveryPassword}>
             {recoveryPassword}
+          </Tooltip>
+        ),
+      });
+    }
+    if (settings.twoFA) {
+      settingsColumns.push({
+        title: '2FA',
+        dataIndex: 'twoFA',
+        width: 200,
+        ellipsis: {
+          showTitle: false,
+        },
+        render: (twoFA) => (
+          <Tooltip placement="topLeft" title={twoFA}>
+            {twoFA}
           </Tooltip>
         ),
       });
@@ -730,7 +731,7 @@ const ProfilesPage = () => {
     >
       <div className="-container-profiles">
         <div className="profiles_header">
-          <h1 className="-title-profiles">INSTAGRAM TOOL</h1>
+          <h1 className="-title-profiles">MiniTool Instagram</h1>
           <div className="user">
             {/* <p className="user_noti">
               Your subscription will be expired in <strong>3 days</strong>. <span>Pay now!</span>
@@ -842,7 +843,7 @@ const ProfilesPage = () => {
               <span className="-option-profiles" onClick={handleOpenProfiles}>
                 <img src={addPerson} alt="image-addPerson"></img>
               </span>
-              <span className="-option-profiles" onClick={handleOpenProfiles}>
+              <span className="-option-profiles" onClick>
                 <img src={addFile} alt="image-addFile"></img>
               </span>
               <PopupProfile
@@ -924,6 +925,7 @@ const ProfilesPage = () => {
                   removeProfile(idSelect);
                 }
               }}
+              profileSelected={profilesSelected}
             ></PopupDeleteProfile>
             <div onClick={handleOpenScripts}>
               <button>Run</button>

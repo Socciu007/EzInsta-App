@@ -182,7 +182,7 @@
     "UIDGroup": [],
     "lineCount": 0
   },
-  "likeComment": {
+  "seedingPost": {
     "viewTimeStart": 5,
     "viewTimeEnd": 3,
     "delayTimeStart": 5,
@@ -206,7 +206,7 @@
     "tagFriendEnd": 3,
     "textComment": []
   },
-  "follower": {
+  "seedingDirectMessage": {
     "delayTimeStart": 3,
     "delayTimeEnd": 5,
     "selectTypeFollow": "profile",
@@ -215,5 +215,6 @@
     "isFollow": false,
     "line": 0
   },
-  "viewVideo": { "viewTimeStart": 30, "viewTimeEnd": 50, "videoID": [], "line": 0 }
+  "seedingUnfollow": { "viewTimeStart": 30, "viewTimeEnd": 50, "videoID": [], "line": 0 },
+  "seedingFollow": {}
 }
