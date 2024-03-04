@@ -6,10 +6,10 @@ import display from '../../assets/pictures/icon-display-setting.png';
 import search from '../../assets/pictures/icon-search.svg';
 import refresh from '../../assets/pictures/icon-refresh.png';
 import settings from '../../assets/pictures/icon-settings.png';
-import plus from '../../assets/pictures/icon-plus.png';
+import addPerson from '../../assets/icon/icon-addPerson.png';
+import addFile from '../../assets/icon/icon-addFile.svg';
 import options from '../../assets/pictures/icon-options.png';
 import addProxy from '../../assets/pictures/icon-addProxy.png';
-// import deleted from '../../assets/pictures/icon-delete.svg';
 import deleted from '../../assets/icon/icon-Delete.svg';
 import yourScript from '../../assets/pictures/icon-yourScripts.svg';
 import pin from '../../assets/icon/icon-pin.svg';
@@ -172,173 +172,20 @@ const ProfilesPage = () => {
     }
     setDisplaySettings(display);
   };
-  // const [inputVisible, setInputVisible] = useState(false);
-  // const [inputValue, setInputValue] = useState('');
-  // const [editInputIndex, setEditInputIndex] = useState(-1);
-  // const [editInputValue, setEditInputValue] = useState('');
-  // const inputRef = useRef(null);
-  // const editInputRef = useRef(null);
-  // useEffect(() => {
-  //   if (inputVisible) {
-  //     inputRef.current?.focus();
-  //   }
-  // }, [inputVisible]);
-  // useEffect(() => {
-  //   editInputRef.current?.focus();
-  // }, [editInputValue]);
-  // const handleCloseTag = async (record, removedTag) => {
-  //   const listProfiles = [...dataProfiles];
-  //   const index = listProfiles.findIndex((profile) => record.id === profile.id);
-  //   const newData = listProfiles[index].filter((tag) => tag !== removedTag);
-  //   console.log('new', newData);
-  //   setDataProfiles(newData);
-  //   await dbSetLocally(storageProfiles, newData);
-  // };
-  // const showInput = () => {
-  //   setInputVisible(true);
-  // };
-  // const handleInputChange = (e) => {
-  //   setInputValue(e.target.value);
-  // };
-  // const handleInputConfirm = () => {
-  //   if (inputValue && !tags.includes(inputValue)) {
-  //     setTags([...tag, inputValue]);
-  //   }
-  //   setInputVisible(false);
-  //   setInputValue('');
-  // };
-  // const handleEditInputChange = (e) => {
-  //   setEditInputValue(e.target.value);
-  // };
-  // const handleEditInputConfirm = async (record, tag) => {
-  //   const newTags = [...tag];
-  //   newTags[editInputIndex] = editInputValue;
-  //   setTags(newTags);
-  //   setEditInputIndex(-1);
-  //   setEditInputValue('');
-  //   const newData = [...dataProfiles];
-  //   const index = newData.findIndex((profile) => record.id === profile.id);
-  //   const profile = newData[index];
-  //   profile.tag = record.tag.split(',').map((e) => {
-  //     if (e && e.length && !e.startsWith('#')) {
-  //       return '#' + e;
-  //     }
-  //     return e;
-  //   });
-  //   newData.splice(index, 1, {
-  //     ...profile,
-  //   });
-  //   setDataProfiles(newData);
-  //   await dbSetLocally(storageProfiles, newData);
-  // };
-  // const tagInputStyle = {
-  //   width: 64,
-  //   height: 22,
-  //   marginInlineEnd: 8,
-  //   verticalAlign: 'top',
-  // };
-  // const listTag = (record, tags) => {
-  //   return (
-  //     <Space size={[0, 8]} wrap>
-  //       {tags.map((tag, index) => {
-  //         if (editInputIndex === index) {
-  //           return (
-  //             <Input
-  //               ref={editInputRef}
-  //               type='text'
-  //               key={index}
-  //               size="small"
-  //               style={tagInputStyle}
-  //               value={editInputValue}
-  //               onChange={handleEditInputChange}
-  //               // onBlur={handleEditInputConfirm(tags)}
-  //               onPressEnter={handleEditInputConfirm(tags)}
-  //             />
-  //           );
-  //         }
-  //         const isLongTag = tag.length > 20;
-  //         const tagElem = (
-  //           <Tag
-  //             key={tag}
-  //             closable={index !== 0}
-  //             style={{
-  //               userSelect: 'none',
-  //             }}
-  //             onClose={() => handleCloseTag(record, tag)}
-  //           >
-  //             <span
-  //               onDoubleClick={(e) => {
-  //                 if (index !== 0) {
-  //                   setEditInputIndex(index);
-  //                   setEditInputValue(tag);
-  //                   e.preventDefault();
-  //                 }
-  //               }}
-  //             >
-  //               {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-  //             </span>
-  //           </Tag>
-  //         );
-  //         return isLongTag ? (
-  //           <Tooltip title={tag} key={tag}>
-  //             {tagElem}
-  //           </Tooltip>
-  //         ) : (
-  //           tagElem
-  //         );
-  //       })}
-  //       {inputVisible ? (
-  //         <Input
-  //           ref={inputRef}
-  //           type="text"
-  //           size="small"
-  //           style={tagInputStyle}
-  //           value={inputValue}
-  //           onChange={() => handleInputChange()}
-  //           onBlur={handleInputConfirm()}
-  //           onPressEnter={handleInputConfirm()}
-  //         />
-  //       ) : (
-  //         <Tag onClick={showInput}>New Tag</Tag>
-  //       )}
-  //     </Space>
-  //   );
-  // };
 
   const renderColumns = async (settings, data) => {
     if (!settings) settings = await dbGetLocally(storageDisplaySettings);
     const settingsColumns = [
       {
         title: '#',
-        // dataIndex: 'key',
         width: 50,
         render: (text, record, index) => <div>{index + 1}</div>,
       },
     ];
 
-    // if (settings.profile) {
-    //   settingsColumns.push({
-    //     title: 'Profile',
-    //     width: 250,
-    //     render: (profile) => {
-    //       return (
-    //         <div className="-text-profile">
-    //           <span>{profile.os.charAt(0).toUpperCase() + profile.os.slice(1)}</span>
-    //           {profile.isPin && <img src={pin} alt="icon-pin"></img>}
-    //           {profile.os === 'mac' && <img style={{ width: 13 }} src={macosIcon} alt="icon-mac"></img>}
-    //           {profile.os === 'win' && <img src={windowIcon} style={{ width: 13 }} alt="icon-window"></img>}
-    //           {profile.os === 'ios' && <img src={iosIcon} style={{ width: 13 }} alt="icon-ios"></img>}
-    //           {profile.os === 'android' && <img src={androidIcon} style={{ width: 13 }} alt="icon-android"></img>}
-    //           {profile.os === 'lin' && <img src={linuxIcon} style={{ width: 13 }} alt="icon-linux"></img>}
-    //         </div>
-    //       );
-    //     },
-    //     sorter: (a, b) => a.profile.length - b.profile.length,
-    //   });
-    // }
     if (settings.uid) {
       settingsColumns.push({
-        title: 'UID',
+        title: 'User Name',
         render: (profile) => {
           return (
             <div className="-text-profile">
@@ -363,14 +210,17 @@ const ProfilesPage = () => {
         },
       });
     }
-    if (settings.name) {
+    if (settings.password) {
       settingsColumns.push({
-        title: 'Name',
-        dataIndex: 'nameAccount',
-        width: 200,
-        render: (nameAccount) => (
-          <Tooltip placement="topLeft" title={nameAccount}>
-            {nameAccount}
+        title: 'Password',
+        dataIndex: 'password',
+        width: 150,
+        ellipsis: {
+          showTitle: false,
+        },
+        render: (password) => (
+          <Tooltip placement="topLeft" title={password}>
+            {password}
           </Tooltip>
         ),
       });
@@ -393,24 +243,9 @@ const ProfilesPage = () => {
         },
       });
     }
-    if (settings.twoFA) {
-      settingsColumns.push({
-        title: '2FA',
-        dataIndex: 'twoFA',
-        width: 200,
-        ellipsis: {
-          showTitle: false,
-        },
-        render: (twoFA) => (
-          <Tooltip placement="topLeft" title={twoFA}>
-            {twoFA}
-          </Tooltip>
-        ),
-      });
-    }
     if (settings.friends) {
       settingsColumns.push({
-        title: 'Friends',
+        title: 'Follower/ Following',
         dataIndex: 'friends',
         width: 150,
         ellipsis: {
@@ -423,39 +258,17 @@ const ProfilesPage = () => {
         ),
       });
     }
-    if (settings.group) {
+    if (settings.twoFA) {
       settingsColumns.push({
-        title: 'Group',
-        dataIndex: 'group',
-        width: 150,
-        ellipsis: true,
-      });
-    }
-    if (settings.sex) {
-      settingsColumns.push({
-        title: 'Sex',
-        dataIndex: 'sex',
-        width: 150,
-      });
-    }
-    if (settings.bird) {
-      settingsColumns.push({
-        title: 'Date of birth',
-        dataIndex: 'birth',
+        title: '2FA',
+        dataIndex: 'twoFA',
         width: 200,
-      });
-    }
-    if (settings.password) {
-      settingsColumns.push({
-        title: 'Password',
-        dataIndex: 'password',
-        width: 150,
         ellipsis: {
           showTitle: false,
         },
-        render: (password) => (
-          <Tooltip placement="topLeft" title={password}>
-            {password}
+        render: (twoFA) => (
+          <Tooltip placement="topLeft" title={twoFA}>
+            {twoFA}
           </Tooltip>
         ),
       });
@@ -501,39 +314,6 @@ const ProfilesPage = () => {
             {recoveryPassword}
           </Tooltip>
         ),
-      });
-    }
-
-    if (settings.proxy) {
-      settingsColumns.push({
-        title: 'Proxy',
-        dataIndex: 'proxy',
-        width: 200,
-        ellipsis: {
-          showTitle: false,
-        },
-        render: (proxy) => {
-          return (
-            <div className="-proxy-profiles">
-              <Tooltip placement="topLeft" title={generateProxyStr(proxy, false)}>
-                {generateProxyStr(proxy)}
-              </Tooltip>
-            </div>
-          );
-        },
-        sorter: (a, b) => {
-          if (!a.isPin && !b.isPin) {
-            const nameA = generateProxyStr(a.proxy, false).toUpperCase();
-            const nameB = generateProxyStr(b.proxy, false).toUpperCase();
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          }
-        },
       });
     }
     if (settings.tag) {
@@ -1060,7 +840,10 @@ const ProfilesPage = () => {
                 <img src={yourScript} alt="icon-yourscripts"></img>
               </span>
               <span className="-option-profiles" onClick={handleOpenProfiles}>
-                <img src={plus} alt="image-plus"></img>
+                <img src={addPerson} alt="image-addPerson"></img>
+              </span>
+              <span className="-option-profiles" onClick={handleOpenProfiles}>
+                <img src={addFile} alt="image-addFile"></img>
               </span>
               <PopupProfile
                 openProfiles={openProfiles}
