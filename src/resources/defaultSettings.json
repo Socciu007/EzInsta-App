@@ -1,0 +1,16 @@
+{
+  "countProfile": 5,
+  "countLoop": 1,
+  "runningType": "random",
+  "URL": "https://mbasic.facebook.com",
+  "muteAudio": false,
+  "showImage": false,
+  "maxTime": 500,
+  "delayThread": 5,
+  "maxRam": 90,
+  "maxCpu": 90,
+  "maxDisk": 90,
+  "proxies": [],
+  "assignProxy": true,
+  "apiChange": true
+}

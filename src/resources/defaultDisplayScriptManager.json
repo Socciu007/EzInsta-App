@@ -1,0 +1,7 @@
+{
+  "name": true,
+  "note": true,
+  "created": true,
+  "tag": true,
+  "status": true
+}

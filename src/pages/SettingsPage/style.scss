@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'GoogleSans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('GoogleSans'), url('./assets/fonts/GoogleSansTTF/GoogleSans-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'GoogleSansBold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('GoogleSans'), url('../../assets/fonts/GoogleSansTTF/GoogleSans-Bold.ttf') format('truetype');
+}
+.layout-settings {
+  background-color: #fff;
+  position: fixed;
+  padding: 30px;
+  height: 100vh;
+  inset: 0px;
+  .-layout-page {
+    // height: 100%;
+    .-title-profiles {
+      color: #01162b;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+    .-return-profiles {
+      display: flex;
+      margin-top: 22px;
+      p {
+        color: #01162b;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 30px;
+      }
+      & span > svg {
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
+    .-settings-profiles {
+      height: 500px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+.layout-settings-Dialog {
+  min-width: 1163px;
+  height: 679px;
+}
+.layout-settings-Page {
+  min-width: 1280px;
+  // height: 679px;
+}
+
+.scroll-settings {
+  height: 90%;
+  width: 100%;
+  margin-top: 18px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 15px;
+  scrollbar-width: thin;
+  padding-right: 13px;
+  background: #fff;
+}
+.Dialog {
+  height: 520px;
+  width: 100%;
+}
+.Page {
+  height: calc(100vh - 143px);
+  width: 101%;
+}
+.scroll-settings::-webkit-scrollbar {
+  width: 5px;
+}
+.scroll-settings::-webkit-scrollbar-thumb {
+  background-color: rgba(1, 22, 43, 0.5); /* Màu của thanh cuộn */
+  border-radius: 20px; /* Bo tròn góc của thanh cuộn */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+  padding: 5px;
+}
+.scroll-settings::-webkit-scrollbar-track {
+  background-color: rgba(1, 22, 43, 0.2); /* Màu của phần bên dưới thanh cuộn */
+  border-radius: 20px;
+}

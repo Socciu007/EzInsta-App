@@ -1,0 +1,56 @@
+// //css choose scripts
+// .PopupSetting {
+//   width: 1163px;
+//   height: 100%;
+//   border-radius: 15px;
+//   background: #fff;
+//   box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+//   padding: 30px;
+//   inset: 0px;
+//   .-return-profiles {
+//     display: flex;
+//     margin-top: 22px;
+//     p {
+//       color: #01162b;
+//       font-size: 18px;
+//       font-weight: 700;
+//       line-height: 30px;
+//     }
+//     & span > svg {
+//       width: 30px;
+//       height: 30px;
+//       flex-shrink: 0;
+//       margin-right: 10px;
+//       cursor: pointer;
+//     }
+//   }
+//   .-settings-profiles {
+//     height: 500px;
+//     display: flex;
+//     justify-content: space-between;
+//   }
+// }
+// .scroll-settings {
+//   height: 90%;
+//   width: 100%;
+//   margin-top: 18px;
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//   border-radius: 15px;
+//   scrollbar-width: thin;
+//   padding-right: 13px;
+//   background: #fff;
+// }
+// .scroll-settings::-webkit-scrollbar {
+//   width: 5px;
+// }
+// .scroll-settings::-webkit-scrollbar-thumb {
+//   background-color: rgba(1, 22, 43, 0.5); /* Màu của thanh cuộn */
+//   border-radius: 20px; /* Bo tròn góc của thanh cuộn */
+//   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+//   padding: 5px;
+// }
+// .scroll-settings::-webkit-scrollbar-track {
+//   background-color: rgba(1, 22, 43, 0.2); /* Màu của phần bên dưới thanh cuộn */
+//   border-radius: 20px;
+// }

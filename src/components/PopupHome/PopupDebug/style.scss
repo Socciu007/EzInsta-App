@@ -1,0 +1,87 @@
+.-layout-debug {
+  width: 1050px;
+  height: auto;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+  &__container {
+    padding: 2% 4% 2% 4%;
+    height: 100%;
+    .-nav-scripts {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1%;
+      &__header {
+        display: flex;
+        gap: 19px;
+        h1 {
+          color: #01162b;
+          font-size: 25px;
+          font-weight: 700;
+          line-height: normal;
+        }
+      }
+      &__btn {
+        &__close {
+          width: 30px;
+          height: 30px;
+          background: #f5f5f5;
+          border-radius: 50%;
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+        }
+      }
+    }
+    &__debugs {
+      display: flex;
+      margin-left: 8px;
+      flex-direction: column;
+      p {
+        font-size: 15px;
+      }
+      .contentDebugs {
+        display: flex;
+        p {
+          margin-left: 12px;
+          display: inline;
+          background: #fff;
+        }
+      }
+    }
+    .scrollable-container {
+      width: 100%;
+      height: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 15px;
+      scrollbar-width: thin;
+      .imgNoBug {
+        margin: 0 auto;
+        height: 150px;
+      }
+      .noBug {
+        text-align: center;
+        color: #01162b;
+        font-size: 15px;
+        font-weight: 400;
+        margin: 10px 0 15px;
+        opacity: 0.7;
+      }
+    }
+    .scrollable-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scrollable-container::-webkit-scrollbar-thumb {
+      background-color: #ccc; /* Màu của thanh cuộn */
+      border-radius: 20px; /* Bo tròn góc của thanh cuộn */
+
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+    }
+    .scrollable-container::-webkit-scrollbar-track {
+      background-color: #f0f0f0; /* Màu của phần bên dưới thanh cuộn */
+      border-radius: 20px;
+    }
+  }
+}

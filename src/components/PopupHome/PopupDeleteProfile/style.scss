@@ -1,0 +1,50 @@
+// css delete profiles
+.-delete-profiles {
+  position: absolute;
+  /* top: -50%; */
+  /* left: -50%; */
+  transform: translate(-50%, -50%);
+  width: 636px;
+  height: 183px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+  &__content {
+    margin-top: 22px;
+    margin-left: 24px;
+    position: absolute;
+    width: 90%;
+    h1 {
+      color: #01162b;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 200%;
+    }
+    p {
+      margin-top: 2px;
+      color: #01162b;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: normal;
+    }
+    &__confirm {
+      display: flex;
+      justify-content: flex-end;
+      gap: 22px;
+      margin-top: 30px;
+      button {
+        display: inline-flex;
+        padding: 9px 29px;
+        align-items: flex-start;
+        gap: 10px;
+        border-radius: 36px;
+        box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: normal;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }
+}

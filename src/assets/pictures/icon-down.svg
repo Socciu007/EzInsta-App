@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+<path d="M1 1L6 6L11 1" stroke="#01162B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+=======
+<<<<<<< HEAD
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="15" viewBox="0 0 10 15" fill="none">
+  <path d="M4.61427 0.467669C4.81426 0.225192 5.18574 0.225192 5.38573 0.467669L8.65534 4.43186C8.92431 4.75798 8.69234 5.25 8.26961 5.25L1.73039 5.25C1.30766 5.25 1.07569 4.75798 1.34467 4.43186L4.61427 0.467669Z" fill="#01162B"/>
+=======
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none">
+<path d="M1 1L6 6L11 1" stroke="#01162B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+>>>>>>> 753a79b9fa90c18b1b82e3c45c3af794262ca8e6
+>>>>>>> main
+</svg>

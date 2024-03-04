@@ -1,0 +1,249 @@
+.sendMessage {
+  position: relative;
+  height: 100%;
+  &__title {
+    height: 5%;
+    color: var(--font-color-para);
+    font-size: 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .goBack {
+    display: flex;
+    margin: 1rem 0;
+    height: 5%;
+    p {
+      color: var(--font-color-para);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 30px;
+    }
+    img {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      margin-right: 10px;
+      margin-right: 1rem;
+    }
+  }
+
+  .scrollable-container {
+    width: 440px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+    padding: 0 15px;
+    scrollbar-width: thin;
+  }
+  .scrollable-container::-webkit-scrollbar {
+    width: 5px;
+  }
+  .scrollable-container::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Màu của thanh cuộn */
+    border-radius: 20px; /* Bo tròn góc của thanh cuộn */
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+  }
+  .scrollable-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Màu của phần bên dưới thanh cuộn */
+    border-radius: 20px;
+  }
+  .component_container {
+    height: 100%;
+    display: flex;
+    .component-left {
+      p {
+        color: var(--font-color-para);
+        font-size: 15px;
+        font-weight: 700;
+        display: flex;
+      }
+      .component-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 5% 0;
+        &__header {
+          width: 45%;
+          display: flex;
+          align-items: center;
+          input[type='checkbox'] {
+            margin-right: 10px;
+            color: #fff;
+          }
+          input[type='checkbox']:checked {
+            background-color: #2a86ff !important;
+          }
+          span {
+            font-weight: 400;
+          }
+        }
+        &__content {
+          display: flex;
+          justify-content: space-between;
+          width: 51%;
+          align-items: center;
+        }
+        &__number {
+          display: flex;
+          align-items: center;
+          width: 80px;
+          padding: 1em 0;
+          border-radius: 5px;
+          border: 1px dashed rgba(1, 22, 43, 0.2);
+          background: var(--bg-input);
+          position: relative;
+          &__icon {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            left: 10%;
+            top: 50%;
+            transform: translate(-10%, -50%);
+            align-items: center;
+            z-index: 1;
+            img {
+              margin: 0.1rem 0;
+            }
+          }
+          input {
+            text-align: center;
+            width: 100%;
+            background: var(--bg-input);
+            height: 100%;
+            border: 0;
+            font-weight: 400;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            overflow-x: hidden;
+            padding: 15px 10px 15px 20px;
+          }
+        }
+      }
+      .numberOfPost {
+        margin-top: 0;
+      }
+      .postOption {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 2%;
+        .PostType {
+          font-family: 'GoogleSans';
+          top: 0;
+          width: 100%;
+          border-radius: 5px;
+          background: var(--bg-input);
+          height: 40px;
+          font-size: 15px;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-image: url('../../../assets/icon/icon-down.svg');
+          background-repeat: no-repeat;
+          background-position: right 10px center;
+          option {
+            font-weight: 400;
+            color: var(--font-color-para);
+          }
+          svg {
+            display: none;
+          }
+        }
+        .PostType:hover,
+        .PostType:active,
+        .PostType:focus,
+        .PostType:target {
+          border: none !important;
+        }
+        .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused
+          .MuiOutlinedInput-notchedOutline,
+        .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+          border: 0;
+          border-radius: 5px;
+        }
+        img {
+          position: absolute;
+          display: inline;
+          right: 5%;
+          top: 50%;
+          transform: translate(-5%, -50%);
+        }
+      }
+      .text,
+      .messages {
+        position: relative;
+        margin-top: 2%;
+        border-radius: 5px;
+        border: 1px dashed rgba(1, 22, 43, 0.2);
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .editor {
+          min-width: 100%;
+          min-height: 100%;
+          max-width: 100%;
+          float: left;
+          -webkit-text-fill-color: #333;
+          font-family: 'GoogleSans';
+        }
+
+        .editor #UID,
+        .editor #message {
+          outline: none;
+          padding-left: 9% !important;
+        }
+
+        .editor pre {
+          padding-left: 9% !important;
+          width: 100%;
+        }
+
+        .editor .editorLineNumber {
+          position: absolute;
+          left: 0px;
+          color: #cccccc;
+          text-align: right;
+          width: 6%;
+          font-weight: 100;
+          opacity: 0.5 !important;
+        }
+      }
+      .placeholder {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        margin-top: 6%;
+        // top: 10%;
+        p {
+          font-size: 15px;
+          font-weight: 400;
+          opacity: 0.5;
+          margin-left: 5%;
+          span {
+            margin-right: 3%;
+          }
+        }
+      }
+      .Text {
+        .selectPost__header {
+          margin-top: 3%;
+        }
+      }
+
+      .Post,
+      .Post .PostContent {
+        display: block;
+      }
+    }
+  }
+  .hide {
+    display: none;
+  }
+}

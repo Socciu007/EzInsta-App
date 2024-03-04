@@ -1,0 +1,230 @@
+.-layout-choose-profile {
+  width: 1163px;
+  height: 679px;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+  &__container {
+    padding: 2% 4% 2% 4%;
+    height: 100%;
+    .-nav-scripts {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1%;
+      &__header {
+        display: flex;
+        gap: 19px;
+        &__close {
+          width: 30px;
+          height: 30px;
+          background: #f5f5f5;
+          border-radius: 50%;
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+        }
+        h1 {
+          color: #01162b;
+          font-size: 25px;
+          font-weight: 700;
+          line-height: normal;
+        }
+      }
+      &__btn {
+        button {
+          width: 120px;
+          height: 40px;
+          border-radius: 8px;
+          background: #2a86ff;
+          box-shadow: 0px 4px 10px 0px rgba(8, 35, 106, 0.25);
+          border: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #fff;
+          font-size: 15px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .scrollable-container {
+      width: 100%;
+      height: 558px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 15px;
+      scrollbar-width: thin;
+      color: #01162b;
+    }
+    .scrollable-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scrollable-container::-webkit-scrollbar-thumb {
+      background-color: #ccc; /* Màu của thanh cuộn */
+      border-radius: 20px; /* Bo tròn góc của thanh cuộn */
+
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng mờ */
+    }
+    .scrollable-container::-webkit-scrollbar-track {
+      background-color: #f0f0f0; /* Màu của phần bên dưới thanh cuộn */
+      border-radius: 20px;
+    }
+    .newProfile-content {
+      margin: 1%;
+      .text {
+        width: 100%;
+        position: relative;
+        border-radius: 8px;
+        border: 1px dashed rgba(1, 22, 43, 0.2);
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .editor {
+          max-width: 99.5%;
+          min-width: 99.5%;
+          min-height: 100%;
+          width: 99.5%;
+          float: left;
+          font-family: 'GoogleSans';
+          -webkit-text-fill-color: #333;
+        }
+
+        .editor #codeArea,
+        .editor #textareaProxy {
+          outline: none;
+          padding-top: 1.6% !important;
+          padding-left: 5.5% !important;
+          color: #01162b !important;
+        }
+
+        .editor pre {
+          color: #01162b !important;
+          padding-left: 5.6% !important;
+          width: 100%;
+        }
+
+        .editor .editorLineNumber {
+          position: absolute;
+          left: 0px;
+          color: #cccccc;
+          text-align: right;
+          width: 4%;
+          font-weight: 100;
+        }
+      }
+      .placeholder {
+        position: absolute;
+        width: 100%;
+        top: 5%;
+        transform: translate(0, -5%);
+        p {
+          font-size: 15px;
+          font-weight: 400;
+          opacity: 0.7;
+          margin-left: 3%;
+          span {
+            color: #01162b;
+            margin-right: 2%;
+          }
+        }
+      }
+      .placehoderProxy {
+        top: 18%;
+        transform: translate(0, -18%);
+      }
+
+      .chooseOption {
+        margin-top: 2%;
+        &__item {
+          margin: 1% 0;
+        }
+        .checkbox {
+          display: flex;
+          align-items: center;
+          margin: 1% 0;
+          input[type='checkbox'] {
+            margin-top: -2px;
+          }
+        }
+
+        .OptionTag {
+          height: 47px;
+          width: 100%;
+          border-radius: 8px;
+          border: 1px dashed rgba(1, 22, 43, 0.3);
+          background: #fff;
+          margin: 1% 0;
+          input {
+            line-height: 47px;
+            resize: none;
+            height: 100%;
+            width: 100%;
+            border: 0;
+            padding: 0 2%;
+            font-family: 'GoogleSans';
+            font-size: 15px;
+          }
+          textarea::-webkit-scrollbar {
+            display: none;
+          }
+        }
+        .proxy {
+          .selectProxy {
+            position: relative;
+            display: flex;
+            align-items: center;
+            .ProxyType {
+              top: 0;
+              width: 100%;
+              height: 40px;
+              font-size: 15px;
+              appearance: none;
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              background-image: url('../../../assets/icon/icon-down.svg') !important;
+              background-repeat: no-repeat !important;
+              background-position: right 20px center !important;
+              font-family: 'GoogleSans';
+              border-radius: 8px;
+              background: #fff;
+              box-shadow: 0px 4px 10px 0px rgba(107, 127, 148, 0.15);
+              option {
+                font-weight: 400;
+                color: var(--font-color-para);
+              }
+              svg {
+                display: none;
+              }
+            }
+            .ProxyType:hover,
+            .ProxyType:active,
+            .ProxyType:target,
+            .ProxyType:focus-visible {
+              border: none;
+            }
+            .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused
+              .MuiOutlinedInput-notchedOutline,
+            .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+              border: 0;
+              border-radius: 5px;
+            }
+          }
+          .selectProxy:hover,
+          .selectProxy:target,
+          .selectProxy:active,
+          .selectProxy:focus-visible {
+            border: none;
+          }
+          .textProxy {
+            margin: 1% 0;
+            position: relative;
+          }
+        }
+      }
+    }
+  }
+}
