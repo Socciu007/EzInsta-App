@@ -20,132 +20,13 @@ export const loginFacebook = (account) => {
     await returnHomePage(page);
     await delay(2000);
     let loginDone = false;
-    let errLogin = "";
-    const checkpoint956 = async () => {
-      await page.goto("https://mbasic.facebook.com/", {
-        waitUntil: "networkidle2",
-        timeout: 60000,
-      });
-      await delay(3000);
-      let isClickStart = false;
-      const elStarts = await getElements(page, "a", 20);
-      if (elStarts && elStarts.length) {
-        for (let i = 0; i < elStarts.length; i++) {
-          const href = await elStarts[i].evaluate((element) => element.href);
-          if (
-            href &&
-            href.includes("checkpoint") &&
-            href.includes("956") &&
-            !href.includes("help")
-          ) {
-            await elStarts[i].click();
-            isClickStart = true;
-            break;
-          }
-        }
-        if (isClickStart) {
-          await delay(7000);
-          let isClickNext = false;
-          const elNexts = await getElements(page, "a", 20);
-          for (let i = 0; i < elNexts.length; i++) {
-            const href = await elNexts[i].evaluate((element) => element.href);
-            if (
-              href &&
-              href.includes("checkpoint") &&
-              href.includes("956") &&
-              !href.includes("help")
-            ) {
-              await elNexts[i].click();
-              isClickNext = true;
-              break;
-            }
-          }
-  
-          if (isClickNext) {
-            await delay(5000);
-            const btnNext = await getElement(page, '[type="submit"]', 15);
-            if (btnNext) {
-              await btnNext.click();
-              await delay(5000);
-              const btnGetCode = await getElement(page, '[type="submit"]', 15);
-              if (btnGetCode) {
-                await btnGetCode.click();
-                await delay(5000);
-                const inputCodeMail = await getElement(page, '[name="code"]', 15);
-                if (inputCodeMail) {
-                  await delay(15000);
-                  let codeMail = await getCodeMail(
-                    account.recoveryEmail,
-                    account.recoveryPassword
-                  );
-  
-                  if (!codeMail || codeMail.length !== 8) {
-                    for (let i = 0; i < 5; i++) {
-                      await delay(10000);
-                      codeMail = await getCodeMail(
-                        account.recoveryEmail,
-                        account.recoveryPassword
-                      );
-                      if (codeMail && codeMail.length == 8) {
-                        break;
-                      }
-                    }
-                  }
-                  if (codeMail && codeMail.length == 8) {
-                    await inputCodeMail.type(codeMail, { delay: 100 });
-                    await delay(1000);
-                    const submitCodeMails = await getElements(
-                      page,
-                      '[type="submit"]',
-                      5
-                    );
-                    if (submitCodeMails.length) {
-                      await submitCodeMails[submitCodeMails.length - 1].click();
-                      await delay(5000);
-                      for (let i = 0; i < 3; i++) {
-                        const btnConfirm = await getElement(page, "a > span", 10);
-                        if (btnConfirm) {
-                          await btnConfirm.click();
-                          await delay(7000);
-                        }
-                      }
-                      await returnHomePage(page);
-                      await delay(3000);
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    };
   
     const { isLogin, error } = await checkLogin(page);
-    if (!isLogin && error == "Checkpoint" && page.url().includes("956")) {
-      if (
-        !account.recoveryEmail ||
-        !account.recoveryPassword ||
-        account.recoveryEmail.length == 0 ||
-        account.recoveryPassword.length == 0
-      ) {
-        logger("Debug||Account checkpoint");
-        return { isLogin: false, error: "Account checkpoint" };
-      }
-      await checkpoint956();
-      const { isLogin, error } = await checkLogin(page);
-      if (!isLogin) {
-        return { isLogin, error };
-      }
-      if(account.cookies){
-        logger('Delete Cookie|'+account.cookies);
-      }
-      
-    } else if (!isLogin) {
+    if (!isLogin) {
       if (
         account.cookies &&
         account.cookies.length &&
-        account.cookies.includes("c_user")
+        account.cookies.includes("ds_user_id")
       ) {
         const cookies = [];
         account.cookies.split(";").forEach((acc) => {
@@ -160,7 +41,7 @@ export const loginFacebook = (account) => {
             cookies.push({
               name: acc.split("=")[0].trim(),
               value: acc.split("=")[1],
-              domain: ".facebook.com",
+              domain: "https://www.instagram.com",
               expires:
                 acc.split("=")[0].trim() == "presence"
                   ? -1
@@ -173,34 +54,15 @@ export const loginFacebook = (account) => {
         await client.send("Network.clearBrowserCache");
         await page.setCookie(...cookies);
         await delay(3000);
-        await page.goto("https://m.facebook.com/", {
+        await page.goto("https://www.instagram.com", {
           waitUntil: "networkidle2",
           timeout: 60000,
         });
         await delay(3000);
-        const { isLogin, error } = await checkLogin(page);
+        const { isLogin } = await checkLogin(page);
         loginDone = isLogin;
-        errLogin = error;
       }
-      if (!loginDone && errLogin == "Checkpoint" && page.url().includes("956")) {
-        if (
-          !account.recoveryEmail ||
-          !account.recoveryPassword ||
-          account.recoveryEmail.length == 0 ||
-          account.recoveryPassword.length == 0
-        ) {
-          logger("Debug||Account checkpoint");
-          return { isLogin: false, error: "Account checkpoint" };
-        }
-        await checkpoint956();
-        const { isLogin, error } = await checkLogin(page);
-        if (!isLogin) {
-          return { isLogin, error };
-        }
-        if(account.cookies){
-          logger('Delete Cookie|'+account.cookies);
-        }
-      } else if (
+      if (
         !loginDone &&
         ((account.twoFA && account.twoFA.length > 5) ||
           (account.uid &&
@@ -227,23 +89,11 @@ export const loginFacebook = (account) => {
             await delay(1000);
           }
   
-          const btnLogin = await getElement(
-            page,
-            '[data-bloks-name="bk.components.ViewTransformsExtension"]',
-            2
-          );
-          const btnLoginNew = await getElement(page, '[name="login"]', 2);
+          const btnLogin = await getElement(page, '[type="submit"]', 2);
   
           if (btnLogin) {
             try {
               await btnLogin.click();
-              await delay(2000);
-            } catch (e) {}
-          }
-  
-          if (btnLoginNew) {
-            try {
-              await btnLoginNew.click();
               await delay(2000);
             } catch (e) {}
           }
@@ -384,13 +234,14 @@ export const loginFacebook = (account) => {
       if (!isLogin) {
         return { isLogin, error };
       }
-      if(account.cookies){
-        logger('Delete Cookie|'+account.cookies);
+      if (account.cookies) {
+        logger("Delete Cookie|" + account.cookies);
       }
     }
   } catch (err) {
     logger(err);
     return false;
-  }  
+  }
+   
   `;
 };

@@ -123,6 +123,12 @@ const PopupRunScript = ({ openRunScript, handleCloseRunScript, script }) => {
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
           );
+        } else if (status.toLowerCase().includes('error')) {
+          return (
+            <div className="-status-profiles -status-profiles-used">
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </div>
+          );
         } else {
           return <div className="-status-profiles">{status.charAt(0).toUpperCase() + status.slice(1)}</div>;
         }

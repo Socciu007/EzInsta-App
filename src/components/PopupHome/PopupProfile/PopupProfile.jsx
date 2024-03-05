@@ -37,13 +37,6 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
 
   const addProfiles = async () => {
     if (loading) return;
-    // if (textContent == '') {
-    //   Store.addNotification({
-    //     ...notification,
-    //     type: 'warning',
-    //     message: 'The Account field is required',
-    //   });
-    // }
     if (values.isTag && (!values.tag || values.tag.length == 0)) {
       Store.addNotification({
         ...notification,
@@ -58,11 +51,10 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
     values.text.forEach((e, index) => {
       const uid = e.split('|')[0];
       const password = e.split('|')[1];
-      const twoFA = e.split('|')[2] ? e.split('|')[2] : '';
-      const recoveryEmail = e.split('|')[3] ? e.split('|')[3] : '';
-      const recoveryPassword = e.split('|')[4] ? e.split('|')[4] : '';
-      const cookies = e.split('|')[5] ? e.split('|')[5] : '';
-      const birth = e.split('|')[6] ? e.split('|')[6] : '';
+      const recoveryEmail = e.split('|')[2] ? e.split('|')[2] : '';
+      const recoveryPassword = e.split('|')[3] ? e.split('|')[3] : '';
+      const cookies = e.split('|')[4] ? e.split('|')[4] : '';
+      const twoFA = e.split('|')[5] ? e.split('|')[5] : '';
       if (uid && uid !== '' && password && password !== '') {
         accounts.push({
           uid,
@@ -72,7 +64,6 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
           recoveryPassword,
           cookies,
           twoFA,
-          birth,
           status: 'ready',
           tag:
             values.isTag && values.tag.split(',').length

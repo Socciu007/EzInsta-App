@@ -143,6 +143,12 @@ const PopupChooseProfile = ({ openProfiles, handleCloseProfiles, designScript })
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </div>
           );
+        } else if (status.toLowerCase().includes('error')) {
+          return (
+            <div className="-status-profiles -status-profiles-used">
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </div>
+          );
         } else {
           return <div className="-status-profiles">{status.charAt(0).toUpperCase() + status.slice(1)}</div>;
         }
@@ -325,7 +331,7 @@ const PopupChooseProfile = ({ openProfiles, handleCloseProfiles, designScript })
         message: 'Please choose profile!',
       });
     } else {
-      const check = profilesSelected.find((e) => e.status !== 'ready');
+      const check = profilesSelected.find((e) => e.status !== 'ready' && !e.status.toLowerCase().includes('error'));
       if (!check) {
         handleCloseProfiles();
         setSelectedRowKeys([]);

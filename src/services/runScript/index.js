@@ -66,8 +66,6 @@ const getPosition = async (index) => {
 };
 
 export const runScript = async (profileSelected, scriptDesign, dispatch) => {
-  // set all profiles selected to waiting status
-
   let newProfileSelected = profileSelected.map((profile) => {
     return { ...profile, script: scriptDesign.id, status: 'waiting' };
   });
@@ -103,14 +101,40 @@ export const runScript = async (profileSelected, scriptDesign, dispatch) => {
       }
     }
   }
+
   for (let i = 0; i < settings.countLoop; i++) {
     await Promise.map(
       results,
       async (result, index) => {
         for (let j = 0; j < result.length; j++) {
           const profile = result[j];
-          await runCode(profile, profileSelected, index, dispatch, arrfunction, settings, j, scriptDesign);
-          dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'ready' }));
+          const resultRun = await runCode(
+            profile,
+            profileSelected,
+            index,
+            dispatch,
+            arrfunction,
+            settings,
+            j,
+            scriptDesign,
+          );
+          if (resultRun && resultRun.includes('ERR_CONNECTION')) {
+            dispatch(
+              updateProfile({
+                ...profile,
+                script: scriptDesign.id,
+                status: i == settings.countLoop - 1 ? 'Error Proxy' : 'waiting',
+              }),
+            );
+          } else {
+            dispatch(
+              updateProfile({
+                ...profile,
+                script: scriptDesign.id,
+                status: i == settings.countLoop - 1 ? 'ready' : 'waiting',
+              }),
+            );
+          }
         }
       },
       { concurrency: results.length },
@@ -129,9 +153,9 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
     let proxyStr = '';
     let proxy;
     let proxyConvert;
+    const indexProfile = profileSelected.findIndex((e) => e.id == profile.id);
     if (settings.assignProxy) {
       if (settings.proxies.length) {
-        const indexProfile = profileSelected.findIndex((e) => e.id == profile.id);
         proxy = settings.proxies[indexProfile % settings.proxies.length];
       } else {
         proxy = profile.proxy;
@@ -139,7 +163,6 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
     } else {
       proxy = profile.proxy;
       if (settings.proxies.length && (!proxy.host || !proxy.host.length)) {
-        const indexProfile = index + j * results.length;
         proxy = settings.proxies[indexProfile % settings.proxies.length];
       }
     }
@@ -175,14 +198,15 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
         mem = infor.mem;
       }
       const browserData = await getBrowserData(profile.id, proxyConvert);
+      console.log(browserData);
       if (browserData && browserData.data) {
         dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'running' }));
         const positionBrowser = await getPosition(index);
         const strCode = `
-
 let browser;
+let proxy;
 const logger = (...params) => {
-event.reply("ipc-logger",[${profile.uid},...params]);
+event.reply("ipc-logger",['${profile.uid}',...params]);
 };
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -276,7 +300,7 @@ const checkLogin = async (page, url) => {
 try {
   const cookies = await page.cookies(url ? url : page.url());
   if (cookies) {
-    const c_user = cookies.find((e) => e.name == "c_user");
+    const c_user = cookies.find((e) => e.name == "ds_user_id");
     const checkpoint = cookies.find((e) => e.name == "checkpoint");
     if (checkpoint || page.url().includes("checkpoint")) {
       return { isLogin:false, error:"Checkpoint" };
@@ -323,15 +347,14 @@ return new Promise(async (resolve) => {
 const returnHomePage = async (page) => {
 await delay(1000);
 const url = await page.url();
-if (url === 'https://m.facebook.com/' || url.includes('https://m.facebook.com/home.php')) {
+if (url == 'https://www.instagram.com' || url == 'https://www.instagram.com/') {
   logger('URL is correct');
 } else {
   logger('Redirect to homepage');
-  await page.goto('https://m.facebook.com/', {
+  await page.goto('https://www.instagram.com', {
     waitUntil: 'networkidle2',
     timeout: 60000,
   });
-  await delay(2000);
 }
 };
 
@@ -664,24 +687,11 @@ for (let i = 0; i < loop; i++) {
 };
 
 const getElementEmail = async (page) => {
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < 30; i++) {
   logger("GET Email");
   let email;
-  email = await getElementByID(page, "m_login_email", 1);
+  email = await getElement(page, '[name="username"]', 1);
   if (email) return email;
-  else {
-    email = await getElementByID(page, "email", 1);
-    if (email) {
-      return email;
-    } else {
-      email = await getElementByName(page, "email", 1);
-      if (email) return email;
-      else{
-        email = await getElement(page, '[type="email"]', 1);
-        if (email) return email;
-      }
-    }
-  }
   await delay(500);
 }
 return null;
@@ -726,9 +736,9 @@ return new Promise(async (resolve) => {
 
   setTimeout(async () => {
     if(!browser || !browser.isConnected()){
-      resolve('Cant open browser!');
+      resolve('Cant open browser');
   }
-  },10000);
+  },5000);
 
   browser = await puppeteer.launch({
     executablePath: "${browserData.executablePath}",
@@ -745,10 +755,11 @@ return new Promise(async (resolve) => {
       "--disable-encryption",
       "--restore-last-session",
       "--donut-pie=undefined",
-      "--proxy-bypass-list=https://static.xx.fbcdn.net",
+      "--proxy-bypass-list=https://scontent.cdninstagram.com",
       "--flag-switches-begin",
       "--flag-switches-end",
       "--window-size=360,760",
+      "--enable-chrome-browser-cloud-management",
       "--force-device-scale-factor=0.8",
       "--window-position=${positionBrowser}"
     ]
@@ -766,7 +777,7 @@ return new Promise(async (resolve) => {
   }
 
   let page = pages[0];
-  
+
   await page.setBypassCSP(true);
   await page.setCacheEnabled(false);
   const session = await page.target().createCDPSession();
@@ -775,7 +786,7 @@ return new Promise(async (resolve) => {
   await page.bringToFront();
   await delay(1000);
   let interval;
-  const proxy = ${
+  proxy = ${
     proxyConvert && proxyConvert.host
       ? `{
     host:${JSON.stringify(proxyConvert.host)},
@@ -789,28 +800,25 @@ return new Promise(async (resolve) => {
      if (!checkPage){
      if(interval)
      clearInterval(interval);
-      logger("Debug||Page is close")
+    logger("Debug||Page is close")
      resolve('Page is close');
  }
 },2000);
 
+
+  await page.goto('https://www.instagram.com', {
+    waitUntil: 'networkidle2',
+    timeout: 30000,
+  });
+
   {${loginFacebook(profile)}}
-  for(let i=0 ;i < 4;i++){
-    let elNext = await getElement(page,'[id="nux-nav-button"]', 5);
-        if(elNext){
-            await elNext.click();
-            await delay(7000);
-        }
-        else break;
-    }
-  ${getInfor(profile)}
+  await delay(999999)
   ${getAllFunc(arrfunction)}
 
 } catch (error) {
-  if(error.includes('Failed to launch the browser process')){
-    logger('Failed to launch the browser process!!!!!!!');
+  if(error && proxy && error.toString().includes('ERR_CONNECTION')){
+    resolve('ERR_CONNECTION');
   }
-  else logger(error);
   } finally {
     if(browser){
         await browser.close();
@@ -819,14 +827,18 @@ return new Promise(async (resolve) => {
   resolve('Done');
 });
 `;
-        const result = await runProfile(strCode, profile.id);
-        console.log(result);
+
+        for (let i = 0; i < 5; i++) {
+          const result = await runProfile(strCode, profile.id);
+          console.log(result);
+          if (result !== 'Cant open browser') {
+            break;
+          }
+        }
       } else {
-        dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'ready' }));
         console.log(`Can't get data Profile!`);
       }
     } else {
-      dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'ready' }));
       console.log('Connect proxy Fail!');
       return;
     }

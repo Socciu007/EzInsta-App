@@ -238,6 +238,12 @@ const ProfilesPage = () => {
                 {status.charAt(0).toUpperCase() + status.slice(1)}
               </div>
             );
+          } else if (status.toLowerCase().includes('error')) {
+            return (
+              <div className="-status-profiles -status-profiles-used">
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </div>
+            );
           } else {
             return <div className="-status-profiles">{status.charAt(0).toUpperCase() + status.slice(1)}</div>;
           }
@@ -462,11 +468,12 @@ const ProfilesPage = () => {
       if (profilesFromServer && profilesFromServer.code) {
         storageService.setSessionObject('profiles', profilesFromServer);
         let profiles = await dbGetLocally(storageProfiles);
-        profiles = profiles.filter((e) => {
-          const check = profilesFromServer.result.find((o) => o.id == e.id);
-          if (check) return true;
-          return false;
-        });
+        if (profiles && profiles.length)
+          profiles = profiles.filter((e) => {
+            const check = profilesFromServer.result.find((o) => o.id == e.id);
+            if (check) return true;
+            return false;
+          });
 
         if (profiles && profiles.length) {
           console.log(profiles);
@@ -588,7 +595,7 @@ const ProfilesPage = () => {
   //scripts
   const handleOpenScripts = () => {
     if (profilesSelected.length > 0) {
-      const check = profilesSelected.find((e) => e.status !== 'ready');
+      const check = profilesSelected.find((e) => e.status !== 'ready' && !e.status.toLowerCase().includes('error'));
       if (!check) {
         setOpenScripts(true);
       } else {
@@ -843,7 +850,7 @@ const ProfilesPage = () => {
               <span className="-option-profiles" onClick={handleOpenProfiles}>
                 <img src={addPerson} alt="image-addPerson"></img>
               </span>
-              <span className="-option-profiles" onClick>
+              <span className="-option-profiles" onClick={() => {}}>
                 <img src={addFile} alt="image-addFile"></img>
               </span>
               <PopupProfile
