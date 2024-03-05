@@ -393,7 +393,7 @@ const SettingsPage = ({ component, handleCloseSettings }) => {
       style={{ opacity: openProxyManage ? 0.3 : 1 }}
     >
       <div className="-layout-page">
-        <h1 className="-title-profiles">INSTAGRAM TOOL</h1>
+        <h1 className="-title-profiles">MiniTool Instagram</h1>
         <div className="-return-profiles">
           <span
             //   onClick={

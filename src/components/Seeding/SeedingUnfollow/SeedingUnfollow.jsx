@@ -8,7 +8,7 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 
-const SeedingView = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
+const SeedingUnfollow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
   const [videoView, setVideoView] = useState(DefaultSciptSettings['viewVideo']);
   const [UIDContent, setUIDContent] = useState('');
   const [line, setLine] = useState(0);
@@ -181,4 +181,4 @@ const SeedingView = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
   );
 };
 
-export default SeedingView;
+export default SeedingUnfollow;

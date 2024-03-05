@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import followerLeft from '../../assets/icon/icon-followerLeft.svg';
-import followerIcon from '../../assets/icon/icon-followerNode.svg';
+import followerLeft from '../../assets/icon/icon-follow.svg';
+import followerIcon from '../../assets/icon/icon-follow.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';

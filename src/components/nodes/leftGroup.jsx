@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import leftGroupLeft from '../../assets/icon/icon-leftGroupLeft.svg';
-import leftGroupIcon from '../../assets/icon/icon-leftGroupNode.svg';
+import rectangRed from '../../assets/icon/icon-rectangRed.svg';
+import directMsgIcon from '../../assets/icon/icon-directMsgIcon.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function leftGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function directMsgNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -44,12 +44,12 @@ function leftGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={leftGroupLeft} alt="left Group Left" />
+        <img src={rectangRed} alt="rectang red" />
         <div className="content">
-          <img src={leftGroupIcon} alt="left Group" />
+          <img src={directMsgIcon} alt="direct mesage" />
           <div className="content-right">
             <div className="right-top">
-              <p>G-leave group</p>
+              <p>Direct message</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function leftGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnect
   );
 }
 
-export default leftGroupNode;
+export default directMsgNode;

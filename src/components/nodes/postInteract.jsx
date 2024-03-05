@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import postInteractLeft from '../../assets/icon/icon-postInteractLeft.svg';
-import postInteractIcon from '../../assets/icon/icon-postInteract.svg';
+import postInteractionLeft from '../../assets/icon/icon-postInteractLeft.svg';
+import postInteractIcon from '../../assets/icon/icon-postInteractionMain.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
@@ -44,12 +44,12 @@ function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConn
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={postInteractLeft} alt="postInteractLeft" />
+        <img src={postInteractionLeft} alt="post interaction Left" />
         <div className="content">
-          <img src={postInteractIcon} alt="postInteractLeft" />
+          <img src={postInteractIcon} alt="post interaction" />
           <div className="content-right">
             <div className="right-top">
-              <p>Post interact</p>
+              <p>Post interaction</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"

@@ -12,7 +12,7 @@ import './style.scss';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 import { useDropzone } from 'react-dropzone';
 
-const SeedingLikeComment = ({ onGoBackClick, id, currentSetup, component, updateDesignScript }) => {
+const SeedingFollow = ({ onGoBackClick, id, currentSetup, component, updateDesignScript }) => {
   const [likeComment, setLikeComment] = useState(DefaultSciptSettings['likeComment']);
   const [textComment, setTextComment] = useState('');
   const [UIDPost, setUIDPost] = useState('');
@@ -895,4 +895,4 @@ const SeedingLikeComment = ({ onGoBackClick, id, currentSetup, component, update
   );
 };
 
-export default SeedingLikeComment;
+export default SeedingFollow;

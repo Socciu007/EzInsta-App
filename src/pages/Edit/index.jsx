@@ -16,9 +16,10 @@ import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
 import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
 import HashtagInteraction from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
 import Invite from '../../components/Group/Invite/Invite.jsx';
-import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
-import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
-import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
+// import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
+// import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
+// import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
+
 import search from '../../assets/icon/icon-search.svg';
 import back from '../../assets/icon/icon-back.svg';
 import newNote from '../../assets/icon/icon-newNote.svg';
@@ -41,7 +42,7 @@ import joinGroup from '../../assets/icon/icon-joinGroup.svg';
 import leftGroup from '../../assets/icon/icon-leftGroup.svg';
 import invite from '../../assets/icon/icon-inviteGroup.svg';
 import likeComment from '../../assets/icon/icon-likeComment.svg';
-import follower from '../../assets/icon/icon-follower.svg';
+import follower from '../../assets/icon/icon-follow.svg';
 import viewVideo from '../../assets/icon/icon-viewVideo.svg';
 import CreatePostGroup from '../../components/Group/Create_Post/CreatePost.jsx';
 
@@ -103,12 +104,12 @@ const Edit = () => {
         return <Invite onGoBackClick={handleGoBackClick} />;
       case 'createPostGroup':
         return <CreatePostGroup onGoBackClick={handleGoBackClick} />;
-      case 'likeComment':
-        return <SeedingLikeComment onGoBackClick={handleGoBackClick} />;
-      case 'follower':
-        return <SeedingFollower onGoBackClick={handleGoBackClick} />;
-      case 'viewVideo':
-        return <SeedingView onGoBackClick={handleGoBackClick} />;
+      // case 'likeComment':
+      //   return <SeedingLikeComment onGoBackClick={handleGoBackClick} />;
+      // case 'follower':
+      //   return <SeedingFollower onGoBackClick={handleGoBackClick} />;
+      // case 'viewVideo':
+      //   return <SeedingView onGoBackClick={handleGoBackClick} />;
       default:
         return (
           <div className={messageClickBack ? 'hide' : 'scrollable-container'}>
@@ -231,7 +232,7 @@ const Edit = () => {
       <div className="wrapper">
         <div className="edit">
           <div className="script-manager__header">
-            <h1>FACEBOOK AUTOMATION</h1>
+            <h1>MiniTool Instagram</h1>
             <div className="title">
               <button onClick={handleReturnClick}>
                 <img src={back} alt="Return" />

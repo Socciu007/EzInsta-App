@@ -501,7 +501,7 @@ const ScriptManager = () => {
       >
         <div className="script-manager">
           <div className="script-manager__header">
-            <h1>FACEBOOK AUTOMATION</h1>
+            <h1>MiniTool Instagram</h1>
             <div className="title">
               <button>
                 <img src={back} alt="" onClick={handleBackClick} />

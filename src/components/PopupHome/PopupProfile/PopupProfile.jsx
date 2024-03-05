@@ -249,7 +249,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                 >
                   <img src={closePopup} alt="icon-x"></img>
                 </div>
-                <h1>NEW PROFILES</h1>
+                <h1>ADD ACCOUNT</h1>
               </div>
               <div className="-wrapper-option-profiles -nav-scripts__btn">
                 <button onClick={addProfiles}>{loading ? <Loading></Loading> : ''} ADD</button>
@@ -257,8 +257,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
             </div>
             <div className="scrollable-container">
               <p style={{ marginLeft: '1%' }}>
-                <strong>Account format:</strong> UID|Password|2FA|Recovery email|Recovery email’s password|Cookie|Date
-                of birth
+                <strong>Account format:</strong> user|pass|mail|passmail|cookie|2FA
               </p>
               <div className="newProfile-content">
                 <div className="Textarea" style={{ position: 'relative' }}>
@@ -280,12 +279,14 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                   </div>
                   <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
                     <p>
-                      <span>1</span>Enter the account information here, each account/line
+                      <span style={{ paddingRight: '2px' }}>1</span>Enter the content here
                     </p>
                     <p>
-                      <span>2</span>
-                      <strong>Account format:</strong> UID|Password|2FA|Recovery email|Recovery email’s
-                      password|Cookie|Date of birth
+                      <span>2</span>Each content/line
+                    </p>
+                    <p>
+                      <span>3</span>
+                      <strong>Account format:</strong> user|pass|mail|passmail|cookie|2FA
                     </p>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import createPostLeft from '../../assets/icon/icon-createPostLeft.svg';
-import createPostIcon from '../../assets/icon/icon-createPost.svg';
+import rectangBlue from '../../assets/icon/icon-rectangBlue.svg';
+import followIcon from '../../assets/icon/icon-followIcon.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
@@ -44,9 +44,9 @@ function createPostGroupNode({ data: { label, onButtonClick, onDeleteNode }, isC
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={createPostLeft} alt="createPostLeft" />
+        <img src={rectangBlue} alt="rectang blue" />
         <div className="content">
-          <img src={createPostIcon} alt="createPost" />
+          <img src={followIcon} alt="follow" />
           <div className="content-right">
             <div className="right-top">
               <p>G-Create post</p>

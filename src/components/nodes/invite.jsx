@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import inviteGroupLeft from '../../assets/icon/icon-inviteGroupLeft.svg';
-import inviteGroupIcon from '../../assets/icon/icon-inviteGroupNode.svg';
+import rectangRed from '../../assets/icon/icon-rectangRed.svg';
+import unfollowIcon from '../../assets/icon/icon-unfollowIcon.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
@@ -44,12 +44,12 @@ function inviteGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConne
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={inviteGroupLeft} alt=" invite Group Left" />
+        <img src={rectangRed} alt="rectang red" />
         <div className="content">
-          <img src={inviteGroupIcon} alt=" invite Group" />
+          <img src={unfollowIcon} alt="unfollow" />
           <div className="content-right">
             <div className="right-top">
-              <p>G-Invite</p>
+              <p>Unfollow</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"

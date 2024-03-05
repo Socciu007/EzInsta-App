@@ -31,14 +31,15 @@ import watchStory from '../../assets/icon/icon-watchStoryGeneral.svg';
 import watchReel from '../../assets/icon/icon-watchReelGeneral.svg';
 import newsfeed from '../../assets/icon/icon-newsfeedGeneral.svg';
 import createPost from '../../assets/icon/icon-createPostGeneral.svg';
+import follow from '../../assets/icon/icon-follow.svg';
 import deletePost from '../../assets/icon/icon-deletePostGeneral.svg';
 import viewNoti from '../../assets/icon/icon-viewNotiGeneral.svg';
 import updateProfile from '../../assets/icon/icon-updateProfileGeneral.svg';
 import heart from '../../assets/icon/icon-heartGeneral.svg';
 import hashtag from '../../assets/icon/icon-hashtagGeneral.svg';
-import joinGroup from '../../assets/icon/icon-joinGroup.svg';
-import leftGroup from '../../assets/icon/icon-leftGroup.svg';
-import invite from '../../assets/icon/icon-inviteGroup.svg';
+import postInteraction from '../../assets/icon/icon-postInteraction.svg';
+import directMsg from '../../assets/icon/icon-directMsg.svg';
+import unFollow from '../../assets/icon/icon-unfollow.svg';
 import likeComment from '../../assets/icon/icon-likeComment.svg';
 import msg from '../../assets/icon/icon-directMsg.svg';
 import viewVideo from '../../assets/icon/icon-viewVideo.svg';
@@ -473,20 +474,20 @@ const CreateScript = () => {
                 {/* Seeding */}
                 <div className={activeCategory === 2 ? 'grid-container' : 'hide'}>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'joinGroup')} draggable>
-                    <img src={joinGroup} alt="join Group General" />
-                    <p>Join group</p>
+                    <img src={postInteraction} alt="postInteraction" />
+                    <p>Post interaction</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'leftGroup')} draggable>
-                    <img src={leftGroup} alt="left Group General" />
-                    <p>Left group</p>
+                    <img src={directMsg} alt="directMsg" />
+                    <p>Direct message</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'inviteGroup')} draggable>
-                    <img src={invite} alt="invite Group General" />
-                    <p>Invite</p>
+                    <img src={unFollow} alt="unFollow" />
+                    <p>Unfollow</p>
                   </div>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'createPostGroup')} draggable>
-                    <img src={createPost} alt="watch newsfeed General" />
-                    <p>Create post</p>
+                    <img src={follow} alt="follow" />
+                    <p>Follow</p>
                   </div>
                 </div>
 

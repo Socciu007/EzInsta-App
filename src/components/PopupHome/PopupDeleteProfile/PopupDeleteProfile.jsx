@@ -2,14 +2,22 @@ import React from 'react';
 import PopupComponent from '../PopupComponent/PopupComponent';
 import './style.scss';
 
-const PopupDeleteProfile = ({ openDeleteProfile, handleCloseDelete, handleRemove }) => {
+const PopupDeleteProfile = ({ openDeleteProfile, handleCloseDelete, handleRemove, profileSelected }) => {
   return (
     <PopupComponent open={openDeleteProfile} onClose={handleCloseDelete}>
       {
         <div className="-delete-profiles">
           <div className="-delete-profiles__content">
             <h1>REMOVE</h1>
-            <p>Are you sure to remove the profiles?</p>
+            {profileSelected.length > 1 ? (
+              <p>
+                Are you sure to delete <strong>{profileSelected.length} profiles?</strong>
+              </p>
+            ) : (
+              <p>
+                Are you sure to delete <strong>1 profile?</strong>
+              </p>
+            )}
             <div className="-delete-profiles__content__confirm">
               <button type="button" style={{ background: '#F5F5F5', color: '#01162B' }} onClick={handleCloseDelete}>
                 Cancel

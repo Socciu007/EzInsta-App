@@ -9,8 +9,8 @@ import 'prismjs/components/prism-javascript';
 import { Select } from 'antd';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 
-const SeedingFollower = ({ onGoBackClick, id, currentSetup, component, updateDesignScript }) => {
-  const [followers, setFollowers] = useState(DefaultSciptSettings['follower']);
+const SeedingPostInteraction = ({ onGoBackClick, id, currentSetup, component, updateDesignScript }) => {
+  const [followers, setFollowers] = useState(DefaultSciptSettings['seedingPost']);
   const [UIDContent, setUIDContent] = useState('');
 
   useEffect(() => {
@@ -244,4 +244,4 @@ const SeedingFollower = ({ onGoBackClick, id, currentSetup, component, updateDes
   );
 };
 
-export default SeedingFollower;
+export default SeedingPostInteraction;

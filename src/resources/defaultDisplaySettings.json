@@ -1,15 +1,10 @@
 {
-  "uid": true,
   "name": true,
-  "bird": false,
-  "friends": false,
-  "group": false,
-  "sex": false,
   "password": true,
+  "status": true,
+  "follower": false,
   "email": true,
   "emailPass": true,
-  "twoFA": true,
-  "status": true,
-  "proxy": true,
+  "twoFA": false,
   "tag": true
 }
