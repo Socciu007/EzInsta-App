@@ -1,4 +1,4 @@
-.invite {
+.joinGroup {
   position: relative;
   height: 100%;
   &__title {
@@ -78,6 +78,9 @@
             background-color: #2a86ff !important;
           }
         }
+        .liked {
+          height: 40px;
+        }
         span {
           font-weight: 400;
         }
@@ -124,15 +127,91 @@
             padding: 15px 10px 15px 20px;
           }
         }
-        &__invite {
+        &__joinGroup {
           display: block;
+          .-type-follower {
+            display: block;
+            .PostContent {
+              margin-top: 10px;
+              border-radius: 5px;
+              background: #f5f5f5;
+              &__select {
+                margin: 0 auto;
+                width: 93%;
+                height: 100%;
+              }
+              &__details {
+                cursor: pointer;
+                font-family: 'GoogleSans';
+                font-size: 15px;
+                font-weight: 400;
+                width: 100%;
+                height: 40px;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-image: url(/src/assets/icon/icon-down.svg);
+                background-repeat: no-repeat;
+                background-position: right 30px center;
+                .ant-select-selector {
+                  padding: 0 18px;
+                  border: none;
+                  font-size: 15px;
+                }
+                .ant-select-arrow {
+                  color: #01162b;
+                }
+
+                option {
+                  font-weight: 400;
+                  color: var(--font-color-para);
+                }
+                svg {
+                  display: none;
+                }
+              }
+            }
+            .postOption {
+              position: relative;
+              display: flex;
+              align-items: center;
+              .PostType,
+              .TagType {
+                width: 95%;
+                border-radius: 5px;
+                background: #f5f5f5;
+                height: 40px;
+                font-size: 15px;
+                margin: 0 3%;
+                // -moz-appearance: none;
+                border: 0;
+                option {
+                  font-weight: 400;
+                  color: var(--font-color-para);
+                }
+              }
+              img {
+                position: absolute;
+                display: inline;
+                right: 5%;
+                top: 50%;
+                transform: translate(-5%, -50%);
+              }
+              .PostType:hover,
+              .PostType:active,
+              .PostType:focus,
+              .PostType:target {
+                border: none !important;
+              }
+            }
+          }
         }
       }
-      .InviteOption {
+      .JoinGroupOption {
         position: relative;
         display: flex;
         align-items: center;
-        .InviteType {
+        .JoinGroupType {
           font-family: 'GoogleSans';
           top: 0;
           width: 100%;
@@ -156,10 +235,10 @@
             display: none;
           }
         }
-        .InviteType:hover,
-        .InviteType:active,
-        .InviteType:focus,
-        .InviteType:target {
+        .JoinGroupType:hover,
+        .JoinGroupType:active,
+        .JoinGroupType:focus,
+        .JoinGroupType:target {
           border: none !important;
         }
         .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused
@@ -177,18 +256,53 @@
         }
       }
 
-      .UID_Header {
+      .AutoAnswer_Header {
         display: flex;
         align-items: center;
+        input[type='checkbox']:checked {
+          background-color: #2a86ff;
+          border: 0;
+          color: white;
+        }
+        input[type='checkbox'] {
+          color: #fff;
+          cursor: pointer;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          outline: 0;
+          border: 1px solid #01162b80;
+          height: 15px;
+          width: 15px;
+          border-radius: 3px;
+          margin-right: 2%;
+          margin-bottom: 0.2em;
+        }
+        input[type='checkbox']:after {
+          content: ' ';
+          margin: 0 auto;
+          width: 30%;
+          height: 70%;
+          border: solid #fff;
+          border-width: 0 2px 2px 0;
+          transform: rotate(50deg);
+          display: none;
+        }
+        input[type='checkbox']:checked:after {
+          display: block;
+        }
+      }
+
+      .Keyword_Header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         input {
           margin-right: 2%;
           margin-bottom: 0.2em;
         }
       }
-      .UID_Header {
-        justify-content: space-between;
-      }
-      .UIDText {
+      .keywordText {
         position: relative;
         border-radius: 5px;
         border: 1px dashed rgba(1, 22, 43, 0.2);
@@ -204,7 +318,7 @@
           -webkit-text-fill-color: #333;
         }
 
-        .editor #codeArea {
+        .editor #keyword {
           outline: none;
           padding-left: 9% !important;
         }
@@ -219,9 +333,48 @@
           left: 0px;
           color: #cccccc;
           text-align: right;
-          opacity: 0.5 !important;
           width: 6%;
           font-weight: 100;
+          opacity: 0.5 !important;
+        }
+      }
+      .userText {
+        position: relative;
+        border-radius: 5px;
+        border: 1px dashed rgba(1, 22, 43, 0.2);
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .editor {
+          min-width: 100%;
+          min-height: 100%;
+          float: left;
+          font-family: 'GoogleSans';
+          -webkit-text-fill-color: #333;
+        }
+
+        .editor #userList {
+          outline: none;
+          padding-top: 4% !important;
+          padding-left: 4.5% !important;
+        }
+
+        .editor pre {
+          padding-top: 4% !important;
+          padding-left: 4.5% !important;
+          width: 100%;
+        }
+
+        .editor .editorLineNumber {
+          display: none;
+          // position: absolute;
+          // left: 0px;
+          // color: #cccccc;
+          // text-align: right;
+          // width: 6%;
+          // font-weight: 100;
+          // opacity: 0.5 !important;
         }
       }
       .placeholder {
@@ -242,6 +395,6 @@
     }
   }
   .hide {
-    display: none;
+    display: none !important;
   }
 }

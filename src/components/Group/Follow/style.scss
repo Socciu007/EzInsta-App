@@ -222,22 +222,6 @@
           transform: translate(-5%, -50%);
         }
       }
-
-      .placeholder {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        margin-top: 5%;
-        p {
-          font-size: 15px;
-          font-weight: 400;
-          opacity: 0.5;
-          margin-left: 5%;
-          span {
-            margin-right: 3%;
-          }
-        }
-      }
       .text,
       .UID,
       .UIDList {
@@ -341,9 +325,151 @@
           }
         }
       }
-      .Post,
-      .Post .PostContent {
+      .-type-follower {
         display: block;
+        .PostContent {
+          margin-top: 10px;
+          border-radius: 5px;
+          background: #f5f5f5;
+          &__select {
+            margin: 0 auto;
+            width: 93%;
+            height: 100%;
+          }
+          &__details {
+            cursor: pointer;
+            font-family: 'GoogleSans';
+            font-size: 15px;
+            font-weight: 400;
+            width: 100%;
+            height: 40px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url(/src/assets/icon/icon-down.svg);
+            background-repeat: no-repeat;
+            background-position: right 30px center;
+            .ant-select-selector {
+              padding: 0 18px;
+              border: none;
+              font-size: 15px;
+            }
+            .ant-select-arrow {
+              color: #01162b;
+            }
+
+            option {
+              font-weight: 400;
+              color: var(--font-color-para);
+            }
+            svg {
+              display: none;
+            }
+          }
+        }
+        .postOption {
+          position: relative;
+          display: flex;
+          align-items: center;
+          .PostType,
+          .TagType {
+            width: 95%;
+            border-radius: 5px;
+            background: #f5f5f5;
+            height: 40px;
+            font-size: 15px;
+            margin: 0 3%;
+            // -moz-appearance: none;
+            border: 0;
+            option {
+              font-weight: 400;
+              color: var(--font-color-para);
+            }
+          }
+          img {
+            position: absolute;
+            display: inline;
+            right: 5%;
+            top: 50%;
+            transform: translate(-5%, -50%);
+          }
+          .PostType:hover,
+          .PostType:active,
+          .PostType:focus,
+          .PostType:target {
+            border: none !important;
+          }
+        }
+      }
+
+      .UID_Header {
+        display: flex;
+        align-items: center;
+        p {
+          font-weight: 700;
+        }
+        input {
+          margin-right: 2%;
+          margin-bottom: 0.2em;
+        }
+      }
+      .UID_Header {
+        justify-content: space-between;
+      }
+      .UIDText {
+        position: relative;
+        border-radius: 5px;
+        border: 1px dashed rgba(1, 22, 43, 0.2);
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .editor {
+          min-width: 100%;
+          min-height: 100%;
+          float: left;
+          font-family: 'GoogleSans';
+          -webkit-text-fill-color: #333;
+        }
+
+        .editor #userList,
+        .editor #postList,
+        .editor #search,
+        .editor #byKey,
+        .editor #byUser {
+          outline: none;
+          padding-left: 9.5% !important;
+        }
+
+        .editor pre {
+          padding-left: 9.5% !important;
+          width: 100%;
+        }
+
+        .editor .editorLineNumber {
+          position: absolute;
+          left: 0px;
+          color: #cccccc;
+          text-align: right;
+          opacity: 0.5 !important;
+          width: 6%;
+          font-weight: 100;
+        }
+      }
+      .placeholder {
+        position: absolute;
+        width: 100%;
+        top: 10%;
+        transform: translate(0, -10%);
+        p {
+          font-size: 15px;
+          font-weight: 400;
+          opacity: 0.5;
+          margin-left: 5%;
+          span {
+            margin-right: 3%;
+          }
+        }
       }
     }
   }

@@ -13,12 +13,10 @@ import View_Notifications from '../../components/General/View_Notifications/View
 import Send_Message from '../../components/General/Send_Message/Send_Message.jsx';
 import Reply_Message from '../../components/General/Reply_Message/Reply_Message.jsx';
 import AddFriend from '../../components/General/Add_Friends/AddFriend.jsx';
-import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
-import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
-import Invite from '../../components/Group/Invite/Invite.jsx';
-// import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
-// import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
-// import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
+import DirectMsg from '../../components/Group/DirectMsg/DirectMsg.jsx';
+import PostInteraction from '../../components/Group/PostInteraction/PostInteraction.jsx';
+import UnFollow from '../../components/Group/UnFollow/UnFollow.jsx';
+import Follow from '../../components/Group/Follow/Follow.jsx';
 
 import search from '../../assets/icon/icon-search.svg';
 import back from '../../assets/icon/icon-back.svg';
@@ -30,7 +28,7 @@ import save from '../../assets/icon/icon-save.svg';
 import watchStory from '../../assets/icon/icon-watchStoryGeneral.svg';
 import watchVideo from '../../assets/icon/icon-watchVideoGeneral.svg';
 import newsfeed from '../../assets/icon/icon-newsfeedGeneral.svg';
-import createPost from '../../assets/icon/icon-createPostGeneral.svg';
+import follow from '../../assets/icon/icon-follow.svg';
 import postInteract from '../../assets/icon/icon-postInteractGeneral.svg';
 import deletePost from '../../assets/icon/icon-deletePostGeneral.svg';
 import viewNoti from '../../assets/icon/icon-viewNotiGeneral.svg';
@@ -38,13 +36,9 @@ import sendMsg from '../../assets/icon/icon-sendMsgGeneral.svg';
 import reply from '../../assets/icon/icon-replyGeneral.svg';
 import addFriend from '../../assets/icon/icon-addFriendGeneral.svg';
 import cancel from '../../assets/icon/icon-cancelGeneral.svg';
-import joinGroup from '../../assets/icon/icon-joinGroup.svg';
-import leftGroup from '../../assets/icon/icon-leftGroup.svg';
-import invite from '../../assets/icon/icon-inviteGroup.svg';
-import likeComment from '../../assets/icon/icon-likeComment.svg';
-import follower from '../../assets/icon/icon-follow.svg';
-import viewVideo from '../../assets/icon/icon-viewVideo.svg';
-import CreatePostGroup from '../../components/Group/Create_Post/CreatePost.jsx';
+import postInteraction from '../../assets/icon/icon-postInteraction.svg';
+import directMsg from '../../assets/icon/icon-directMsg.svg';
+import unFollow from '../../assets/icon/icon-unfollow.svg';
 
 const Edit = () => {
   const [component, setComponent] = useState('default');
@@ -96,20 +90,15 @@ const Edit = () => {
         return <AddFriend onGoBackClick={handleGoBackClick} />;
       case 'cancelFriend':
         return <CancelFriend onGoBackClick={handleGoBackClick} />;
-      case 'joinGroup':
-        return <JoinGroup onGoBackClick={handleGoBackClick} />;
-      case 'leftGroup':
-        return <LeaveGroup onGoBackClick={handleGoBackClick} />;
-      case 'inviteGroup':
-        return <Invite onGoBackClick={handleGoBackClick} />;
-      case 'createPostGroup':
-        return <CreatePostGroup onGoBackClick={handleGoBackClick} />;
-      // case 'likeComment':
-      //   return <SeedingLikeComment onGoBackClick={handleGoBackClick} />;
-      // case 'follower':
-      //   return <SeedingFollower onGoBackClick={handleGoBackClick} />;
-      // case 'viewVideo':
-      //   return <SeedingView onGoBackClick={handleGoBackClick} />;
+      case 'seedingPost':
+        return <PostInteraction onGoBackClick={handleGoBackClick} />;
+      case 'directMsg':
+        return <DirectMsg onGoBackClick={handleGoBackClick} />;
+      case 'unfollow':
+        return <UnFollow onGoBackClick={handleGoBackClick} />;
+      case 'follow':
+        return <Follow onGoBackClick={handleGoBackClick} />;
+
       default:
         return (
           <div className={messageClickBack ? 'hide' : 'scrollable-container'}>
@@ -133,12 +122,7 @@ const Edit = () => {
                 >
                   Seeding
                 </button>
-                {/* <button
-                  className={activeCategory === 3 ? 'categoryActive' : 'categoryBtn'}
-                  onClick={() => handleCategoryClick(3)}
-                >
-                  Seeding
-                </button> */}
+
                 <hr />
               </div>
               <div className="left-content__container">
@@ -189,37 +173,23 @@ const Edit = () => {
                   </div>
                 </div>
                 <div className={activeCategory === 2 ? 'grid-container' : 'hide'}>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'joinGroup')} draggable>
-                    <img src={joinGroup} alt="join Group General" />
-                    <p>Join group</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'seedingPost')} draggable>
+                    <img src={postInteraction} alt="post interaction" />
+                    <p>Post interaction</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'leftGroup')} draggable>
-                    <img src={leftGroup} alt="left Group General" />
-                    <p>Left group</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'directMsg')} draggable>
+                    <img src={directMsg} alt="directMsg" />
+                    <p>Direct Message</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'inviteGroup')} draggable>
-                    <img src={invite} alt="invite Group General" />
-                    <p>Invite</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'unfollow')} draggable>
+                    <img src={unFollow} alt="unfollow" />
+                    <p>Unfollow</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'createPostGroup')} draggable>
-                    <img src={createPost} alt="watch newsfeed General" />
-                    <p>Create post</p>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'follow')} draggable>
+                    <img src={follow} alt="follow" />
+                    <p>Follow</p>
                   </div>
                 </div>
-                {/* <div className={activeCategory === 3 ? 'grid-container' : 'hide'}>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'likeComment')} draggable>
-                    <img src={likeComment} alt="Like and Comment" />
-                    <p>Like, comment</p>
-                  </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'follower')} draggable>
-                    <img src={follower} alt="Followers" />
-                    <p>Followers</p>
-                  </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'viewVideo')} draggable>
-                    <img src={viewVideo} alt="View Video" />
-                    <p>View video</p>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>

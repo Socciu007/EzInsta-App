@@ -11,12 +11,10 @@ import CreatePost from '../../components/General/CreatePost/CreatePost.jsx';
 import Post_Interaction from '../../components/General/Post_Interaction/Post_Interaction.jsx';
 import Delete_Post from '../../components/General/Delete_Post/Delete_Post.jsx';
 import View_Notifications from '../../components/General/View_Notifications/View_Notifications.jsx';
-import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
-import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
-import Invite from '../../components/Group/Invite/Invite.jsx';
-// import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
-// import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
-// import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
+import UnFollow from '../../components/Group/UnFollow/UnFollow.jsx';
+import Follow from '../../components/Group/Follow/Follow.jsx';
+import PostInteraction from '../../components/Group/PostInteraction/PostInteraction.jsx';
+import DirectMsg from '../../components/Group/DirectMsg/DirectMsg.jsx';
 
 import search from '../../assets/icon/icon-search.svg';
 import back from '../../assets/icon/icon-back.svg';
@@ -37,10 +35,6 @@ import hashtag from '../../assets/icon/icon-hashtagGeneral.svg';
 import postInteraction from '../../assets/icon/icon-postInteraction.svg';
 import directMsg from '../../assets/icon/icon-directMsg.svg';
 import unFollow from '../../assets/icon/icon-unfollow.svg';
-import likeComment from '../../assets/icon/icon-likeComment.svg';
-import msg from '../../assets/icon/icon-directMsg.svg';
-import viewVideo from '../../assets/icon/icon-viewVideo.svg';
-import CreatePostGroup from '../../components/Group/Create_Post/CreatePost.jsx';
 import { storageScripts } from '../../common/const.config.js';
 import DefaultSciptSettings from '../../resources/defaultSciptSettings.json';
 import { dbGetLocally, dbSetLocally } from '../../sender';
@@ -153,6 +147,7 @@ const CreateScript = () => {
           isPin: designScript.isPin ? true : false,
           createdAt: new Date(),
         });
+        console.log('designScript', designScript);
       }
 
       const res = await dbSetLocally(storageScripts, JSON.stringify(arrScript));
@@ -307,7 +302,7 @@ const CreateScript = () => {
         );
       case 'seedingPost':
         return (
-          <JoinGroup
+          <PostInteraction
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -317,7 +312,7 @@ const CreateScript = () => {
         );
       case 'directMsg':
         return (
-          <LeaveGroup
+          <DirectMsg
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -327,7 +322,7 @@ const CreateScript = () => {
         );
       case 'unfollow':
         return (
-          <Invite
+          <UnFollow
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -337,7 +332,7 @@ const CreateScript = () => {
         );
       case 'follow':
         return (
-          <CreatePostGroup
+          <Follow
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -412,7 +407,6 @@ const CreateScript = () => {
                     <p style={{ textAlign: 'center' }}>Hashtag Interaction</p>
                   </div>
                 </div>
-                {/* Seeding */}
                 <div className={activeCategory === 2 ? 'grid-container' : 'hide'}>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'seedingPost')} draggable>
                     <img src={postInteraction} alt="postInteraction" />
@@ -462,7 +456,7 @@ const CreateScript = () => {
       <div className="wrapper">
         <div className="create-script">
           <div className="script-manager__header">
-            <h1>INSTAGRAM TOOL</h1>
+            <h1>MiniTool Instagram</h1>
             <div className="title">
               <button onClick={handleReturnClick}>
                 <img src={back} alt="Return" />
@@ -472,7 +466,6 @@ const CreateScript = () => {
           </div>
           <div className="create-script__content">
             {renderComponent(component)}
-
             <div className="right-content">
               <div className="right-content__edit">
                 <div className="edit-input">

@@ -195,14 +195,22 @@
     "postUID": []
   },
   "directMsg": {
-    "delayTimeStart": 3,
-    "delayTimeEnd": 5,
-    "selectTypeFollow": "profile",
+    "typeDirectMSg": "user",
+    "numberStart": 5,
+    "numberEnd": 10,
+    "type": "user",
     "UIDList": [],
-    "isLike": false,
-    "isFollow": false,
-    "line": 0
+    "messageList": []
   },
-  "unfollow": { "viewTimeStart": 30, "viewTimeEnd": 50, "videoID": [], "line": 0 },
-  "follow": {}
+  "unfollow": { "typeUnfollow": "random", "numberStart": 3, "numberEnd": 3, "userList": [], "line": 0 },
+  "follow": {
+    "numberStart": 3,
+    "numberEnd": 5,
+    "typeFollow": "followers",
+    "postList": [],
+    "userList": [],
+    "search": [],
+    "searchByKeyword": [],
+    "searchByUser": []
+  }
 }

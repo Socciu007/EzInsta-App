@@ -8,11 +8,12 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+// import MenuItem from '@mui/material/MenuItem';
+// import Select from '@mui/material/Select';
 import { parseToNumber } from '../../../services/utils.js';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
-const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
+import { Select } from 'antd';
+const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
   const [values, setValues] = useState(DefaultSciptSettings['seedingPost']);
   const [userContent, setUserContent] = useState('');
   const [textContent, setTextContent] = useState('');
@@ -392,257 +393,60 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                 </div>
               </div>
               {values.isShare && (
-                <div className="JoinGroupContent">
-                  <div className="component-item JoinGroupOption">
+                <div className="component-item -type-follower">
+                  <div className="PostContent">
                     <Select
-                      name="JoinGroupOption"
-                      className="JoinGroupType"
-                      onChange={(event) => {
-                        changeTypeShare(event.target.value);
-                      }}
+                      id="typeProfile"
+                      className="PostContent__select PostContent__details"
                       value={values.typeShare}
-                    >
-                      <MenuItem value="user">User</MenuItem>
-                    </Select>
+                      onChange={changeTypeShare}
+                      bordered={false}
+                      options={[
+                        {
+                          value: 'user',
+                          label: 'User',
+                        },
+                      ]}
+                    />
+                    {/* </div> */}
                   </div>
                 </div>
               )}
-              <div className="KeywordContent">
-                <div className="Keyword_Header">
-                  <h>User list</h>
-                  {/* <span>({values.lineCount})</span> */}
-                </div>
-                <div className="component-item " style={{ position: 'relative' }}>
-                  <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="keywordText">
-                    <Editor
-                      value={userContent}
-                      onValueChange={(text) => {
-                        setUserContent(text);
-                      }}
-                      highlight={(text) => hightlightWithLineNumbers(text, languages.js, userContent)}
-                      padding={15}
-                      className="editor"
-                      textareaId="userList"
-                      style={{
-                        background: '#f5f5f5',
-                        fontSize: 15,
-                      }}
-                    />
+              {values.typeShare === 'user' && (
+                <div className="KeywordContent">
+                  <div className="Keyword_Header">
+                    <h>User list</h>
+                    {/* <span>({values.lineCount})</span> */}
                   </div>
-                  <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
-                    <p>
-                      Enter the content here
-                      {/* <span>1</span>Enter the content here */}
-                    </p>
-                    {/* <p>
+                  <div className="component-item " style={{ position: 'relative' }}>
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
+                      <Editor
+                        value={userContent}
+                        onValueChange={(text) => {
+                          setUserContent(text);
+                        }}
+                        highlight={(text) => hightlightWithLineNumbers(text, languages.js, userContent)}
+                        padding={15}
+                        className="editor"
+                        textareaId="userList"
+                        style={{
+                          background: '#f5f5f5',
+                          fontSize: 15,
+                        }}
+                      />
+                    </div>
+                    <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                      <p>
+                        Enter the content here
+                        {/* <span>1</span>Enter the content here */}
+                      </p>
+                      {/* <p>
                       <span>2</span>Each UID/line
                     </p> */}
-                  </div>
-                </div>
-              </div>
-              {/* <div className="component-item__header">
-                <p>Select Join group type</p>
-              </div>
-              <div className="JoinGroupContent">
-                <div className="component-item JoinGroupOption">
-                  <Select
-                    name="JoinGroupOption"
-                    className="JoinGroupType"
-                    onChange={(event) => {
-                      changeOption(event.target.value);
-                    }}
-                    value={values.option}
-                  >
-                    <MenuItem value="suggestions">By suggestions</MenuItem>
-                    <MenuItem value="keywords">By keywords</MenuItem>
-                    <MenuItem value="UID">By UID</MenuItem>
-                  </Select>
-                </div>
-                {(values.option === 'suggestions' || values.option === 'keywords' || values.option === 'UID') && (
-                  <div>
-                    <div className="component-item numberOfGroups">
-                      <p className="component-item__header">Number of groups:</p>
-                      <div className="component-item__number">
-                        <div className="component-item__number__icon">
-                          <img
-                            src={iconIncrease}
-                            alt="Increase icon"
-                            onClick={() => {
-                              changeViewTimeStart(values.groupStart + 1);
-                            }}
-                          />
-                          <img
-                            src={iconDecrease}
-                            alt="Decrease icon"
-                            onClick={() => {
-                              changeGroupStart(values.groupStart - 1);
-                            }}
-                          />
-                        </div>
-                        <input
-                          type="text"
-                          name="Start"
-                          value={values.groupStart}
-                          onChange={(event) => changeGroupStart(event.target.value)}
-                        />
-                      </div>
-                      <span>to</span>
-                      <div className="component-item__number">
-                        <div className="component-item__number__icon">
-                          <img
-                            src={iconIncrease}
-                            alt="Increase icon"
-                            onClick={() => {
-                              changeGroupEnd(values.groupEnd + 1);
-                            }}
-                          />
-                          <img
-                            src={iconDecrease}
-                            alt="Decrease icon"
-                            onClick={() => {
-                              changeGroupEnd(values.groupEnd - 1);
-                            }}
-                          />
-                        </div>
-                        <input
-                          type="text"
-                          name="End"
-                          value={values.groupEnd}
-                          onChange={(event) => changeGroupEnd(event.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="component-item delayTime">
-                      <p className="component-item__header">
-                        Delay time<span style={{ marginLeft: '2px' }}>(s):</span>
-                      </p>
-                      <div className="component-item__number">
-                        <div className="component-item__number__icon">
-                          <img
-                            src={iconIncrease}
-                            alt="Increase icon"
-                            onClick={() => {
-                              changeDelayTimeStart(values.delayTimeStart + 1);
-                            }}
-                          />
-                          <img
-                            src={iconDecrease}
-                            alt="Decrease icon"
-                            onClick={() => {
-                              changeDelayTimeStart(values.delayTimeStart - 1);
-                            }}
-                          />
-                        </div>
-                        <input
-                          name="Start"
-                          type="text"
-                          value={values.delayTimeStart}
-                          onChange={(event) => changeDelayTimeStart(event.target.value)}
-                        />
-                      </div>
-                      <span>to</span>
-                      <div className="component-item__number">
-                        <div className="component-item__number__icon">
-                          <img
-                            src={iconIncrease}
-                            alt="Increase icon"
-                            onClick={() => {
-                              changeDelayTimeEnd(values.delayTimeEnd + 1);
-                            }}
-                          />
-                          <img
-                            src={iconDecrease}
-                            alt="Decrease icon"
-                            onClick={() => {
-                              changeDelayTimeEnd(values.delayTimeEnd - 1);
-                            }}
-                          />
-                        </div>
-                        <input
-                          name="End"
-                          type="text"
-                          value={values.delayTimeEnd}
-                          onChange={(event) => changeDelayTimeEnd(event.target.value)}
-                        />
-                      </div>
-                    </div>
-                    {(values.option === 'keywords' || values.option === 'UID') && (
-                      <div className="KeywordContent">
-                        <div className="Keyword_Header">
-                          {values.option === 'keywords' && <p>Keyword list</p>}
-                          {values.option === 'UID' && <p>UID list</p>}
-                          <span>({values.lineCount})</span>
-                        </div>
-                        <div className="component-item " style={{ position: 'relative' }}>
-                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="keywordText">
-                            <Editor
-                              value={textContent}
-                              onValueChange={(text) => {
-                                setTextContent(text);
-                              }}
-                              highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
-                              padding={15}
-                              className="editor"
-                              textareaId="keyword"
-                              style={{
-                                background: '#f5f5f5',
-                                fontSize: 15,
-                              }}
-                            />
-                          </div>
-
-                          <div onClick={handleDivKeywordClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
-                            <p>
-                              <span>1</span>Enter the keyword here
-                            </p>
-                            <p>
-                              <span>2</span>Each keyword/line
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    <div className="AutoAnswerContent">
-                      <div className="AutoAnswer_Header">
-                        <input
-                          type="checkbox"
-                          name="autoAnswer"
-                          checked={values.isAutoAnswer}
-                          onChange={(event) => changeAnswer(event.target.checked)}
-                        />
-                        <p>Automatically answer the questions</p>
-                      </div>
-                      <div
-                        style={{ position: 'relative' }}
-                        className={`component-item  ${values.isAutoAnswer ? 'show' : 'hide'}`}
-                      >
-                        <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="AutoAnswerText">
-                          <Editor
-                            value={answerContent}
-                            onValueChange={(text) => setAnswerContent(text)}
-                            highlight={(text) => hightlightWithLineNumbers(text, languages.js, answerContent)}
-                            padding={15}
-                            className="editor"
-                            textareaId="answer"
-                            style={{
-                              background: '#f5f5f5',
-                              fontSize: 15,
-                            }}
-                          />
-                        </div>
-                        <div onClick={handleDivAnswerClick} className={`placeholder ${answerContent ? 'hide' : ''}`}>
-                          <p>
-                            <span>1</span>Enter the answer here
-                          </p>
-                          <p>
-                            <span>2</span>Each answer/line
-                          </p>
-                        </div>
-                      </div>
                     </div>
                   </div>
-                )}
-              </div> */}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -651,4 +455,4 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
   );
 };
 
-export default JoinGroup;
+export default PostInteraction;
