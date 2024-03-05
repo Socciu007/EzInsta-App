@@ -22,8 +22,8 @@ import viewNotiNode from '../nodes/viewNoti';
 import sendMsgNode from '../nodes/sendMsg';
 import replyMsgNode from '../nodes/replyMsg';
 import updateProfileNode from '../nodes/updateProfile';
-import cancelFriendNode from '../nodes/cancelFriend';
-import joinGroupNode from '../nodes/joinGroup';
+import hashtagInteractionNode from '../nodes/hashtagInteraction';
+import followInteractionNode from '../nodes/followInteraction';
 import leftGroupNode from '../nodes/leftGroup';
 import inviteGroupNode from '../nodes/invite';
 import likeCommentNode from '../nodes/likeComment';
@@ -50,8 +50,8 @@ const nodeTypes = {
   sendMsg: sendMsgNode,
   replyMsg: replyMsgNode,
   updateProfile: updateProfileNode,
-  cancelFriend: cancelFriendNode,
-  joinGroup: joinGroupNode,
+  hashtagInteraction: hashtagInteractionNode,
+  followInteraction: followInteractionNode,
   leftGroup: leftGroupNode,
   inviteGroup: inviteGroupNode,
   createPostGroup: createPostGroupNode,
@@ -70,8 +70,8 @@ const nodeMessage = {
   sendMsg: 'sendMsg',
   replyMsg: 'replyMsg',
   updateProfile: 'updateProfile',
-  cancelFriend: 'cancelFriend',
-  joinGroup: 'joinGroup',
+  hashtagInteraction: 'hashtagInteraction',
+  followInteraction: 'followInteraction',
   leftGroup: 'leftGroup',
   inviteGroup: 'inviteGroup',
   createPostGroup: 'createPostGroup',

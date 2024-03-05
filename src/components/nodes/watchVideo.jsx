@@ -50,7 +50,7 @@ function watchVideoNode({ data: { label, onButtonClick, onDeleteNode }, isConnec
           <img src={watchVideoIcon} alt="watchVideo" />
           <div className="content-right">
             <div className="right-top">
-              <p>Watch video</p>
+              <p>Watch reels</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"

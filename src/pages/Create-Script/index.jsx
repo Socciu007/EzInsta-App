@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DnDFlow from '../../components/drag/drag';
 import WatchStory from '../../components/General/WatchStory/WatchStory.jsx';
 
-import CancelFriend from '../../components/General/Cancel_Friend/CancelFriend.jsx';
+import CancelFriend from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
 import Newsfeed from '../../components/General/Newsfeed/Newsfeed.jsx';
 import CreatePost from '../../components/General/CreatePost/CreatePost.jsx';
 import Post_Interaction from '../../components/General/Post_Interaction/Post_Interaction.jsx';
@@ -15,9 +15,12 @@ import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
 import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
 import Invite from '../../components/Group/Invite/Invite.jsx';
 import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
+import WatchVideo from '../../components/General/WatchVideo/WatchVideo.jsx';
 import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
 import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
-import AddFriend from '../../components/General/Add_Friends/AddFriend.jsx';
+import AddFriend from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
+import HashtagInteraction from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
+import FollowInteraction from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
 import search from '../../assets/icon/icon-search.svg';
 import back from '../../assets/icon/icon-back.svg';
 import newNote from '../../assets/icon/icon-newNote.svg';
@@ -254,16 +257,16 @@ const CreateScript = () => {
             updateDesignScript={updateDesignScript}
           />
         );
-      case 'postInteract':
-        return (
-          <Post_Interaction
-            currentSetup={currentSetup}
-            component={component}
-            id={currentComponent}
-            onGoBackClick={handleGoBackClick}
-            updateDesignScript={updateDesignScript}
-          />
-        );
+      // case 'postInteract':
+      //   return (
+      //     <Post_Interaction
+      //       currentSetup={currentSetup}
+      //       component={component}
+      //       id={currentComponent}
+      //       onGoBackClick={handleGoBackClick}
+      //       updateDesignScript={updateDesignScript}
+      //     />
+      //   );
       case 'deletePost':
         return (
           <Delete_Post
@@ -314,9 +317,10 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'cancelFriend':
+
+      case 'hashtagInteraction':
         return (
-          <CancelFriend
+          <HashtagInteraction
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -324,9 +328,9 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'joinGroup':
+      case 'followInteraction':
         return (
-          <JoinGroup
+          <FollowInteraction
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -457,11 +461,11 @@ const CreateScript = () => {
                     <img src={updateProfile} alt="Update Profile General" />
                     <p>Update Profile</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'updateProfile')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'followInteraction')} draggable>
                     <img src={heart} alt="Interact with follower/following General" />
                     <p style={{ textAlign: 'center' }}>Follow Interaction</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'updateProfile')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'hashtagInteraction')} draggable>
                     <img src={hashtag} alt="Hashtag Interaction General" />
                     <p style={{ textAlign: 'center' }}>Hashtag Interaction</p>
                   </div>

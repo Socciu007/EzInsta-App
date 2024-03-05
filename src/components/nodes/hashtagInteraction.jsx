@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import cancelLeft from '../../assets/icon/icon-cancelLeft.svg';
-import cancelIcon from '../../assets/icon/icon-cancel.svg';
+import cancelIcon from '../../assets/icon/icon-heart.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function cancelFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function hashtagInteractionNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -49,7 +49,7 @@ function cancelFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConn
           <img src={cancelIcon} alt="cancelLeft" />
           <div className="content-right">
             <div className="right-top">
-              <p>Cancel friend</p>
+              <p>Hashtag Interaction </p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function cancelFriendNode({ data: { label, onButtonClick, onDeleteNode }, isConn
   );
 }
 
-export default cancelFriendNode;
+export default hashtagInteractionNode;
