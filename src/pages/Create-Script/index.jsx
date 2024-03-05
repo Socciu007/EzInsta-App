@@ -285,26 +285,6 @@ const CreateScript = () => {
             updateDesignScript={updateDesignScript}
           />
         );
-      // case 'sendMsg':
-      //   return (
-      //     <Send_Message
-      //       currentSetup={currentSetup}
-      //       component={component}
-      //       id={currentComponent}
-      //       updateDesignScript={updateDesignScript}
-      //       onGoBackClick={handleGoBackClick}
-      //     />
-      //   );
-      // case 'replyMsg':
-      //   return (
-      //     <Reply_Message
-      //       currentSetup={currentSetup}
-      //       updateDesignScript={updateDesignScript}
-      //       component={component}
-      //       id={currentComponent}
-      //       onGoBackClick={handleGoBackClick}
-      //     />
-      //   );
       case 'updateProfile':
         return (
           <AddFriend
@@ -325,7 +305,7 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'joinGroup':
+      case 'seedingPost':
         return (
           <JoinGroup
             currentSetup={currentSetup}
@@ -335,7 +315,7 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'leftGroup':
+      case 'directMsg':
         return (
           <LeaveGroup
             currentSetup={currentSetup}
@@ -345,7 +325,7 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'inviteGroup':
+      case 'unfollow':
         return (
           <Invite
             currentSetup={currentSetup}
@@ -355,39 +335,9 @@ const CreateScript = () => {
             onGoBackClick={handleGoBackClick}
           />
         );
-      case 'createPostGroup':
+      case 'follow':
         return (
           <CreatePostGroup
-            currentSetup={currentSetup}
-            component={component}
-            updateDesignScript={updateDesignScript}
-            id={currentComponent}
-            onGoBackClick={handleGoBackClick}
-          />
-        );
-      case 'likeComment':
-        return (
-          <SeedingLikeComment
-            currentSetup={currentSetup}
-            component={component}
-            updateDesignScript={updateDesignScript}
-            id={currentComponent}
-            onGoBackClick={handleGoBackClick}
-          />
-        );
-      case 'directMsg':
-        return (
-          <SeedingFollower
-            currentSetup={currentSetup}
-            component={component}
-            updateDesignScript={updateDesignScript}
-            id={currentComponent}
-            onGoBackClick={handleGoBackClick}
-          />
-        );
-      case 'viewVideo':
-        return (
-          <SeedingView
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -416,14 +366,9 @@ const CreateScript = () => {
                   className={activeCategory === 2 ? 'categoryActive' : 'categoryBtn'}
                   onClick={() => handleCategoryClick(2)}
                 >
-                  Group
-                </button>
-                <button
-                  className={activeCategory === 3 ? 'categoryActive' : 'categoryBtn'}
-                  onClick={() => handleCategoryClick(3)}
-                >
                   Seeding
                 </button>
+
                 <hr />
               </div>
               <div className="left-content__container">
@@ -469,36 +414,21 @@ const CreateScript = () => {
                 </div>
                 {/* Seeding */}
                 <div className={activeCategory === 2 ? 'grid-container' : 'hide'}>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'joinGroup')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'seedingPost')} draggable>
                     <img src={postInteraction} alt="postInteraction" />
                     <p>Post interaction</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'leftGroup')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'directMsg')} draggable>
                     <img src={directMsg} alt="directMsg" />
                     <p>Direct message</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'inviteGroup')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'unfollow')} draggable>
                     <img src={unFollow} alt="unFollow" />
                     <p>Unfollow</p>
                   </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'createPostGroup')} draggable>
+                  <div className="card" onDragStart={(event) => onDragStart(event, 'follow')} draggable>
                     <img src={follow} alt="follow" />
                     <p>Follow</p>
-                  </div>
-                </div>
-
-                <div className={activeCategory === 3 ? 'grid-container' : 'hide'}>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'likeComment')} draggable>
-                    <img src={likeComment} alt="Like and Comment" />
-                    <p>Like, comment</p>
-                  </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'directMsg')} draggable>
-                    <img src={msg} alt="Direct Message" />
-                    <p>Direct Message</p>
-                  </div>
-                  <div className="card" onDragStart={(event) => onDragStart(event, 'viewVideo')} draggable>
-                    <img src={viewVideo} alt="View Video" />
-                    <p>View video</p>
                   </div>
                 </div>
               </div>

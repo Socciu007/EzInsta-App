@@ -78,6 +78,9 @@
             background-color: #2a86ff !important;
           }
         }
+        .liked {
+          height: 40px;
+        }
         span {
           font-weight: 400;
         }
@@ -240,10 +243,13 @@
           -webkit-text-fill-color: #333;
         }
 
-        .editor #keyword,
-        .editor #answer {
+        .editor #keyword {
           outline: none;
           padding-left: 9% !important;
+        }
+
+        .editor #userList {
+          padding-top: 2%;
         }
 
         .editor pre {

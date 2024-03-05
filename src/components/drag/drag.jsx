@@ -23,11 +23,9 @@ import sendMsgNode from '../nodes/sendMsg';
 import replyMsgNode from '../nodes/replyMsg';
 import updateProfileNode from '../nodes/updateProfile';
 import cancelFriendNode from '../nodes/cancelFriend';
-import directMsgNode from '../nodes/leftGroup';
-import inviteGroupNode from '../nodes/invite';
-import likeCommentNode from '../nodes/likeComment';
-import viewVideoNode from '../nodes/viewVideo';
-import createPostGroupNode from '../nodes/createPostGroup';
+import directMsgNode from '../nodes/directMsg';
+import unfollowNode from '../nodes/unfollow';
+import followNode from '../nodes/follow';
 const initialNodes = [
   {
     id: '1',
@@ -49,13 +47,10 @@ const nodeTypes = {
   replyMsg: replyMsgNode,
   updateProfile: updateProfileNode,
   cancelFriend: cancelFriendNode,
-  postInteraction: postInteractNode,
-  leftGroup: directMsgNode,
-  inviteGroup: inviteGroupNode,
-  createPostGroup: createPostGroupNode,
-  likeComment: likeCommentNode,
+  seedingPost: postInteractNode,
   directMsg: directMsgNode,
-  viewVideo: viewVideoNode,
+  unfollow: unfollowNode,
+  follow: followNode,
 };
 const nodeMessage = {
   watchStory: 'watchStory',
@@ -69,13 +64,10 @@ const nodeMessage = {
   replyMsg: 'replyMsg',
   updateProfile: 'updateProfile',
   cancelFriend: 'cancelFriend',
-  postInteraction: 'joinGroup',
-  leftGroup: 'leftGroup',
-  inviteGroup: 'inviteGroup',
-  createPostGroup: 'createPostGroup',
-  likeComment: 'likeComment',
+  seedingPost: 'seedingPost',
   directMsg: 'directMsg',
-  viewVideo: 'viewVideo',
+  unfollow: 'unfollow',
+  follow: 'follow',
 };
 
 const getId = () => `dndnode_${+new Date()}`;

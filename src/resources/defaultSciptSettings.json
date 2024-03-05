@@ -178,30 +178,23 @@
     "lineCount": 0
   },
   "seedingPost": {
-    "viewTimeStart": 5,
-    "viewTimeEnd": 3,
-    "delayTimeStart": 5,
-    "delayTimeEnd": 8,
+    "viewTimeStart": 10,
+    "viewTimeEnd": 15,
+    "delayTimeStart": 1,
+    "delayTimeEnd": 5,
     "isLike": false,
     "likeStart": 2,
     "likeEnd": 5,
     "isShare": false,
-    "shareToFeedStart": 0,
-    "shareToFeedEnd": 5,
-    "postQuantityStart": 0,
-    "postQuantityEnd": 0,
-    "line": 0,
-    "postID": [],
+    "typeShare": "",
+    "userList": [],
     "isComment": false,
-    "photoVideoQuantityStart": 1,
-    "photoVideoQuantityEnd": 2,
-    "file": [],
-    "isTag": false,
-    "tagFriendStart": 1,
-    "tagFriendEnd": 3,
-    "textComment": []
+    "commentStart": 0,
+    "commentEnd": 5,
+    "line": 0,
+    "postUID": []
   },
-  "seedingDirectMessage": {
+  "directMsg": {
     "delayTimeStart": 3,
     "delayTimeEnd": 5,
     "selectTypeFollow": "profile",
@@ -210,6 +203,6 @@
     "isFollow": false,
     "line": 0
   },
-  "seedingUnfollow": { "viewTimeStart": 30, "viewTimeEnd": 50, "videoID": [], "line": 0 },
-  "seedingFollow": {}
+  "unfollow": { "viewTimeStart": 30, "viewTimeEnd": 50, "videoID": [], "line": 0 },
+  "follow": {}
 }

@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import rectangBlue from '../../assets/icon/icon-rectangBlue.svg';
-import followIcon from '../../assets/icon/icon-followIcon.svg';
+import rectangRed from '../../assets/icon/icon-rectangRed.svg';
+import unfollowIcon from '../../assets/icon/icon-unfollowIcon.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function createPostGroupNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function unfollowNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -44,12 +44,12 @@ function createPostGroupNode({ data: { label, onButtonClick, onDeleteNode }, isC
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={rectangBlue} alt="rectang blue" />
+        <img src={rectangRed} alt="rectang red" />
         <div className="content">
-          <img src={followIcon} alt="follow" />
+          <img src={unfollowIcon} alt="unfollow" />
           <div className="content-right">
             <div className="right-top">
-              <p>G-Create post</p>
+              <p>Unfollow</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function createPostGroupNode({ data: { label, onButtonClick, onDeleteNode }, isC
   );
 }
 
-export default createPostGroupNode;
+export default unfollowNode;

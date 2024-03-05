@@ -13,8 +13,8 @@ import Select from '@mui/material/Select';
 import { parseToNumber } from '../../../services/utils.js';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
-  const [values, setValues] = useState(DefaultSciptSettings['joinGroup']);
-  const [answerContent, setAnswerContent] = useState('');
+  const [values, setValues] = useState(DefaultSciptSettings['seedingPost']);
+  const [userContent, setUserContent] = useState('');
   const [textContent, setTextContent] = useState('');
 
   useEffect(() => {
@@ -23,11 +23,11 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
 
   useEffect(() => {
     if (currentSetup) {
-      if (currentSetup.text && currentSetup.text.length) {
-        setTextContent(currentSetup.text.join('\n'));
+      if (currentSetup.postUID && currentSetup.postUID.length) {
+        setTextContent(currentSetup.postUID.join('\n'));
       }
-      if (currentSetup.answer && currentSetup.answer.length) {
-        setAnswerContent(currentSetup.answer.join('\n'));
+      if (currentSetup.userList && currentSetup.userList.length) {
+        setUserContent(currentSetup.userList.join('\n'));
       }
       setValues(currentSetup);
     }
@@ -35,18 +35,18 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, text: textContent.split('\n'), lineCount: textContent.split('\n').length });
+      setValues({ ...values, postUID: textContent.split('\n'), lineCount: textContent.split('\n').length });
     }
   }, [textContent]);
 
   useEffect(() => {
-    if (answerContent.length) {
-      setValues({ ...values, answer: answerContent.split('\n') });
+    if (userContent.length) {
+      setValues({ ...values, userList: userContent.split('\n') });
     }
-  }, [answerContent]);
+  }, [userContent]);
 
-  const changeOption = (value) => {
-    setValues({ ...values, option: value });
+  const changeTypeShare = (value) => {
+    setValues({ ...values, typeShare: value });
   };
 
   const changeDelayTimeStart = (time) => {
@@ -56,24 +56,43 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
     setValues({ ...values, delayTimeEnd: parseToNumber(time) });
   };
 
-  const changeGroupStart = (group) => {
-    setValues({ ...values, groupStart: parseToNumber(group) });
+  const changeViewTimeStart = (group) => {
+    setValues({ ...values, viewTimeStart: parseToNumber(group) });
   };
-  const changeGroupEnd = (group) => {
-    setValues({ ...values, groupEnd: parseToNumber(group) });
+  const changeViewTimeEnd = (group) => {
+    setValues({ ...values, viewTimeEnd: parseToNumber(group) });
+  };
+
+  const handleChangeLike = (value) => {
+    setValues({ ...values, isLike: value });
+  };
+  const changeLikeStart = (value) => {
+    setValues({ ...values, likeStart: parseToNumber(value) });
+  };
+  const changeLikeEnd = (value) => {
+    setValues({ ...values, likeEnd: parseToNumber(value) });
+  };
+  const handleChangeComment = (value) => {
+    setValues({ ...values, isComment: value });
+  };
+  const changeCommentStart = (value) => {
+    setValues({ ...values, commentStart: parseToNumber(value) });
+  };
+  const changeCommentEnd = (value) => {
+    setValues({ ...values, commentEnd: parseToNumber(value) });
+  };
+  const handleChangeShare = (value) => {
+    setValues({ ...values, isShare: value });
   };
 
   const handleDivKeywordClick = () => {
     document.getElementById('keyword').focus();
   };
 
-  const handleDivAnswerClick = () => {
-    document.getElementById('answer').focus();
+  const handleDivUserListClick = () => {
+    document.getElementById('userList').focus();
   };
 
-  const changeAnswer = (value) => {
-    setValues({ ...values, isAutoAnswer: value });
-  };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
       .split('\n')
@@ -93,10 +112,335 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                   onGoBackClick(values, component, id);
                 }}
               />
-              <p>Join group</p>
+              <p>Post interaction</p>
+            </div>
+            <div className="KeywordContent">
+              <div className="Keyword_Header">
+                <p>Post UID list</p>
+                {/* <span>({values.lineCount})</span> */}
+              </div>
+              <div className="component-item " style={{ position: 'relative' }}>
+                <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="keywordText">
+                  <Editor
+                    value={textContent}
+                    onValueChange={(text) => {
+                      setTextContent(text);
+                    }}
+                    highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
+                    padding={15}
+                    className="editor"
+                    textareaId="keyword"
+                    style={{
+                      background: '#f5f5f5',
+                      fontSize: 15,
+                    }}
+                  />
+                </div>
+
+                <div onClick={handleDivKeywordClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
+                  <p>
+                    <span>1</span>Enter the UID list here
+                  </p>
+                  <p>
+                    <span>2</span>Each UID/line
+                  </p>
+                </div>
+              </div>
             </div>
             <div className="component-item__joinGroup">
-              <div className="component-item__header">
+              <div className="component-item numberOfGroups">
+                <p className="component-item__header">
+                  View time <span style={{ marginLeft: '2px' }}>(s):</span>
+                </p>
+                <div className="component-item__number">
+                  <div className="component-item__number__icon">
+                    <img
+                      src={iconIncrease}
+                      alt="Increase icon"
+                      onClick={() => {
+                        changeViewTimeStart(values.viewTimeStart + 1);
+                      }}
+                    />
+                    <img
+                      src={iconDecrease}
+                      alt="Decrease icon"
+                      onClick={() => {
+                        changeViewTimeStart(values.viewTimeStart - 1);
+                      }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    name="Start"
+                    value={values.viewTimeStart}
+                    onChange={(event) => changeViewTimeStart(event.target.value)}
+                  />
+                </div>
+                <span>to</span>
+                <div className="component-item__number">
+                  <div className="component-item__number__icon">
+                    <img
+                      src={iconIncrease}
+                      alt="Increase icon"
+                      onClick={() => {
+                        changeViewTimeEnd(values.viewTimeEnd + 1);
+                      }}
+                    />
+                    <img
+                      src={iconDecrease}
+                      alt="Decrease icon"
+                      onClick={() => {
+                        changeViewTimeEnd(values.viewTimeEnd - 1);
+                      }}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    name="End"
+                    value={values.viewTimeEnd}
+                    onChange={(event) => changeViewTimeEnd(event.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="component-item delayTime">
+                <p className="component-item__header">
+                  Delay time<span style={{ marginLeft: '2px' }}>(s):</span>
+                </p>
+                <div className="component-item__number">
+                  <div className="component-item__number__icon">
+                    <img
+                      src={iconIncrease}
+                      alt="Increase icon"
+                      onClick={() => {
+                        changeDelayTimeStart(values.delayTimeStart + 1);
+                      }}
+                    />
+                    <img
+                      src={iconDecrease}
+                      alt="Decrease icon"
+                      onClick={() => {
+                        changeDelayTimeStart(values.delayTimeStart - 1);
+                      }}
+                    />
+                  </div>
+                  <input
+                    name="Start"
+                    type="text"
+                    value={values.delayTimeStart}
+                    onChange={(event) => changeDelayTimeStart(event.target.value)}
+                  />
+                </div>
+                <span>to</span>
+                <div className="component-item__number">
+                  <div className="component-item__number__icon">
+                    <img
+                      src={iconIncrease}
+                      alt="Increase icon"
+                      onClick={() => {
+                        changeDelayTimeEnd(values.delayTimeEnd + 1);
+                      }}
+                    />
+                    <img
+                      src={iconDecrease}
+                      alt="Decrease icon"
+                      onClick={() => {
+                        changeDelayTimeEnd(values.delayTimeEnd - 1);
+                      }}
+                    />
+                  </div>
+                  <input
+                    name="End"
+                    type="text"
+                    value={values.delayTimeEnd}
+                    onChange={(event) => changeDelayTimeEnd(event.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="component-item">
+                <div className="component-item__header liked">
+                  <input
+                    type="checkbox"
+                    name="isLike"
+                    checked={values.isLike}
+                    onChange={(event) => handleChangeLike(event.target.checked)}
+                  />
+                  <p>Random Like:</p>
+                </div>
+                <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => {
+                          changeLikeStart(values.likeStart + 1);
+                        }}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => {
+                          changeLikeStart(values.likeEnd - 1);
+                        }}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={!values.isLike ? 0 : values.likeStart}
+                      onChange={(event) => changeLikeStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => {
+                          changeLikeEnd(values.likeEnd + 1);
+                        }}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => {
+                          changeLikeEnd(values.likeEnd - 1);
+                        }}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={!values.isLike ? 0 : values.likeEnd}
+                      onChange={(event) => changeLikeEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="component-item">
+                <div className="component-item__header liked">
+                  <input
+                    type="checkbox"
+                    name="isLike"
+                    checked={values.isComment}
+                    onChange={(event) => handleChangeComment(event.target.checked)}
+                  />
+                  <p>Random comment:</p>
+                </div>
+                <div className={`component-item__content ${values.isComment ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => {
+                          changeCommentStart(values.commentStart + 1);
+                        }}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => {
+                          changeCommentStart(values.commentStart - 1);
+                        }}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={!values.isComment ? 0 : values.commentStart}
+                      onChange={(event) => changeCommentStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => {
+                          changeCommentEnd(values.commentEnd + 1);
+                        }}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => {
+                          changeCommentEnd(values.commentEnd - 1);
+                        }}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={!values.isComment ? 0 : values.commentEnd}
+                      onChange={(event) => changeCommentEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="component-item">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="isShare"
+                    checked={values.isShare}
+                    onChange={(event) => handleChangeShare(event.target.checked)}
+                  />
+                  <p>Share:</p>
+                </div>
+              </div>
+              {values.isShare && (
+                <div className="JoinGroupContent">
+                  <div className="component-item JoinGroupOption">
+                    <Select
+                      name="JoinGroupOption"
+                      className="JoinGroupType"
+                      onChange={(event) => {
+                        changeTypeShare(event.target.value);
+                      }}
+                      value={values.typeShare}
+                    >
+                      <MenuItem value="user">User</MenuItem>
+                    </Select>
+                  </div>
+                </div>
+              )}
+              <div className="KeywordContent">
+                <div className="Keyword_Header">
+                  <h>User list</h>
+                  {/* <span>({values.lineCount})</span> */}
+                </div>
+                <div className="component-item " style={{ position: 'relative' }}>
+                  <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="keywordText">
+                    <Editor
+                      value={userContent}
+                      onValueChange={(text) => {
+                        setUserContent(text);
+                      }}
+                      highlight={(text) => hightlightWithLineNumbers(text, languages.js, userContent)}
+                      padding={15}
+                      className="editor"
+                      textareaId="userList"
+                      style={{
+                        background: '#f5f5f5',
+                        fontSize: 15,
+                      }}
+                    />
+                  </div>
+                  <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                    <p>
+                      Enter the content here
+                      {/* <span>1</span>Enter the content here */}
+                    </p>
+                    {/* <p>
+                      <span>2</span>Each UID/line
+                    </p> */}
+                  </div>
+                </div>
+              </div>
+              {/* <div className="component-item__header">
                 <p>Select Join group type</p>
               </div>
               <div className="JoinGroupContent">
@@ -124,7 +468,7 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                             src={iconIncrease}
                             alt="Increase icon"
                             onClick={() => {
-                              changeGroupStart(values.groupStart + 1);
+                              changeViewTimeStart(values.groupStart + 1);
                             }}
                           />
                           <img
@@ -298,7 +642,7 @@ const JoinGroup = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                     </div>
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

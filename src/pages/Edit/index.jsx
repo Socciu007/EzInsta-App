@@ -131,14 +131,14 @@ const Edit = () => {
                   className={activeCategory === 2 ? 'categoryActive' : 'categoryBtn'}
                   onClick={() => handleCategoryClick(2)}
                 >
-                  Group
+                  Seeding
                 </button>
-                <button
+                {/* <button
                   className={activeCategory === 3 ? 'categoryActive' : 'categoryBtn'}
                   onClick={() => handleCategoryClick(3)}
                 >
                   Seeding
-                </button>
+                </button> */}
                 <hr />
               </div>
               <div className="left-content__container">
@@ -206,7 +206,7 @@ const Edit = () => {
                     <p>Create post</p>
                   </div>
                 </div>
-                <div className={activeCategory === 3 ? 'grid-container' : 'hide'}>
+                {/* <div className={activeCategory === 3 ? 'grid-container' : 'hide'}>
                   <div className="card" onDragStart={(event) => onDragStart(event, 'likeComment')} draggable>
                     <img src={likeComment} alt="Like and Comment" />
                     <p>Like, comment</p>
@@ -219,7 +219,7 @@ const Edit = () => {
                     <img src={viewVideo} alt="View Video" />
                     <p>View video</p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
