@@ -54,7 +54,7 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
     setValues({ ...values, typeDirectMSg: value });
   };
   const changeType = (value) => {
-    setValues({ ...values, type: value });
+    setValues({ ...values, typeNew: value });
   };
 
   const changeNumberStart = (value) => {
@@ -179,7 +179,7 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                   <Select
                     id="typeProfile"
                     className="PostContent__select PostContent__details"
-                    value={values.type}
+                    value={values.typeNew}
                     onChange={changeType}
                     bordered={false}
                     options={[
@@ -197,7 +197,7 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
               </div>
             )}
 
-            {(values.type === 'user' || values.typeDirectMSg === 'user') && (
+            {(values.typeNew === 'user' || values.typeDirectMSg === 'user') && (
               <div className="component-item userList">
                 <div className="KeywordContent">
                   <div className="Keyword_Header">

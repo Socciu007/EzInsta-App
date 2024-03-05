@@ -186,7 +186,7 @@
     "likeStart": 2,
     "likeEnd": 5,
     "isShare": false,
-    "typeShare": "",
+    "typeShare": "user",
     "userList": [],
     "isComment": false,
     "commentStart": 0,
@@ -198,11 +198,11 @@
     "typeDirectMSg": "user",
     "numberStart": 5,
     "numberEnd": 10,
-    "type": "user",
+    "typeNew": "user",
     "UIDList": [],
     "messageList": []
   },
-  "unfollow": { "typeUnfollow": "random", "numberStart": 3, "numberEnd": 3, "userList": [], "line": 0 },
+  "unfollow": { "typeUnfollow": "random", "numberStart": 3, "numberEnd": 3, "userList": [] },
   "follow": {
     "numberStart": 3,
     "numberEnd": 5,

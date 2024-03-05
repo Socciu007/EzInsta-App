@@ -36,7 +36,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, postUID: textContent.split('\n'), lineCount: textContent.split('\n').length });
+      setValues({ ...values, postUID: textContent.split('\n'), line: textContent.split('\n').length });
     }
   }, [textContent]);
 
@@ -118,7 +118,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
             <div className="KeywordContent">
               <div className="Keyword_Header">
                 <p>Post UID list</p>
-                {/* <span>({values.lineCount})</span> */}
+                {/* <span>({values.line})</span> */}
               </div>
               <div className="component-item " style={{ position: 'relative' }}>
                 <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="keywordText">
@@ -140,7 +140,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
                 <div onClick={handleDivKeywordClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
                   <p>
-                    <span>1</span>Enter the UID list here
+                    <span style={{ marginRight: '13.5px' }}>1</span>Enter the UID list here
                   </p>
                   <p>
                     <span>2</span>Each UID/line
@@ -415,8 +415,8 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
               {values.typeShare === 'user' && (
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
-                    <h>User list</h>
-                    {/* <span>({values.lineCount})</span> */}
+                    <p>User list</p>
+                    {/* <span>({values.line})</span> */}
                   </div>
                   <div className="component-item " style={{ position: 'relative' }}>
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
