@@ -64,8 +64,8 @@ function updateProfileNode({ data: { label, onButtonClick, onDeleteNode }, isCon
                   '& .MuiButtonBase-root': liStyle,
                 }}
               >
-                <MenuItem onClick={editNode}>Sửa</MenuItem>
-                <MenuItem onClick={deleteNode}>Xóa</MenuItem>
+                <MenuItem onClick={editNode}>Edit</MenuItem>
+                <MenuItem onClick={deleteNode}>Delete</MenuItem>
               </Menu>
             </div>
             <div className="right-bottom">

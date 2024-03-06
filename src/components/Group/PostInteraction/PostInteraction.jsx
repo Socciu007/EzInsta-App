@@ -39,12 +39,16 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, postUID: textContent.split('\n'), line: textContent.split('\n').length });
+    } else {
+      setValues({ ...values, postUID: [] });
     }
   }, [textContent]);
 
   useEffect(() => {
     if (userContent.length) {
       setValues({ ...values, userList: userContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
     }
   }, [userContent]);
 

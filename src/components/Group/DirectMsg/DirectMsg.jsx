@@ -45,6 +45,8 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
   useEffect(() => {
     if (messageContent.length) {
       setValues({ ...values, messageList: messageContent.split('\n') });
+    } else {
+      setValues({ ...values, messageList: [] });
     }
   }, [messageContent]);
 

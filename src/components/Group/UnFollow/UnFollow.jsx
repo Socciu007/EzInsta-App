@@ -33,6 +33,8 @@ const UnFollow = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, userList: textContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
     }
   }, [textContent]);
 

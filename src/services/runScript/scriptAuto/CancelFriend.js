@@ -223,7 +223,7 @@ export const cancelFriend = (setting) => {
       for (let i = 0; i < numCancel * 2; i++) {
         try {
           deleteBtns = await getElements(page, deleteSelector, 10);
-          logger("có " + deleteBtns.length + " nút xóa")
+          logger("có " + deleteBtns.length + " nút Delete")
           const rs = await cancelFriendOnRequest(page, cancelObj, deleteBtns);
           if (rs) {
             count++;

@@ -49,30 +49,40 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
   useEffect(() => {
     if (postContent.length) {
       setValues({ ...values, postList: postContent.split('\n') });
+    } else {
+      setValues({ ...values, postList: [] });
     }
   }, [postContent]);
 
   useEffect(() => {
     if (userContent.length) {
       setValues({ ...values, userList: userContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
     }
   }, [userContent]);
 
   useEffect(() => {
     if (searchContent.length) {
       setValues({ ...values, search: searchContent.split('\n') });
+    } else {
+      setValues({ ...values, search: [] });
     }
   }, [searchContent]);
 
   useEffect(() => {
     if (searchByKeyContent.length) {
       setValues({ ...values, searchByKeyword: searchByKeyContent.split('\n') });
+    } else {
+      setValues({ ...values, searchByKeyword: [] });
     }
   }, [searchByKeyContent]);
 
   useEffect(() => {
     if (searchByUserContent.length) {
       setValues({ ...values, searchByUser: searchByUserContent.split('\n') });
+    } else {
+      setValues({ ...values, searchByUser: [] });
     }
   }, [searchByUserContent]);
 
