@@ -63,6 +63,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
           recoveryEmail,
           recoveryPassword,
           cookies,
+          follower: '',
           twoFA,
           status: 'ready',
           tag:

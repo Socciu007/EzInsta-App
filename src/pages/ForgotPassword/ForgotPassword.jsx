@@ -184,7 +184,7 @@ const ForgotPassword = () => {
     <div className="forgotPass">
       <div className="forgotPass__content">
         <div className="forgotPass__content-header">
-          <p className="tool-name">AUTOFACE</p>
+          <p className="tool-name">AUTOIG</p>
           <div className="forgotPass__content_switch-language">
             <Select
               name="languageOption"

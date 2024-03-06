@@ -41,9 +41,9 @@ export const loginFacebook = (account) => {
             cookies.push({
               name: acc.split("=")[0].trim(),
               value: acc.split("=")[1],
-              domain: "https://www.instagram.com",
+              domain: ".instagram.com",
               expires:
-                acc.split("=")[0].trim() == "presence"
+                acc.split("=")[0].trim() == "rur"
                   ? -1
                   : moment().add(180, "days").unix(),
             });
@@ -53,6 +53,7 @@ export const loginFacebook = (account) => {
         await client.send("Network.clearBrowserCookies");
         await client.send("Network.clearBrowserCache");
         await page.setCookie(...cookies);
+        logger("import cookies");
         await delay(3000);
         await page.goto("https://www.instagram.com", {
           waitUntil: "networkidle2",

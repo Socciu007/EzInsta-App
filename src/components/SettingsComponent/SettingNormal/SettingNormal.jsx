@@ -73,24 +73,6 @@ const SettingNormal = ({
             </Select>
           </div>
         </div>
-        {/* <div className="-sub-settings">
-          <p>URL</p>
-          <div className="-options-sub-settings">
-            <Select
-              className="-options-sub-settings__select -options-sub-settings__details"
-              onChange={handleOnchangeUrl}
-              bordered={false}
-              defaultValue={settings.URL}
-              value={settings.URL}
-              options={[
-                {
-                  value: 'https://mbasic.facebook.com',
-                  label: 'https://mbasic.facebook.com',
-                },
-              ]}
-            />
-          </div>
-        </div> */}
         <div className="-sub-settings -sub1-settings">
           <Switch checked={settings.muteAudio} onChange={handleOnChangeMuteaudio} />
           <p>Mute Audio</p>

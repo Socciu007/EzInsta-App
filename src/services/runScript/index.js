@@ -162,9 +162,6 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
       }
     } else {
       proxy = profile.proxy;
-      if (settings.proxies.length && (!proxy.host || !proxy.host.length)) {
-        proxy = settings.proxies[indexProfile % settings.proxies.length];
-      }
     }
 
     if (proxy.host && proxy.host.length) {
@@ -299,12 +296,15 @@ const checkLogin = async (page, url) => {
 
 try {
   const cookies = await page.cookies(url ? url : page.url());
+  logger(cookies);
   if (cookies) {
     const c_user = cookies.find((e) => e.name == "ds_user_id");
+    const rur =  cookies.find((e) => e.name == "rur");
+    const sessionid = cookies.find((e) => e.name == "sessionid");
     const checkpoint = cookies.find((e) => e.name == "checkpoint");
     if (checkpoint || page.url().includes("checkpoint")) {
       return { isLogin:false, error:"Checkpoint" };
-    } else if (c_user) {
+    } else if (c_user && rur && sessionid) {
       return { isLogin:true, error:null };
     } else {
       return { isLogin:false, error:null };
@@ -805,14 +805,12 @@ return new Promise(async (resolve) => {
  }
 },2000);
 
-
   await page.goto('https://www.instagram.com', {
     waitUntil: 'networkidle2',
     timeout: 30000,
   });
 
   {${loginFacebook(profile)}}
-  await delay(999999)
   ${getAllFunc(arrfunction)}
 
 } catch (error) {
