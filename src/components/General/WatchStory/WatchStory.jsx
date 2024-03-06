@@ -26,7 +26,9 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
       if (currentSetup.shareText && currentSetup.shareText.length) {
         setShareContent(currentSetup.shareText.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -37,11 +39,15 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, commentText: textContent.split('\n') });
+    } else {
+      setValues({ ...values, commentText: [] });
     }
   }, [textContent]);
   useEffect(() => {
     if (shareContent.length) {
       setValues({ ...values, shareText: shareContent.split('\n') });
+    } else {
+      setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
   const changeTimeStart = (time) => {

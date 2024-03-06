@@ -201,5 +201,43 @@
     "search": [],
     "searchByKeyword": [],
     "searchByUser": []
+  },
+  "followInteraction": {
+    "accountStart": 2,
+    "accountEnd": 5,
+    "timeStart": 7,
+    "timeEnd": 10,
+    "delayTimeStart": 7,
+    "delayTimeEnd": 15,
+    "isLike": false,
+    "likeStart": 5,
+    "likeEnd": 10,
+    "isComment": false,
+    "commentText": [],
+    "isShare": false,
+    "typeShare": "randomShare",
+    "shareText": []
+  },
+  "hashtagInteraction": {
+    "accountStart": 2,
+    "accountEnd": 5,
+    "timeStart": 7,
+    "timeEnd": 10,
+    "delayTimeStart": 7,
+    "delayTimeEnd": 15,
+    "isLike": false,
+    "likeStart": 5,
+    "likeEnd": 10,
+    "isComment": false,
+    "commentText": [],
+    "isShare": false,
+    "typeShare": "randomShare",
+    "shareText": []
+  },
+  "updateProfile": {
+    "gender": "male",
+    "customGender": [],
+    "bio": [],
+    "photos": []
   }
 }

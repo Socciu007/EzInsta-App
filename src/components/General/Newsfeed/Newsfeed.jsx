@@ -17,6 +17,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   const [textContent, setTextContent] = useState('');
   const [shareContent, setShareContent] = useState('');
   const [values, setValues] = useState(DefaultSciptSettings['newsFeed']);
+
   useEffect(() => {
     if (currentSetup) {
       if (currentSetup.commentText && currentSetup.commentText.length) {
@@ -25,7 +26,9 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
       if (currentSetup.shareText && currentSetup.shareText.length) {
         setShareContent(currentSetup.shareText.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -36,13 +39,19 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, commentText: textContent.split('\n') });
+    } else {
+      setValues({ ...values, commentText: [] });
     }
   }, [textContent]);
+
   useEffect(() => {
     if (shareContent.length) {
       setValues({ ...values, shareText: shareContent.split('\n') });
+    } else {
+      setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
+
   const changeTimeStart = (time) => {
     setValues({ ...values, scrollTimeStart: parseToNumber(time) });
   };
