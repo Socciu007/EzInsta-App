@@ -1,14 +1,18 @@
 {
   "watchStory": {
-    "numberStoryStart": 2,
-    "numberStoryEnd": 5,
+    "timeStart": 2,
+    "timeEnd": 5,
     "delayTimeStart": 7,
     "delayTimeEnd": 15,
-    "isReact": false,
-    "isLike": false,
     "isComment": false,
-    "option": "text",
-    "text": []
+    "commentText": [],
+    "typeComment": "text",
+    "isLike": false,
+    "likeStart": 5,
+    "likeEnd": 10,
+    "isShare": false,
+    "typeShare": "randomShare",
+    "shareText": []
   },
   "watchVideo": {
     "videoStart": 3,
@@ -19,48 +23,34 @@
     "likeStart": 1,
     "likeEnd": 2,
     "isShare": false,
-    "shareStart": 1,
-    "shareEnd": 2,
+    "typeShare": "randomShare",
+    "shareText": [],
     "isComment": false,
-    "option": "text",
-    "text": [],
-    "photos": [],
-    "photoStart": 1,
-    "photoEnd": 2,
-    "commentStart": 1,
-    "commentEnd": 2
+    "typeComment": "text",
+    "commentText": []
   },
   "newsFeed": {
     "scrollTimeStart": 300,
     "scrollTimeEnd": 400,
     "delayTimeStart": 5,
     "delayTimeEnd": 10,
-    "randomLike": false,
+    "isLike": false,
     "likeStart": 5,
     "likeEnd": 10,
-    "randomShare": false,
-    "shareStart": 1,
-    "shareEnd": 2,
-    "randomComment": false,
-    "commentStart": 1,
-    "commentEnd": 2,
-    "commentStrs": []
+    "isShare": false,
+    "typeShare": "randomShare",
+    "shareText": [],
+    "isComment": false,
+    "commentText": []
   },
   "createPost": {
     "postStart": 1,
     "postEnd": 2,
     "delayTimeStart": 5,
     "delayTimeEnd": 10,
-    "option": "background",
+
     "text": [],
-    "photos": [],
-    "photoStart": 1,
-    "photoEnd": 2,
-    "isTag": false,
-    "typeTag": "random",
-    "numberFriendTagStart": 1,
-    "numberFriendTagEnd": 2,
-    "UID": []
+    "photos": []
   },
   "postInteract": {
     "UID": [],
@@ -86,7 +76,6 @@
   "deletePost": {
     "delayTimeStart": 5,
     "delayTimeEnd": 10,
-    "lineCount": 0,
     "text": [],
     "viewTimeStart": 60,
     "viewTimeEnd": 120

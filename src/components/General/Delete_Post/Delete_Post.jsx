@@ -73,42 +73,10 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
               />
               <p>Delete post</p>
             </div>
-            <div className="PostUIDList">
-              <p className="selectComment__header">
-                Post UID list
-                <span style={{ marginLeft: '2px' }}>({values.lineCount})</span>
-              </p>
-              <div style={{ position: 'relative' }} className="component-item">
-                <div className="text" style={{ width: '100%', height: 204, overflow: 'auto' }}>
-                  <Editor
-                    value={textContent}
-                    onValueChange={(text) => {
-                      setTextContent(text);
-                    }}
-                    highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
-                    padding={15}
-                    className="editor"
-                    textareaId="codeArea"
-                    style={{
-                      background: '#f5f5f5',
-                      fontSize: 15,
-                    }}
-                  />
-                  <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
-                    <p>
-                      <span>1</span>Enter the content here
-                    </p>
-                    <p>
-                      <span>2</span>Each content/line
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <div className="component-item viewTime">
               <p className="component-item__header">
-                View time<span style={{ marginLeft: '2px' }}> (s):</span>
+                Post view time<span style={{ marginLeft: '2px' }}> (s):</span>
               </p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -213,6 +181,31 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
                   value={values.delayTimeEnd}
                   onChange={(event) => changeDelayTimeEnd(event.target.value)}
                 />
+              </div>
+            </div>
+
+            <div className="PostUIDList">
+              <p className="selectComment__header">Post UID list</p>
+              <div style={{ position: 'relative' }} className="component-item">
+                <div className="text" style={{ width: '100%', height: 204, overflow: 'auto' }}>
+                  <Editor
+                    value={textContent}
+                    onValueChange={(text) => {
+                      setTextContent(text);
+                    }}
+                    highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
+                    padding={15}
+                    className="editor"
+                    textareaId="codeArea"
+                    style={{
+                      background: '#f5f5f5',
+                      fontSize: 15,
+                    }}
+                  />
+                  <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
+                    <p style={{ marginLeft: '37px' }}>Enter the content here</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

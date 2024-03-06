@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
 import { Handle, Position } from 'reactflow';
-import postInteractionLeft from '../../assets/icon/icon-postInteractLeft.svg';
-import postInteractIcon from '../../assets/icon/icon-postInteractionMain.svg';
+import cancelLeft from '../../assets/icon/icon-cancelLeft.svg';
+import cancelIcon from '../../assets/icon/icon-heart.svg';
 import optionNode from '../../assets/icon/icon-optionNode.svg';
 import time from '../../assets/icon/icon-time.svg';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 const handleStyle = { left: 10 };
 
-function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
+function hashtagInteractionNode({ data: { label, onButtonClick, onDeleteNode }, isConnectable, id }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -44,12 +44,12 @@ function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConn
     <div className="updater-node">
       <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
       <div className="node">
-        <img src={postInteractionLeft} alt="post interaction Left" />
+        <img src={cancelLeft} alt="cancelLeft" />
         <div className="content">
-          <img src={postInteractIcon} alt="post interaction" />
+          <img src={cancelIcon} alt="cancelLeft" />
           <div className="content-right">
             <div className="right-top">
-              <p>Post interaction</p>
+              <p>Hashtag Interaction </p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
@@ -81,4 +81,4 @@ function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConn
   );
 }
 
-export default postInteractNode;
+export default hashtagInteractionNode;

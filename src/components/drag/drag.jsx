@@ -22,10 +22,11 @@ import viewNotiNode from '../nodes/viewNoti';
 import sendMsgNode from '../nodes/sendMsg';
 import replyMsgNode from '../nodes/replyMsg';
 import updateProfileNode from '../nodes/updateProfile';
-import cancelFriendNode from '../nodes/cancelFriend';
 import directMsgNode from '../nodes/directMsg';
 import unfollowNode from '../nodes/unfollow';
 import followNode from '../nodes/follow';
+import hashtagInteractionNode from '../nodes/hashtagInteraction';
+import followInteractionNode from '../nodes/followInteraction';
 const initialNodes = [
   {
     id: '1',
@@ -46,11 +47,12 @@ const nodeTypes = {
   sendMsg: sendMsgNode,
   replyMsg: replyMsgNode,
   updateProfile: updateProfileNode,
-  cancelFriend: cancelFriendNode,
   seedingPost: postInteractNode,
   directMsg: directMsgNode,
   unfollow: unfollowNode,
   follow: followNode,
+  hashtagInteraction: hashtagInteractionNode,
+  followInteraction: followInteractionNode,
 };
 const nodeMessage = {
   watchStory: 'watchStory',
@@ -68,6 +70,8 @@ const nodeMessage = {
   directMsg: 'directMsg',
   unfollow: 'unfollow',
   follow: 'follow',
+  hashtagInteraction: 'hashtagInteraction',
+  followInteraction: 'followInteraction',
 };
 
 const getId = () => `dndnode_${+new Date()}`;
