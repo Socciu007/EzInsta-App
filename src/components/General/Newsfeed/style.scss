@@ -173,11 +173,18 @@
         }
         .editor #codeArea {
           outline: none;
-          padding-left: 9% !important;
+          padding-left: 10% !important;
+          padding-top: 4% !important;
         }
-
+        .editor #shareContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4% !important;
+        }
         .editor pre {
-          padding-left: 9% !important;
+          padding-left: 10% !important;
+          padding-top: 4% !important;
+          width: 100%;
         }
 
         .editor .editorLineNumber {
@@ -205,22 +212,17 @@
           }
         }
       }
-      .comment {
-        .commentContent {
-          p {
-            font-weight: 400;
-          }
-          background-color: #f5f5f5;
-          padding: 19px;
-          margin-top: 15px;
-          margin-bottom: 15px;
-          border-radius: 5px;
+      .commentContent {
+        p {
+          font-weight: 400;
         }
+        background-color: #f5f5f5;
+        padding: 19px;
+        margin-top: 5%;
+        margin-bottom: 15px;
+        border-radius: 5px;
       }
-      .editor {
-        margin-top: 15px;
-        margin-bottom: 10px;
-      }
+
       .Like .component-item__content,
       .share .component-item__content,
       .comment .commentContent {
@@ -240,4 +242,15 @@
   .hide {
     display: none !important;
   }
+}
+.box {
+  margin-bottom: 0px !important;
+  margin-top: 5px !important;
+}
+.Post,
+.Post .PostContent {
+  display: block;
+}
+.share {
+  display: block !important;
 }

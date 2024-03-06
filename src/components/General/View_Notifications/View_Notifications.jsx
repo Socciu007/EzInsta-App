@@ -54,7 +54,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
               <p>View notifications</p>
             </div>
             <div className="component-item numberOfNotifications">
-              <p className="component-item__header">Number of notifications</p>
+              <p className="component-item__header">Quantity</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
@@ -107,7 +107,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
             </div>
             <div className="component-item delayTime">
               <p className="component-item__header">
-                Waiting time <span style={{ marginLeft: '2px' }}>(s):</span>
+                Delay time <span style={{ marginLeft: '2px' }}>(s):</span>
               </p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -159,7 +159,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
                 />
               </div>
             </div>
-            <div className="component-item Notification">
+            {/* <div className="component-item Notification">
               <div className="component-item__header">
                 <p>Notification options</p>
               </div>
@@ -175,7 +175,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
                   </Select>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

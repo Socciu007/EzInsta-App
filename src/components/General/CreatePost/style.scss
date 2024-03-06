@@ -271,7 +271,8 @@
       .dragVideoOrPhoto {
         position: relative;
         width: 100%;
-        padding: 1rem 0;
+        padding: 0.7rem 0;
+        margin-top: 5%;
         border-radius: 5px;
         border: 1px dashed rgba(1, 22, 43, 0.2);
         background: #f5f5f5;
@@ -326,4 +327,7 @@
 }
 .MuiButtonBase-root {
   font-family: 'GoogleSans' !important;
+}
+.component-item__header {
+  font-weight: 700;
 }

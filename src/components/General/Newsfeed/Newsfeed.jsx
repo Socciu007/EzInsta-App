@@ -11,15 +11,19 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import { parseToNumber } from '../../../services/utils';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
   const [textContent, setTextContent] = useState('');
+  const [shareContent, setShareContent] = useState('');
   const [values, setValues] = useState(DefaultSciptSettings['newsFeed']);
-
   useEffect(() => {
     if (currentSetup) {
-      if (currentSetup.commentStrs && currentSetup.commentStrs.length) {
-        setTextContent(currentSetup.commentStrs.join('\n'));
+      if (currentSetup.commentText && currentSetup.commentText.length) {
+        setTextContent(currentSetup.commentText.join('\n'));
+      }
+      if (currentSetup.shareText && currentSetup.shareText.length) {
+        setShareContent(currentSetup.shareText.join('\n'));
       }
       setValues(currentSetup);
     }
@@ -31,10 +35,14 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, commentStrs: textContent.split('\n') });
+      setValues({ ...values, commentText: textContent.split('\n') });
     }
   }, [textContent]);
-
+  useEffect(() => {
+    if (shareContent.length) {
+      setValues({ ...values, shareText: shareContent.split('\n') });
+    }
+  }, [shareContent]);
   const changeTimeStart = (time) => {
     setValues({ ...values, scrollTimeStart: parseToNumber(time) });
   };
@@ -51,23 +59,15 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   };
 
   const handleChangeLiked = (value) => {
-    setValues({ ...values, randomLike: value });
+    setValues({ ...values, isLike: value });
   };
 
   const handleChangeShared = (value) => {
-    setValues({ ...values, randomShare: value });
+    setValues({ ...values, isShare: value });
   };
 
   const handleChangeComment = (value) => {
-    setValues({ ...values, randomComment: value });
-  };
-
-  const handleChangeCommentStart = (value) => {
-    setValues({ ...values, commentStart: parseToNumber(value) });
-  };
-
-  const handleChangeCommentEnd = (value) => {
-    setValues({ ...values, commentEnd: parseToNumber(value) });
+    setValues({ ...values, isComment: value });
   };
 
   const handleChangeLikeStart = (value) => {
@@ -77,22 +77,29 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
     setValues({ ...values, likeEnd: parseToNumber(value) });
   };
 
-  const handleChangeShareStart = (value) => {
-    setValues({ ...values, shareStart: parseToNumber(value) });
-  };
+  // const handleChangeShareStart = (value) => {
+  //   setValues({ ...values, shareStart: parseToNumber(value) });
+  // };
 
-  const handleChangeShareEnd = (value) => {
-    setValues({ ...values, shareEnd: parseToNumber(value) });
-  };
+  // const handleChangeShareEnd = (value) => {
+  //   setValues({ ...values, shareEnd: parseToNumber(value) });
+  // };
 
   const handleDivClick = () => {
     document.getElementById('codeArea').focus();
   };
-  const hightlightWithLineNumbers = (input, language) =>
+  const handleDivShareClick = () => {
+    document.getElementById('shareContent').focus();
+  };
+  const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
       .split('\n')
-      .map((line, i) => `<span class='editorLineNumber ${textContent ? '' : 'hide'}'>${i + 1}</span>${line}`)
+      .map((line, i) => `<span class='editorLineNumber ${content ? '' : 'hide'}'>${i + 1}</span>${line}`)
       .join('\n');
+
+  const changeOption = (value) => {
+    setValues({ ...values, typeShare: value });
+  };
 
   return (
     <div className="newsfeed">
@@ -110,7 +117,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
               <p>Newsfeed</p>
             </div>
             <div className="component-item scrollTime">
-              <p className="component-item__header">Time in newsfeed: (s):</p>
+              <p className="component-item__header">Browsing time (s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
@@ -218,12 +225,12 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                 <input
                   type="checkbox"
                   name="randomLike"
-                  checked={values.randomLike}
+                  checked={values.isLike}
                   onChange={(event) => handleChangeLiked(event.target.checked)}
                 />
                 <p>Random Like :</p>
               </div>
-              <div className={`component-item__content ${values.randomLike ? 'show' : 'hide'}`}>
+              <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
                   <div className="component-item__number__icon">
                     <img
@@ -272,24 +279,24 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                 <input
                   type="checkbox"
                   name="randomComment"
-                  checked={values.randomComment}
+                  checked={values.isComment}
                   onChange={(event) => handleChangeComment(event.target.checked)}
                 />
                 <p>Random Comment</p>
               </div>
-              <div className={`commentContent ${values.randomComment ? 'show' : 'hide'}`}>
+              <div className={`commentContent ${values.isComment ? 'show' : 'hide'}`}>
                 <div className="Text">
                   <p style={{ fontWeight: 700 }}>Comment</p>
-                  <div style={{ position: 'relative' }} className="component-item editor">
+                  <div style={{ position: 'relative' }} className="component-item box">
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                       <Editor
                         value={textContent}
                         onValueChange={(text) => {
                           setTextContent(text);
                         }}
-                        highlight={(code) => hightlightWithLineNumbers(code, languages.js)}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, textContent)}
                         padding={15}
-                        className={`editor`}
+                        className="editor"
                         textareaId="codeArea"
                         onClick={handleDivClick}
                         style={{
@@ -298,9 +305,9 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                         }}
                       />
                       {textContent.length ? null : (
-                        <div onClick={handleDivClick} className={`placeholder`}>
+                        <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
                           <p>
-                            <span>1</span>Enter the content here
+                            <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                           </p>
                           <p>
                             <span>2</span>Each content/line
@@ -317,53 +324,60 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                 <input
                   type="checkbox"
                   name="randomShare"
-                  checked={values.randomShare}
+                  checked={values.isShare}
                   onChange={(event) => handleChangeShared(event.target.checked)}
                 />
-                <p>Random share :</p>
+                <p>Share :</p>
               </div>
-              <div className={`component-item__content ${values.randomShare ? 'show' : 'hide'}`}>
-                <div className="component-item__number">
-                  <div className="component-item__number__icon">
-                    <img
-                      src={iconIncrease}
-                      alt="Increase icon"
-                      onClick={() => handleChangeShareStart(values.shareStart + 1)}
-                    />
-                    <img
-                      src={iconDecrease}
-                      alt="Decrease icon"
-                      onClick={() => handleChangeShareStart(values.shareStart - 1 > 0 ? values.shareStart - 1 : 0)}
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    name="Start"
-                    value={values.shareStart}
-                    onChange={(event) => handleChangeShareStart(event.target.value)}
-                  />
+              <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
+                <div className="component-item postOption">
+                  <Select
+                    name="postOption"
+                    className="PostType"
+                    onChange={(event) => changeOption(event.target.value)}
+                    value={values.typeShare}
+                    bordered={2 < 1 ? false : undefined}
+                  >
+                    <MenuItem value="randomShare">Share random</MenuItem>
+                    <MenuItem value="user">User</MenuItem>
+                  </Select>
                 </div>
-                <span>to</span>
-                <div className="component-item__number">
-                  <div className="component-item__number__icon">
-                    <img
-                      src={iconIncrease}
-                      alt="Increase icon"
-                      onClick={() => handleChangeShareEnd(values.shareEnd + 1)}
-                    />
-                    <img
-                      src={iconDecrease}
-                      alt="Decrease icon"
-                      onClick={() => handleChangeShareEnd(values.shareEnd - 1 > 0 ? values.shareEnd - 1 : 0)}
-                    />
+                {values.typeShare === 'user' && (
+                  <div className="commentContent">
+                    <div className="Text">
+                      <p style={{ fontWeight: 700 }}>User</p>
+                      <div style={{ position: 'relative' }} className="component-item box">
+                        <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                          <Editor
+                            value={shareContent}
+                            onValueChange={(text) => {
+                              setShareContent(text);
+                            }}
+                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
+                            padding={15}
+                            className="editor"
+                            textareaId="shareContent"
+                            onClick={handleDivShareClick}
+                            style={{
+                              background: '#FFFFFF',
+                              fontSize: 15,
+                            }}
+                          />
+                          {shareContent.length ? null : (
+                            <div onClick={handleDivShareClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
+                              <p>
+                                <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                              </p>
+                              <p>
+                                <span>2</span>Each content/line
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    type="text"
-                    name="End"
-                    value={values.shareEnd}
-                    onChange={(event) => handleChangeShareEnd(event.target.value)}
-                  />
-                </div>
+                )}
               </div>
             </div>
           </div>
