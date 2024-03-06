@@ -843,7 +843,7 @@ const ProfilesPage = () => {
               <span className="-option-profiles" onClick={handleOpenProfiles}>
                 <img src={addPerson} alt="image-addPerson"></img>
               </span>
-              <span className="-option-profiles" onClick>
+              <span className="-option-profiles">
                 <img src={addFile} alt="image-addFile"></img>
               </span>
               <PopupProfile

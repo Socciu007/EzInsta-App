@@ -4,20 +4,13 @@ import './style.scss';
 import { v4 as uuidv4 } from 'uuid';
 import DnDFlow from '../../components/drag/drag';
 import WatchStory from '../../components/General/WatchStory/WatchStory.jsx';
-
-import CancelFriend from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
 import Newsfeed from '../../components/General/Newsfeed/Newsfeed.jsx';
 import CreatePost from '../../components/General/CreatePost/CreatePost.jsx';
-import Post_Interaction from '../../components/General/Post_Interaction/Post_Interaction.jsx';
 import Delete_Post from '../../components/General/Delete_Post/Delete_Post.jsx';
 import View_Notifications from '../../components/General/View_Notifications/View_Notifications.jsx';
-import JoinGroup from '../../components/Group/Join_Group/JoinGroup.jsx';
 import LeaveGroup from '../../components/Group/Leave_Group/LeaveGroup.jsx';
 import Invite from '../../components/Group/Invite/Invite.jsx';
-import SeedingLikeComment from '../../components/Seeding/SeedingLikeComment/SeedingLikeComment.jsx';
 import WatchVideo from '../../components/General/WatchVideo/WatchVideo.jsx';
-import SeedingFollower from '../../components/Seeding/SeedingFollower/SeedingFollower.jsx';
-import SeedingView from '../../components/Seeding/SeedingView/SeedingView.jsx';
 import AddFriend from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
 import HashtagInteraction from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
 import FollowInteraction from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
@@ -372,16 +365,6 @@ const CreateScript = () => {
       case 'likeComment':
         return (
           <SeedingLikeComment
-            currentSetup={currentSetup}
-            component={component}
-            updateDesignScript={updateDesignScript}
-            id={currentComponent}
-            onGoBackClick={handleGoBackClick}
-          />
-        );
-      case 'directMsg':
-        return (
-          <SeedingFollower
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}

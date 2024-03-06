@@ -55,7 +55,6 @@ const nodeTypes = {
   inviteGroup: inviteGroupNode,
   createPostGroup: createPostGroupNode,
   likeComment: likeCommentNode,
-  directMsg: directMsgNode,
   viewVideo: viewVideoNode,
 };
 const nodeMessage = {
@@ -75,7 +74,6 @@ const nodeMessage = {
   inviteGroup: 'inviteGroup',
   createPostGroup: 'createPostGroup',
   likeComment: 'likeComment',
-  directMsg: 'directMsg',
   viewVideo: 'viewVideo',
 };
 
