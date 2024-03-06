@@ -14,10 +14,10 @@ import 'prismjs/components/prism-javascript';
 import { useDropzone } from 'react-dropzone';
 import { parseToNumber } from '../../../services/utils';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
-const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
-  const [values, setValues] = useState(DefaultSciptSettings['createPost']);
+const UpdateProfile = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
+  const [values, setValues] = useState(DefaultSciptSettings['updateProfile']);
   const [textContent, setTextContent] = useState('');
-  const [UIDContent, setUIDContent] = useState('');
+  const [customGender, setCustomGender] = useState('');
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 10,
@@ -49,11 +49,11 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
 
   useEffect(() => {
     if (currentSetup) {
-      if (currentSetup.UID && currentSetup.UID.length) {
-        setUIDContent(currentSetup.UID.join('\n'));
+      if (currentSetup.bio && currentSetup.bio.length) {
+        setTextContent(currentSetup.bio.join('\n'));
       }
-      if (currentSetup.text && currentSetup.text.length) {
-        setTextContent(currentSetup.text.join('\n'));
+      if (currentSetup.customGender && currentSetup.customGender.length) {
+        setCustomGender(currentSetup.customGender.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -63,44 +63,28 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, text: textContent.split('\n') });
+      setValues({ ...values, bio: textContent.split('\n') });
     } else {
-      setValues({ ...values, text: [] });
+      setValues({ ...values, bio: [] });
     }
   }, [textContent]);
 
   useEffect(() => {
-    if (UIDContent.length) {
-      setValues({ ...values, UID: UIDContent.split('\n') });
+    if (customGender.length) {
+      setValues({ ...values, customGender: customGender.split('\n') });
     } else {
-      setValues({ ...values, UID: [] });
+      setValues({ ...values, customGender: [] });
     }
-  }, [UIDContent]);
+  }, [customGender]);
 
-  const changePostStart = (post) => {
-    setValues({ ...values, postStart: parseToNumber(post) });
+  const changeGenderOption = (value) => {
+    setValues({ ...values, gender: value });
   };
-
-  const changePostEnd = (post) => {
-    setValues({ ...values, postEnd: parseToNumber(post) });
+  const handleDivShareClick = () => {
+    document.getElementById('shareContent').focus();
   };
-
-  const changeDelayTimeStart = (time) => {
-    setValues({ ...values, delayTimeStart: parseToNumber(time) });
-  };
-  const changeDelayTimeEnd = (time) => {
-    setValues({ ...values, delayTimeEnd: parseToNumber(time) });
-  };
-
-  const changeOption = (value) => {
-    setValues({ ...values, option: value });
-  };
-
   const handleDivClick = () => {
     document.getElementById('text').focus();
-  };
-  const handleUIDDivClick = () => {
-    document.getElementById('UID').focus();
   };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
@@ -121,34 +105,18 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                   onGoBackClick(values, component, id);
                 }}
               />
-              <p>Create post</p>
+              <p>Update Profile</p>
             </div>
 
             <div className="component-item Post">
               <div className="PostContent">
                 <div className="photoOrVideo">
-                  <p className="component-item__header">Photo/video</p>
+                  <p className="component-item__header">Update avatar</p>
                   {values.photos.length === 0 ? (
-                    <div>
-                      <div {...getRootProps({ className: 'component-item dragVideoOrPhoto' })}>
-                        <input {...getInputProps()} />
-                        <img className="mx-auto h-40" src={DragButton} alt="addfile" />
-                        <p>Drag the photo/video folder here</p>
-                      </div>
-                      <div>
-                        <p
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            fontWeight: '400',
-                            opacity: '0.5',
-                            marginTop: '-12px',
-                            marginBottom: '12px',
-                          }}
-                        >
-                          (Maximum number: 7 images or one video)
-                        </p>
-                      </div>
+                    <div {...getRootProps({ className: 'component-item dragVideoOrPhoto' })}>
+                      <input {...getInputProps()} />
+                      <img className="mx-auto h-40" src={DragButton} alt="addfile" />
+                      <p>Drag the photo/video folder here</p>
                     </div>
                   ) : (
                     <div className={`folderPhoto`}>
@@ -166,7 +134,7 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 </div>
 
                 <div className="Text">
-                  <p className="selectPost__header">Caption</p>
+                  <p className="selectPost__header">Update Bio</p>
                   <div style={{ position: 'relative' }} className="component-item">
                     <div className="text" style={{ width: '100%', height: 204, overflow: 'auto' }}>
                       <Editor
@@ -188,10 +156,53 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                       <p>
                         <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                       </p>
-                      <p>
-                        <span>2</span>Each content/line
-                      </p>
                     </div>
+                  </div>
+                </div>
+
+                <div className="component-item share">
+                  <div className="component-item__header">
+                    <p>Gender</p>
+                  </div>
+                  <div className={`PostContent ${values.gender ? 'show' : 'hide'}`}>
+                    <div className="component-item postOption">
+                      <Select
+                        name="postOption"
+                        className="PostType"
+                        onChange={(event) => changeGenderOption(event.target.value)}
+                        value={values.gender}
+                        bordered={2 < 1 ? false : undefined}
+                      >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                        <MenuItem value="custom">Custom</MenuItem>
+                        <MenuItem value="hide">Prefer not to say</MenuItem>
+                      </Select>
+                    </div>
+                    {values.gender === 'custom' && (
+                      <div>
+                        <div className="Text">
+                          <div style={{ position: 'relative' }} className="component-item box">
+                            <div style={{ width: '100%', height: 40, overflow: 'auto' }} className={`text`}>
+                              <input
+                                type="text"
+                                style={{
+                                  background: '#FFFFFF',
+                                  fontSize: 15,
+                                  border: 'none',
+                                }}
+                                value={customGender}
+                                onChange={(event) => {
+                                  setCustomGender(event.target.value);
+                                }}
+                                className="editor"
+                                placeholder="Enter the content here"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -203,4 +214,4 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   );
 };
 
-export default CreatePost;
+export default UpdateProfile;

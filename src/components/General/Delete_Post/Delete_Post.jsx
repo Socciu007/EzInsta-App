@@ -20,7 +20,9 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
       if (currentSetup.text && currentSetup.text.length) {
         setTextContent(currentSetup.text.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -31,6 +33,8 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, text: textContent.split('\n'), lineCount: textContent.split('\n').length });
+    } else {
+      setValues({ ...values, text: [] });
     }
   }, [textContent]);
 

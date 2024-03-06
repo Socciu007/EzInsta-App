@@ -4,7 +4,6 @@ import './style.scss';
 import iconDecrease from '../../../assets/icon/icon-Decrease.svg';
 import iconIncrease from '../../../assets/icon/icon-Increase.svg';
 import backButton from '../../../assets/icon/icon-back.svg';
-import iconQuestion from '../../../assets/icon/icon-question.svg';
 import Editor from 'react-simple-code-editor';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,7 +14,7 @@ import { parseToNumber } from '../../../services/utils';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 
 const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
-  const [values, setValues] = useState(DefaultSciptSettings['watchStory']);
+  const [values, setValues] = useState(DefaultSciptSettings['hashtagInteraction']);
   const [textContent, setTextContent] = useState('');
   const [shareContent, setShareContent] = useState('');
   useEffect(() => {
@@ -26,7 +25,9 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
       if (currentSetup.shareText && currentSetup.shareText.length) {
         setShareContent(currentSetup.shareText.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -37,13 +38,25 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
   useEffect(() => {
     if (textContent.length) {
       setValues({ ...values, commentText: textContent.split('\n') });
+    } else {
+      setValues({ ...values, commentText: [] });
     }
   }, [textContent]);
   useEffect(() => {
     if (shareContent.length) {
       setValues({ ...values, shareText: shareContent.split('\n') });
+    } else {
+      setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
+  const changeAccountStart = (num) => {
+    setValues({ ...values, accountStart: parseToNumber(num) });
+  };
+
+  const changeAccountEnd = (num) => {
+    setValues({ ...values, accountEnd: parseToNumber(num) });
+  };
+
   const changeTimeStart = (time) => {
     setValues({ ...values, timeStart: parseToNumber(time) });
   };
@@ -85,9 +98,6 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
   };
-  const changeCommentOption = (value) => {
-    setValues({ ...values, typeComment: value });
-  };
   const changeShareOption = (value) => {
     setValues({ ...values, typeShare: value });
   };
@@ -114,22 +124,22 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     src={iconIncrease}
                     alt="Increase icon"
                     onClick={() => {
-                      changeTimeStart(values.timeStart + 1);
+                      changeAccountStart(values.accountStart + 1);
                     }}
                   />
                   <img
                     src={iconDecrease}
                     alt="Decrease icon"
                     onClick={() => {
-                      changeTimeStart(values.timeStart - 1);
+                      changeAccountStart(values.accountStart - 1);
                     }}
                   />
                 </div>
                 <input
                   name="Start"
                   type="text"
-                  value={values.timeStart}
-                  onChange={(event) => changeTimeStart(event.target.value)}
+                  value={values.accountStart}
+                  onChange={(event) => changeAccountStart(event.target.value)}
                 />
               </div>
               <span>to</span>
@@ -139,22 +149,22 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     src={iconIncrease}
                     alt="Increase icon"
                     onClick={() => {
-                      changeTimeEnd(values.timeEnd + 1);
+                      changeAccountEnd(values.accountEnd + 1);
                     }}
                   />
                   <img
                     src={iconDecrease}
                     alt="Decrease icon"
                     onClick={() => {
-                      changeTimeEnd(values.timeEnd - 1);
+                      changeAccountEnd(values.accountEnd - 1);
                     }}
                   />
                 </div>
                 <input
                   name="End"
                   type="text"
-                  value={values.timeEnd}
-                  onChange={(event) => changeTimeEnd(event.target.value)}
+                  value={values.accountEnd}
+                  onChange={(event) => changeAccountEnd(event.target.value)}
                 />
               </div>
             </div>
@@ -270,7 +280,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                   checked={values.isLike}
                   onChange={(event) => handleChangeLiked(event.target.checked)}
                 />
-                <p>Random Like :</p>
+                <p>Random Like</p>
               </div>
               <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
@@ -326,21 +336,10 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     changeComment(event.target.checked);
                   }}
                 />
-                <p>Reply Story</p>
+                <p>Random Comment</p>
                 {/* <img src={iconQuestion} alt="icon Question" /> */}
               </div>
               <div className={` Text ${values.isComment ? 'show' : 'hide'}`}>
-                <div className="component-item postOption">
-                  <Select
-                    name="postOption"
-                    className="PostType"
-                    onChange={(event) => changeCommentOption(event.target.value)}
-                    value={values.typeComment}
-                    bordered={2 < 1 ? false : undefined}
-                  >
-                    <MenuItem value="text">Text</MenuItem>
-                  </Select>
-                </div>
                 <div className="commentContent1">
                   <p style={{ fontWeight: 700 }}>Comment</p>
                   <div style={{ position: 'relative' }} className="component-item box">
@@ -384,9 +383,9 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                   checked={values.isShare}
                   onChange={(event) => handleChangeShared(event.target.checked)}
                 />
-                <p>Share Story:</p>
+                <p>Share</p>
               </div>
-              <div className={`PostContent ${values.randomShare ? 'show' : 'hide'}`}>
+              <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
                 <div className="component-item postOption">
                   <Select
                     name="postOption"

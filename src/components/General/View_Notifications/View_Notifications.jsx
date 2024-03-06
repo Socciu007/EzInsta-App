@@ -35,7 +35,9 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
   };
   useEffect(() => {
     if (currentSetup) {
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
   return (

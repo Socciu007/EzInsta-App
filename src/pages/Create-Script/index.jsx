@@ -44,6 +44,7 @@ import PopupChooseProfile from '../../components/PopupHome/PopupChooseProfile/Po
 import PopupDebug from '../../components/PopupHome/PopupDebug/PopupDebug.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeDebug } from '../../redux/debugSlice.js';
+import UpdateProfile from '../../components/General/UpdateProfile/UpdateProfile.jsx';
 const CreateScript = () => {
   const DnDFlowRef = useRef();
   const { state } = useLocation();
@@ -282,7 +283,7 @@ const CreateScript = () => {
         );
       case 'updateProfile':
         return (
-          <AddFriend
+          <UpdateProfile
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
