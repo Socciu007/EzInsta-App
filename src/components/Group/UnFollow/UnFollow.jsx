@@ -31,7 +31,7 @@ const UnFollow = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, userList: textContent.split('\n'), lineCount: textContent.split('\n').length });
+      setValues({ ...values, userList: textContent.split('\n') });
     }
   }, [textContent]);
 
@@ -155,7 +155,6 @@ const UnFollow = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                 <div className="UIDContent">
                   <div className="UID_Header">
                     <p>User list</p>
-                    {/* <span>({values.lineCount})</span> */}
                   </div>
                   <div className="component-item " style={{ position: 'relative' }}>
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="UIDText">

@@ -297,18 +297,22 @@ body {
 .node {
   display: flex;
   align-items: center;
+  height: 40px;
+  // width: 140px;
   // position: relative;
   .content {
     display: flex;
     align-items: center;
     margin-left: 15px;
     p {
-      margin-left: 15px;
-      margin-right: 24px;
+      // margin-left: 15px;
+      // margin-right: 24px;
+      display: inline;
       font-size: 10px;
       font-weight: 700;
     }
     .content-right {
+      margin-left: 10px;
       .right-top,
       .right-bottom {
         display: flex;
