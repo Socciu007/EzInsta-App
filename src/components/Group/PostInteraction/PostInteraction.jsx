@@ -30,7 +30,9 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
       if (currentSetup.userList && currentSetup.userList.length) {
         setUserContent(currentSetup.userList.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 50);
     }
   }, [currentSetup]);
 

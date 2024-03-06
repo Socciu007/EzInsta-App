@@ -24,8 +24,9 @@ const UnFollow = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
       if (currentSetup.userList && currentSetup.userList.length) {
         setTextContent(currentSetup.userList.join('\n'));
       }
-
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 50);
     }
   }, [currentSetup]);
 

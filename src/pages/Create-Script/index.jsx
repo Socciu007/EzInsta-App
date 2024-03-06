@@ -34,6 +34,7 @@ import heart from '../../assets/icon/icon-heartGeneral.svg';
 import hashtag from '../../assets/icon/icon-hashtagGeneral.svg';
 import postInteraction from '../../assets/icon/icon-postInteraction.svg';
 import directMsg from '../../assets/icon/icon-directMsg.svg';
+import rectangSelect from '../../assets/icon/img-rectangleRed.png';
 import unFollow from '../../assets/icon/icon-unfollow.svg';
 import { storageScripts } from '../../common/const.config.js';
 import DefaultSciptSettings from '../../resources/defaultSciptSettings.json';
@@ -112,7 +113,6 @@ const CreateScript = () => {
     } else {
       newDesign.script.push({ ...value, id, type: component });
     }
-
     setDesignScript(newDesign);
   };
 
@@ -250,16 +250,7 @@ const CreateScript = () => {
             updateDesignScript={updateDesignScript}
           />
         );
-      // case 'postInteract':
-      //   return (
-      //     <Post_Interaction
-      //       currentSetup={currentSetup}
-      //       component={component}
-      //       id={currentComponent}
-      //       onGoBackClick={handleGoBackClick}
-      //       updateDesignScript={updateDesignScript}
-      //     />
-      //   );
+
       case 'deletePost':
         return (
           <Delete_Post
@@ -312,7 +303,7 @@ const CreateScript = () => {
         );
       case 'seedingPost':
         return (
-          <JoinGroup
+          <PostInteraction
             currentSetup={currentSetup}
             component={component}
             updateDesignScript={updateDesignScript}
@@ -365,13 +356,15 @@ const CreateScript = () => {
                   className={activeCategory === 1 ? 'categoryActive' : 'categoryBtn'}
                   onClick={() => handleCategoryClick(1)}
                 >
-                  General
+                  {activeCategory === 1 && <img src={rectangSelect} alt="img rectangle"></img>}
+                  <p>General</p>
                 </button>
                 <button
                   className={activeCategory === 2 ? 'categoryActive' : 'categoryBtn'}
                   onClick={() => handleCategoryClick(2)}
                 >
-                  Seeding
+                  {activeCategory === 2 && <img src={rectangSelect} alt="img rectangle"></img>}
+                  <p>Seeding</p>
                 </button>
 
                 <hr />

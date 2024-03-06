@@ -25,24 +25,22 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
       if (currentSetup.userList && currentSetup.userList.length) {
         setUserContent(currentSetup.userList.join('\n'));
       }
-      setValues(currentSetup);
+      if (currentSetup.messageList && currentSetup.messageList.length) {
+        setMessageContent(currentSetup.messageList.join('\n'));
+      }
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
   useEffect(() => {
     if (userContent.length) {
       setValues({ ...values, userList: userContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
     }
   }, [userContent]);
-
-  useEffect(() => {
-    if (currentSetup) {
-      if (currentSetup.messageList && currentSetup.messageList.length) {
-        setMessageContent(currentSetup.messageList.join('\n'));
-      }
-      setValues(currentSetup);
-    }
-  }, [currentSetup]);
 
   useEffect(() => {
     if (messageContent.length) {
