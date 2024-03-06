@@ -189,22 +189,34 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                   bordered={false}
                   options={[
                     {
-                      value: 'user',
-                      label: 'User',
+                      value: 'followers',
+                      label: 'Follow the followers',
                     },
                     {
-                      value: 'post',
-                      label: 'Post UID',
+                      value: 'byUserLikePost',
+                      label: "Follow user's liking posts",
                     },
                     {
-                      value: 'search',
-                      label: 'Search',
+                      value: 'byUserFollower',
+                      label: "Follow user's follower",
+                    },
+                    {
+                      value: 'byUserFollowing',
+                      label: "Follow user's following",
+                    },
+                    {
+                      value: 'searchByKey',
+                      label: 'Follow base on keywords',
+                    },
+                    {
+                      value: 'searchByUser',
+                      label: 'Follow base on user',
                     },
                   ]}
                 />
               </div>
             </div>
-            {values.typeFollow === 'user' && (
+            {(values.typeFollow === 'byUserFollower' || values.typeFollow === 'byUserFollowing') && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>User list</p>
@@ -238,7 +250,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {values.typeFollow === 'post' && (
+            {values.typeFollow === 'byUserLikePost' && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>Post UID list</p>
@@ -272,7 +284,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {values.typeFollow === 'search' && (
+            {(values.typeFollow === 'searchByKey' || values.typeFollow === 'searchByUser') && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>Search</p>
@@ -306,7 +318,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {values.typeFollow === 'search' && (
+            {values.typeFollow === 'searchByKey' && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>Keyword</p>
@@ -343,7 +355,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {values.typeFollow === 'search' && (
+            {values.typeFollow === 'searchByUser' && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>User</p>

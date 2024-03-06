@@ -93,8 +93,7 @@
           -webkit-text-fill-color: #333;
         }
 
-        .editor #codeArea,
-        .editor #textareaProxy {
+        .editor #codeArea {
           outline: none;
           padding-top: 1.5% !important;
           padding-left: 5.6% !important;
@@ -223,6 +222,19 @@
           .textProxy {
             margin: 1% 0;
             position: relative;
+            .editor #textareaProxy {
+              outline: none;
+              padding-top: 1.5% !important;
+              padding-left: 5.6% !important;
+              color: #01162b !important;
+            }
+
+            .editor pre {
+              color: #01162b !important;
+              padding-top: 1.5% !important;
+              padding-left: 5.6% !important;
+              width: 100%;
+            }
           }
         }
       }

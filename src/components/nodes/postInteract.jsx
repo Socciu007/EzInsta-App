@@ -70,7 +70,7 @@ function postInteractNode({ data: { label, onButtonClick, onDeleteNode }, isConn
             </div>
             <div className="right-bottom">
               <img src={time} alt="Time" />
-              <p>5 minutes</p>
+              <p>5 min</p>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import pin from '../../assets/icon/icon-pin.svg';
 import pinBlack from '../../assets/icon/icon-pinBlack.svg';
 import iconEdit from '../../assets/icon/icon-editBlack.svg';
 import iconDuplicate from '../../assets/icon/icon-duplicate.svg';
-import iconDelete from '../../assets/icon/icon-Delete.svg';
+import iconDelete from '../../assets/icon/icon-remove.svg';
 import option from '../../assets/icon/icon-options.svg';
 import close from '../../assets/icon/icon-close.svg';
 import yourScript from '../../assets/pictures/icon-yourScripts.svg';

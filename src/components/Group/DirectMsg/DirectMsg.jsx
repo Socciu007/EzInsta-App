@@ -223,12 +223,11 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                 </div>
                 <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
                   <p>
-                    Enter the content here
-                    {/* <span>1</span>Enter the content here */}
+                    <span>1</span>Enter the content here
                   </p>
-                  {/* <p>
-                      <span>2</span>Each UID/line
-                    </p> */}
+                  <p>
+                    <span>2</span>Each content/line
+                  </p>
                 </div>
               </div>
             )}
@@ -257,12 +256,11 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
               </div>
               <div onClick={handleDivMsgListClick} className={`placeholder ${messageContent ? 'hide' : ''}`}>
                 <p>
-                  Enter the content here
-                  {/* <span>1</span>Enter the content here */}
+                  <span>1</span>Enter the content here
                 </p>
-                {/* <p>
-                      <span>2</span>Each UID/line
-                    </p> */}
+                <p>
+                  <span>2</span>Each content/line
+                </p>
               </div>
             </div>
           </div>

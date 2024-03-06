@@ -347,7 +347,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                           className={`placeholder placehoderProxy ${proxyContent ? 'hide' : ''}`}
                         >
                           <p>
-                            <span>1</span>Enter the proxy here
+                            <span style={{ marginRight: '22px' }}>1</span>Enter the proxy here
                           </p>
                           <p>
                             <span>2</span>
