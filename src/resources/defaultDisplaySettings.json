@@ -3,6 +3,7 @@
   "password": true,
   "status": true,
   "follower": false,
+  "proxy": true,
   "email": true,
   "emailPass": true,
   "twoFA": false,

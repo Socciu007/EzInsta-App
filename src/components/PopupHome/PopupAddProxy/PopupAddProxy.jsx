@@ -12,19 +12,17 @@ import { dbSetLocally, updateProfile } from '../../../sender';
 import Dialog from '@mui/material/Dialog';
 import { Store } from 'react-notifications-component';
 import notification from '../../../resources/notification.json';
-const PopupAddProxy = ({
-  profilesSelected,
-  openAddProxy,
-  handleCloseAdd,
-  handleOpenProxyManage,
-  dataProfiles,
-  getProfiles,
-}) => {
-  const [proxyType, setProxyType] = useState('http');
+const PopupAddProxy = ({ profilesSelected, openAddProxy, handleCloseAdd, dataProfiles, reloadProfiles }) => {
+  const [proxyType, setProxyType] = useState('without');
   const [proxyString, setProxyString] = useState('');
   const handleWriteText = () => {
     document.getElementById('proxyString').focus();
   };
+
+  useEffect(() => {
+    setProxyType('without');
+    setProxyString('');
+  }, [openAddProxy]);
 
   const onChangeProxyType = (e) => {
     setProxyType(e.target.value);
@@ -40,7 +38,32 @@ const PopupAddProxy = ({
       .map((line, i) => `<span class='editorLineNumber ${proxyString ? '' : 'hide'}'>${i + 1}</span>${line}`)
       .join('\n');
   const changeProxy = async () => {
-    if (proxyString !== '') {
+    if (proxyType == 'without') {
+      for (let i = 0; i < profilesSelected.length; i++) {
+        const res = await updateProfile(profilesSelected[i].id, {
+          host: '',
+          port: '',
+          username: '',
+          password: '',
+          mode: '',
+        });
+        if (res && res.code == 1) {
+          const index = dataProfiles.findIndex((e) => e.id === profilesSelected[i].id);
+          const newData = [...dataProfiles];
+          newData[index].proxy = res.result.proxy;
+          await dbSetLocally(storageProfiles, newData);
+        }
+      }
+      reloadProfiles();
+      handleCloseAdd();
+      setTimeout(() => {
+        Store.addNotification({
+          ...notification,
+          type: 'success',
+          message: 'Add proxy to profiles success!',
+        });
+      }, 500);
+    } else if (proxyString !== '') {
       const listProxy = [];
       const listProxyString = proxyString.split('\n');
       listProxyString.forEach((proxy) => {
@@ -75,7 +98,7 @@ const PopupAddProxy = ({
             await dbSetLocally(storageProfiles, newData);
           }
         }
-        getProfiles();
+        reloadProfiles();
         handleCloseAdd();
         setTimeout(() => {
           Store.addNotification({
@@ -155,6 +178,7 @@ const PopupAddProxy = ({
                 onChange={onChangeProxyType}
                 value={proxyType}
               >
+                <MenuItem value="without">Without Proxy</MenuItem>
                 <MenuItem value="http">HTTP</MenuItem>
                 <MenuItem value="socks4">Socks 4</MenuItem>
                 <MenuItem value="socks5">Socks 5</MenuItem>
@@ -162,45 +186,58 @@ const PopupAddProxy = ({
               </Select>
             </div>
           </div>
-          <div className="-add-proxys__type">
-            <p>Proxy list</p>
-            <div className="-add-proxys-nav -list-proxys">
-              <div className="keywordText">
-                <Editor
-                  value={proxyString}
-                  onValueChange={onchangeProxyString}
-                  highlight={(proxyString) => hightlightWithLineNumbers(proxyString, languages.js)}
-                  padding={15}
-                  onClick={handleWriteText}
-                  className="editor"
-                  textareaId="proxyString"
-                />
-              </div>
 
-              <div
-                className="placeholder"
-                onClick={handleWriteText}
-                style={{ display: proxyString ? 'none' : 'inline' }}
-              >
-                <p>
-                  <span>1</span>
-                  <div>Enter the content here</div>
-                </p>
-                <p>
-                  <span>2</span>
-                  <div>
-                    <span style={{ opacity: 1, fontWeight: 700 }}>Proxy format: </span>IP:Port:Username:Password
+          <div className="-add-proxys__type">
+            {proxyType !== 'without' ? (
+              <>
+                <p>Proxy list</p>
+              </>
+            ) : null}
+
+            <div className="-add-proxys-nav -list-proxys">
+              {proxyType !== 'without' ? (
+                <>
+                  <div className="keywordText">
+                    <Editor
+                      value={proxyString}
+                      onValueChange={onchangeProxyString}
+                      highlight={(proxyString) => hightlightWithLineNumbers(proxyString, languages.js)}
+                      padding={15}
+                      onClick={handleWriteText}
+                      className="editor"
+                      textareaId="proxyString"
+                    />
                   </div>
-                </p>
-                <p>
-                  <span>3</span>
-                  <div>1 proxy/line</div>
-                </p>
-                <p>
-                  <span>4</span>
-                  <div>The number of proxies should not be less or more than the number of profiles</div>
-                </p>
-              </div>
+
+                  <div
+                    className="placeholder"
+                    onClick={handleWriteText}
+                    style={{ display: proxyString ? 'none' : 'inline' }}
+                  >
+                    <p>
+                      <span>1</span>
+                      <div>Enter the content here</div>
+                    </p>
+                    <p>
+                      <span>2</span>
+                      <div>
+                        <span style={{ opacity: 1, fontWeight: 700 }}>Proxy format: </span>IP:Port:Username:Password
+                      </div>
+                    </p>
+                    <p>
+                      <span>3</span>
+                      <div>1 proxy/line</div>
+                    </p>
+                    <p>
+                      <span>4</span>
+                      <div>The number of proxies should not be less or more than the number of profiles</div>
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="keywordText without"></div>
+              )}
+
               <div onClick={changeProxy} className="-list-proxys__save">
                 Save
               </div>
