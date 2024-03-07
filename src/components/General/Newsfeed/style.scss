@@ -254,3 +254,10 @@
 .share {
   display: block !important;
 }
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+.component-item__header {
+  width: 45% !important;
+}

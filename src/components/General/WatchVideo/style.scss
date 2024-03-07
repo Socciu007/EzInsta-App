@@ -163,7 +163,6 @@
         .commentType {
           font-family: 'GoogleSans';
           top: 0;
-          width: 100%;
           border-radius: 5px;
           background: var(--bg-input);
           height: 40px;
@@ -342,4 +341,11 @@
   margin-top: 5%;
   margin-bottom: 15px;
   border-radius: 5px;
+}
+.top {
+  justify-content: space-between;
+  display: flex;
+}
+.component-item__header {
+  width: 45% !important;
 }

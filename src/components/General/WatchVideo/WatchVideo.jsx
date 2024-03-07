@@ -112,13 +112,27 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
     setValues({ ...values, delayTimeEnd: parseToNumber(time) });
   };
 
-  const changeLikeStart = (like) => {
+  const handleChangeLikeStart = (like) => {
     setValues({ ...values, likeStart: parseToNumber(like) });
   };
-  const changeLikeEnd = (like) => {
+  const handleChangeLikeEnd = (like) => {
     setValues({ ...values, likeEnd: parseToNumber(like) });
   };
 
+  const handleChangeCommentStart = (value) => {
+    setValues({ ...values, commentStart: parseToNumber(value) });
+  };
+
+  const handleChangeCommentEnd = (value) => {
+    setValues({ ...values, commentEnd: parseToNumber(value) });
+  };
+  const handleChangeShareStart = (value) => {
+    setValues({ ...values, shareStart: parseToNumber(value) });
+  };
+
+  const handleChangeShareEnd = (value) => {
+    setValues({ ...values, shareEnd: parseToNumber(value) });
+  };
   const changeLike = (value) => {
     setValues({ ...values, isLike: value });
   };
@@ -133,9 +147,6 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
 
   const changeShareOption = (value) => {
     setValues({ ...values, typeShare: value });
-  };
-  const changeCommentOption = (value) => {
-    setValues({ ...values, typeComment: value });
   };
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
@@ -280,14 +291,14 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                       src={iconIncrease}
                       alt="Increase icon"
                       onClick={() => {
-                        changeLikeStart(values.likeStart + 1);
+                        handleChangeLikeStart(values.likeStart + 1);
                       }}
                     />
                     <img
                       src={iconDecrease}
                       alt="Decrease icon"
                       onClick={() => {
-                        changeLikeStart(values.likeStart - 1);
+                        handleChangeLikeStart(values.likeStart - 1);
                       }}
                     />
                   </div>
@@ -295,7 +306,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     type="text"
                     name="Start"
                     value={!values.isLike ? 0 : values.likeStart}
-                    onChange={(event) => changeLikeStart(event.target.value)}
+                    onChange={(event) => handleChangeLikeStart(event.target.value)}
                   />
                 </div>
                 <span>to</span>
@@ -305,14 +316,14 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                       src={iconIncrease}
                       alt="Increase icon"
                       onClick={() => {
-                        changeLikeEnd(values.likeEnd + 1);
+                        handleChangeLikeEnd(values.likeEnd + 1);
                       }}
                     />
                     <img
                       src={iconDecrease}
                       alt="Decrease icon"
                       onClick={() => {
-                        changeLikeEnd(values.likeEnd - 1);
+                        handleChangeLikeEnd(values.likeEnd - 1);
                       }}
                     />
                   </div>
@@ -320,20 +331,67 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     type="text"
                     name="End"
                     value={!values.isLike ? 0 : values.likeEnd}
-                    onChange={(event) => changeLikeEnd(event.target.value)}
+                    onChange={(event) => handleChangeLikeEnd(event.target.value)}
                   />
                 </div>
               </div>
             </div>
             <div className="component-item comment">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomComment"
-                  checked={values.isComment}
-                  onChange={(event) => changeComment(event.target.checked)}
-                />
-                <p>Random Comment</p>
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomComment"
+                    checked={values.isComment}
+                    onChange={(event) => changeComment(event.target.checked)}
+                  />
+                  <p>Random Comment</p>
+                </div>
+                <div className={`component-item__content ${values.isComment ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentStart(values.commentStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() =>
+                          handleChangeCommentStart(values.commentStart - 1 > 0 ? values.commentStart - 1 : 0)
+                        }
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.commentStart}
+                      onChange={(event) => handleChangeCommentStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.commentEnd}
+                      onChange={(event) => handleChangeCommentEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={`commentContent ${values.isComment ? 'show' : 'hide'}`}>
                 <div className="Text">
@@ -371,14 +429,59 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
               </div>
             </div>
             <div className="component-item share">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomShare"
-                  checked={values.isShare}
-                  onChange={(event) => changeShare(event.target.checked)}
-                />
-                <p>Share Reels:</p>
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomShare"
+                    checked={values.isShare}
+                    onChange={(event) => changeShare(event.target.checked)}
+                  />
+                  <p>Share :</p>
+                </div>
+                <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareStart(values.shareStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareStart(values.shareStart - 1 > 0 ? values.shareStart - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.shareStart}
+                      onChange={(event) => handleChangeShareStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.shareEnd}
+                      onChange={(event) => handleChangeShareEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
                 <div className="component-item postOption">

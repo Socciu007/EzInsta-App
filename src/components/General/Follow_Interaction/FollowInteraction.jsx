@@ -83,6 +83,21 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
   const handleChangeLikeEnd = (value) => {
     setValues({ ...values, likeEnd: parseToNumber(value) });
   };
+  const handleChangeCommentStart = (value) => {
+    setValues({ ...values, commentStart: parseToNumber(value) });
+  };
+
+  const handleChangeCommentEnd = (value) => {
+    setValues({ ...values, commentEnd: parseToNumber(value) });
+  };
+  const handleChangeShareStart = (value) => {
+    setValues({ ...values, shareStart: parseToNumber(value) });
+  };
+
+  const handleChangeShareEnd = (value) => {
+    setValues({ ...values, shareEnd: parseToNumber(value) });
+  };
+
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
       .split('\n')
@@ -327,17 +342,61 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
               </div>
             </div>
             <div className="component-item comment">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomComment"
-                  checked={values.isComment}
-                  onChange={(event) => {
-                    changeComment(event.target.checked);
-                  }}
-                />
-                <p>Random Comment</p>
-                {/* <img src={iconQuestion} alt="icon Question" /> */}
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomComment"
+                    checked={values.isComment}
+                    onChange={(event) => changeComment(event.target.checked)}
+                  />
+                  <p>Random Comment</p>
+                </div>
+                <div className={`component-item__content  ${values.isComment ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentStart(values.commentStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() =>
+                          handleChangeCommentStart(values.commentStart - 1 > 0 ? values.commentStart - 1 : 0)
+                        }
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.commentStart}
+                      onChange={(event) => handleChangeCommentStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.commentEnd}
+                      onChange={(event) => handleChangeCommentEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={` Text ${values.isComment ? 'show' : 'hide'}`}>
                 <div className="commentContent1">
@@ -376,14 +435,59 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
               </div>
             </div>
             <div className="component-item share">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomShare"
-                  checked={values.isShare}
-                  onChange={(event) => handleChangeShared(event.target.checked)}
-                />
-                <p>Share:</p>
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomShare"
+                    checked={values.isShare}
+                    onChange={(event) => handleChangeShared(event.target.checked)}
+                  />
+                  <p>Share :</p>
+                </div>
+                <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareStart(values.shareStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareStart(values.shareStart - 1 > 0 ? values.shareStart - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.shareStart}
+                      onChange={(event) => handleChangeShareStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.shareEnd}
+                      onChange={(event) => handleChangeShareEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
                 <div className="component-item postOption">

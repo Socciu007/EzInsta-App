@@ -49,12 +49,12 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
       setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
-  const changeAccountStart = (num) => {
-    setValues({ ...values, accountStart: parseToNumber(num) });
+  const changePostStart = (num) => {
+    setValues({ ...values, postStart: parseToNumber(num) });
   };
 
-  const changeAccountEnd = (num) => {
-    setValues({ ...values, accountEnd: parseToNumber(num) });
+  const changePostEnd = (num) => {
+    setValues({ ...values, postEnd: parseToNumber(num) });
   };
 
   const changeTimeStart = (time) => {
@@ -82,6 +82,20 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
   };
   const handleChangeLikeEnd = (value) => {
     setValues({ ...values, likeEnd: parseToNumber(value) });
+  };
+  const handleChangeCommentStart = (value) => {
+    setValues({ ...values, commentStart: parseToNumber(value) });
+  };
+
+  const handleChangeCommentEnd = (value) => {
+    setValues({ ...values, commentEnd: parseToNumber(value) });
+  };
+  const handleChangeShareStart = (value) => {
+    setValues({ ...values, shareStart: parseToNumber(value) });
+  };
+
+  const handleChangeShareEnd = (value) => {
+    setValues({ ...values, shareEnd: parseToNumber(value) });
   };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
@@ -116,7 +130,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
               />
               <p>Hashtag Interaction</p>
             </div>
-            <div className="component-item watchingTime">
+            <div className="component-item watchingTime numsPost">
               <p className="component-item__header">Number of post(s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -124,22 +138,22 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     src={iconIncrease}
                     alt="Increase icon"
                     onClick={() => {
-                      changeAccountStart(values.accountStart + 1);
+                      changePostStart(values.postStart + 1);
                     }}
                   />
                   <img
                     src={iconDecrease}
                     alt="Decrease icon"
                     onClick={() => {
-                      changeAccountStart(values.accountStart - 1);
+                      changePostStart(values.postStart - 1);
                     }}
                   />
                 </div>
                 <input
                   name="Start"
                   type="text"
-                  value={values.accountStart}
-                  onChange={(event) => changeAccountStart(event.target.value)}
+                  value={values.postStart}
+                  onChange={(event) => changePostStart(event.target.value)}
                 />
               </div>
               <span>to</span>
@@ -149,22 +163,22 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     src={iconIncrease}
                     alt="Increase icon"
                     onClick={() => {
-                      changeAccountEnd(values.accountEnd + 1);
+                      changePostEnd(values.postEnd + 1);
                     }}
                   />
                   <img
                     src={iconDecrease}
                     alt="Decrease icon"
                     onClick={() => {
-                      changeAccountEnd(values.accountEnd - 1);
+                      changePostEnd(values.postEnd - 1);
                     }}
                   />
                 </div>
                 <input
                   name="End"
                   type="text"
-                  value={values.accountEnd}
-                  onChange={(event) => changeAccountEnd(event.target.value)}
+                  value={values.postEnd}
+                  onChange={(event) => changePostEnd(event.target.value)}
                 />
               </div>
             </div>
@@ -220,7 +234,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                 />
               </div>
             </div>
-            <div className="component-item numberOfStory">
+            <div className="component-item numberOfStory delayTime">
               <p className="component-item__header">Delay time(s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -327,17 +341,61 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
               </div>
             </div>
             <div className="component-item comment">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomComment"
-                  checked={values.isComment}
-                  onChange={(event) => {
-                    changeComment(event.target.checked);
-                  }}
-                />
-                <p>Random Comment</p>
-                {/* <img src={iconQuestion} alt="icon Question" /> */}
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomComment"
+                    checked={values.isComment}
+                    onChange={(event) => changeComment(event.target.checked)}
+                  />
+                  <p>Random Comment</p>
+                </div>
+                <div className={`component-item__content  ${values.isComment ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentStart(values.commentStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() =>
+                          handleChangeCommentStart(values.commentStart - 1 > 0 ? values.commentStart - 1 : 0)
+                        }
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.commentStart}
+                      onChange={(event) => handleChangeCommentStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeCommentEnd(values.commentEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.commentEnd}
+                      onChange={(event) => handleChangeCommentEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={` Text ${values.isComment ? 'show' : 'hide'}`}>
                 <div className="commentContent1">
@@ -376,14 +434,59 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
               </div>
             </div>
             <div className="component-item share">
-              <div className="component-item__header">
-                <input
-                  type="checkbox"
-                  name="randomShare"
-                  checked={values.isShare}
-                  onChange={(event) => handleChangeShared(event.target.checked)}
-                />
-                <p>Share</p>
+              <div className="top">
+                <div className="component-item__header">
+                  <input
+                    type="checkbox"
+                    name="randomShare"
+                    checked={values.isShare}
+                    onChange={(event) => handleChangeShared(event.target.checked)}
+                  />
+                  <p>Share :</p>
+                </div>
+                <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareStart(values.shareStart + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareStart(values.shareStart - 1 > 0 ? values.shareStart - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="Start"
+                      value={values.shareStart}
+                      onChange={(event) => handleChangeShareStart(event.target.value)}
+                    />
+                  </div>
+                  <span>to</span>
+                  <div className="component-item__number">
+                    <div className="component-item__number__icon">
+                      <img
+                        src={iconIncrease}
+                        alt="Increase icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd + 1)}
+                      />
+                      <img
+                        src={iconDecrease}
+                        alt="Decrease icon"
+                        onClick={() => handleChangeShareEnd(values.shareEnd - 1 > 0 ? values.commentEnd - 1 : 0)}
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      name="End"
+                      value={values.shareEnd}
+                      onChange={(event) => handleChangeShareEnd(event.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
                 <div className="component-item postOption">

@@ -223,7 +223,6 @@
       }
       .comment {
         .component-item__header {
-          width: 100%;
           img {
             display: inline;
             align-items: center;
@@ -328,4 +327,7 @@
   margin-top: 5%;
   margin-bottom: 15px;
   border-radius: 5px;
+}
+.component-item__header {
+  width: 45% !important;
 }
