@@ -9,10 +9,10 @@ export const newFeed = (setting) => {
       likeStart: ${setting.likeStart},
       likeEnd: ${setting.likeEnd},
       isShare: ${setting.isShare},
-      typeShare: ${JSON.stringify(setting.typeShare)}
-      "shareText": ${JSON.stringify(setting.shareText)},
+      typeShare: ${JSON.stringify(setting.typeShare)},
+      shareText: ${JSON.stringify(setting.shareText)},
       isComment: ${setting.isComment},
-      "commentText": ${JSON.stringify(setting.commentText)},
+      commentText: ${JSON.stringify(setting.commentText)},
     }`;
   return `
   
@@ -213,7 +213,7 @@ try {
       let count = 0;
       let numLikes = getRandomIntBetween(news.likeStart, news.likeEnd);
       logger('Cần like ' + numLikes + ' bài');
-      let temp = 2;
+      let temp = 0;
       for (let i = 0; i < numLikes * 2; i++) {
         try {
           await returnHomePage(page);

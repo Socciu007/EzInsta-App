@@ -824,6 +824,7 @@ return new Promise(async (resolve) => {
         let result;
         for (let i = 0; i < 5; i++) {
           result = await runProfile(strCode, profile.id);
+          console.log(result);
           if (result !== 'Cant open browser') {
             break;
           }
