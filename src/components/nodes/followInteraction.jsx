@@ -49,7 +49,7 @@ function followInteractionNode({ data: { label, onButtonClick, onDeleteNode }, i
           <img src={cancelIcon} alt="cancelLeft" />
           <div className="content-right">
             <div className="right-top">
-              <p>Follow Interaction </p>
+              <p>Follow Interact</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"
