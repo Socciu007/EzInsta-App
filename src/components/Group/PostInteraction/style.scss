@@ -355,27 +355,28 @@
           -webkit-text-fill-color: #333;
         }
 
-        .editor #userList {
+        .editor #userList,
+        .editor #commentText {
           outline: none;
-          padding-top: 4% !important;
-          padding-left: 4.5% !important;
+          // padding-top: 4% !important;
+          padding-left: 9.5% !important;
         }
 
         .editor pre {
-          padding-top: 4% !important;
-          padding-left: 4.5% !important;
+          // padding-top: 4% !important;
+          padding-left: 9.5% !important;
           width: 100%;
         }
 
         .editor .editorLineNumber {
-          display: none;
-          // position: absolute;
-          // left: 0px;
-          // color: #cccccc;
-          // text-align: right;
-          // width: 6%;
-          // font-weight: 100;
-          // opacity: 0.5 !important;
+          // display: none;
+          position: absolute;
+          left: 0px;
+          color: #cccccc;
+          text-align: right;
+          width: 6%;
+          font-weight: 100;
+          opacity: 0.5 !important;
         }
       }
       .placeholder {

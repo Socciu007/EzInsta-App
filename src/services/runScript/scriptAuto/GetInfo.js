@@ -1,18 +1,17 @@
 export const getInfor = (profile) => {
-  if (!profile.nameAccount || !profile.friends) {
+  if (!profile.fllower) {
     return `{
             try{
                 const checkPageIsLive = checkIsLive(page);
-    if (!checkPageIsLive) {
-      logger("Page null!");
-      return false;
-    }
+                if (!checkPageIsLive) {
+                logger("Page null!");
+                return false;
+                }
 
     await page.goto('https://mbasic.facebook.com/me', {
           waitUntil: 'networkidle2',
           timeout: 60000,
         });
-
          const elName = await getElement(page,'span strong');
          if(elName){
             const name = await getText(page, elName);

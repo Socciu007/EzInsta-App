@@ -49,7 +49,7 @@ function hashtagInteractionNode({ data: { label, onButtonClick, onDeleteNode }, 
           <img src={cancelIcon} alt="cancelLeft" />
           <div className="content-right">
             <div className="right-top">
-              <p>Hashtag Interaction </p>
+              <p>Hashtag Interact</p>
               <img src={optionNode} alt="More" onClick={handleClick} />
               <Menu
                 id="basic-menu"

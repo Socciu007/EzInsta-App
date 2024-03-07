@@ -103,6 +103,9 @@ body {
             cursor: pointer;
             margin-right: 30px;
             margin-bottom: 10px;
+            p {
+              margin-left: 5px;
+            }
           }
           .categoryActive {
             display: inline;

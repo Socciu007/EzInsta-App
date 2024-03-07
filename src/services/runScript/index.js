@@ -123,7 +123,7 @@ export const runScript = async (profileSelected, scriptDesign, dispatch) => {
               updateProfile({
                 ...profile,
                 script: scriptDesign.id,
-                status: i == settings.countLoop - 1 ? 'Error Proxy' : 'waiting',
+                status: i == settings.countLoop - 1 ? 'Proxy Error' : 'waiting',
               }),
             );
           } else {
@@ -140,11 +140,6 @@ export const runScript = async (profileSelected, scriptDesign, dispatch) => {
       { concurrency: results.length },
     );
   }
-  newProfileSelected = profileSelected.map((profile) => {
-    return { ...profile, script: scriptDesign.id, status: 'ready' };
-  });
-  dispatch(updateProfiles(newProfileSelected));
-  return;
 };
 
 const runCode = async (profile, profileSelected, index, dispatch, arrfunction, settings, indexThread, scriptDesign) => {
@@ -826,20 +821,21 @@ return new Promise(async (resolve) => {
 });
 `;
 
+        let result;
         for (let i = 0; i < 5; i++) {
-          const result = await runProfile(strCode, profile.id);
-          console.log(result);
+          result = await runProfile(strCode, profile.id);
           if (result !== 'Cant open browser') {
             break;
           }
         }
+        return result;
       } else {
         console.log(`Can't get data Profile!`);
       }
     } else {
       console.log('Connect proxy Fail!');
-      return;
     }
+    return;
   } catch (err) {
     dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'ready' }));
     console.log(err);

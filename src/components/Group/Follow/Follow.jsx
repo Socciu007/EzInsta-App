@@ -40,9 +40,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
       if (currentSetup.searchByUser && currentSetup.searchByUser.length) {
         setSearchByUserContent(currentSetup.searchByUser.join('\n'));
       }
-      setTimeout(() => {
-        setValues(currentSetup);
-      }, 50);
+      setValues(currentSetup);
     }
   }, [currentSetup]);
 

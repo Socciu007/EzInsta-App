@@ -10,7 +10,7 @@ import addPerson from '../../assets/icon/icon-addPerson.png';
 import addFile from '../../assets/icon/icon-addFile.svg';
 import options from '../../assets/pictures/icon-options.png';
 import addProxy from '../../assets/pictures/icon-addProxy.png';
-import deleted from '../../assets/icon/icon-Delete.svg';
+import deleted from '../../assets/icon/icon-remove.svg';
 import yourScript from '../../assets/pictures/icon-yourScripts.svg';
 import pin from '../../assets/icon/icon-pin.svg';
 import pinBlack from '../../assets/icon/icon-pinBlack.svg';
@@ -22,7 +22,6 @@ import defaultDisplaySettings from '../../resources/defaultDisplaySettings.json'
 import { EditableCell, EditableRow } from '../../components/EditableTable/EditableTable';
 import PopupProfile from '../../components/PopupHome/PopupProfile/PopupProfile';
 import PopupAddProxy from '../../components/PopupHome/PopupAddProxy/PopupAddProxy';
-import PopupProxyManage from '../../components/PopupHome/PopupProxyManage/PopupProxyManage';
 import PopupDeleteProfile from '../../components/PopupHome/PopupDeleteProfile/PopupDeleteProfile';
 import PopupScript from '../../components/PopupHome/PopupScript/PopupScript';
 import { accessToken, storageDisplaySettings, storageProfiles, storageSettings } from '../../common/const.config';
@@ -51,7 +50,6 @@ const ProfilesPage = () => {
   const [openProfiles, setOpenProfiles] = useState(false);
   const [openAddProxy, setOpenAddProxy] = useState(false);
   const [openDeleteProfile, setOpenDeleteProfile] = useState(false);
-  const [openProxyManage, setOpenProxyManage] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -160,6 +158,7 @@ const ProfilesPage = () => {
     if (!token || token == '') {
       return navigate('/login');
     }
+
     const settings = await dbGetLocally(storageSettings);
     if (!settings) {
       await dbSetLocally(storageSettings, defaultSettings);
@@ -227,6 +226,7 @@ const ProfilesPage = () => {
         ),
       });
     }
+
     if (settings.status) {
       settingsColumns.push({
         title: 'Status',
@@ -309,6 +309,40 @@ const ProfilesPage = () => {
         ),
       });
     }
+
+    if (settings.proxy) {
+      settingsColumns.push({
+        title: 'Proxy',
+        dataIndex: 'proxy',
+        width: 200,
+        ellipsis: {
+          showTitle: false,
+        },
+        render: (proxy) => {
+          return (
+            <div className="-proxy-profiles">
+              <Tooltip placement="topLeft" title={generateProxyStr(proxy, false)}>
+                {generateProxyStr(proxy)}
+              </Tooltip>
+            </div>
+          );
+        },
+        sorter: (a, b) => {
+          if (!a.isPin && !b.isPin) {
+            const nameA = generateProxyStr(a.proxy, false).toUpperCase();
+            const nameB = generateProxyStr(b.proxy, false).toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0;
+          }
+        },
+      });
+    }
+
     if (settings.twoFA) {
       settingsColumns.push({
         title: '2FA',
@@ -593,6 +627,13 @@ const ProfilesPage = () => {
       message: 'Reloaded Profiles',
     });
   };
+
+  const reloadProfiles = async () => {
+    await getProfiles();
+    await getUser();
+    setProfilesSelected([]);
+    setSelectedRowKeys([]);
+  };
   //scripts
   const handleOpenScripts = () => {
     if (profilesSelected.length > 0) {
@@ -636,14 +677,7 @@ const ProfilesPage = () => {
     setDisplaySettings(settings);
     renderColumns(settings);
   };
-  //proxy
-  const handleOpenProxyManage = () => {
-    setOpenProxyManage(true);
-  };
-  const handleCloseProxyManage = () => {
-    setOpenAddProxy(true);
-    setOpenProxyManage(false);
-  };
+
   const handleCloseAdd = () => {
     setOpenAddProxy(false);
   };
@@ -731,10 +765,7 @@ const ProfilesPage = () => {
     <div
       className="layout-profiles"
       style={{
-        opacity:
-          openAddProxy || openDeleteProfile || openScripts || openProfiles || openProxyManage || openDisplaySetting
-            ? 0.1
-            : 1,
+        opacity: openAddProxy || openDeleteProfile || openScripts || openProfiles || openDisplaySetting ? 0.1 : 1,
       }}
     >
       <div className="-container-profiles">
@@ -888,20 +919,11 @@ const ProfilesPage = () => {
             ) : null}
             <PopupAddProxy
               profilesSelected={profilesSelected}
-              getProfiles={getProfiles}
+              reloadProfiles={reloadProfiles}
               dataProfiles={dataProfiles}
               openAddProxy={openAddProxy}
               handleCloseAdd={handleCloseAdd}
-              handleOpenProxyManage={handleOpenProxyManage}
             ></PopupAddProxy>
-            <PopupProxyManage
-              startScreen={'Home'}
-              profilesSelected={profilesSelected}
-              getProfiles={getProfiles}
-              dataProfiles={dataProfiles}
-              openProxyManage={openProxyManage}
-              handleCloseProxyManage={handleCloseProxyManage}
-            ></PopupProxyManage>
             {profilesSelected.length ? (
               <div
                 className="-select-profile"
