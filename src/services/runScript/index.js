@@ -118,7 +118,7 @@ export const runScript = async (profileSelected, scriptDesign, dispatch) => {
             j,
             scriptDesign,
           );
-          if (resultRun && resultRun.includes('ERR_CONNECTION')) {
+          if (resultRun && resultRun.toString().includes('ERR_CONNECTION')) {
             dispatch(
               updateProfile({
                 ...profile,
