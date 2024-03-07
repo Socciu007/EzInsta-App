@@ -10,7 +10,7 @@ import addPerson from '../../assets/icon/icon-addPerson.png';
 import addFile from '../../assets/icon/icon-addFile.svg';
 import options from '../../assets/pictures/icon-options.png';
 import addProxy from '../../assets/pictures/icon-addProxy.png';
-import deleted from '../../assets/icon/icon-Delete.svg';
+import deleted from '../../assets/icon/icon-remove.svg';
 import yourScript from '../../assets/pictures/icon-yourScripts.svg';
 import pin from '../../assets/icon/icon-pin.svg';
 import pinBlack from '../../assets/icon/icon-pinBlack.svg';

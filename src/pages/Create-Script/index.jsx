@@ -206,7 +206,7 @@ const CreateScript = () => {
     navigate('/scripManager');
   };
   const handleCategoryClick = (categoryNumber) => {
-    setActiveCategory(categoryNumber === activeCategory ? null : categoryNumber);
+    setActiveCategory(categoryNumber);
   };
 
   const renderComponent = (component) => {

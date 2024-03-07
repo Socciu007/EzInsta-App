@@ -8,8 +8,6 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
-// import MenuItem from '@mui/material/MenuItem';
-// import Select from '@mui/material/Select';
 import { parseToNumber } from '../../../services/utils.js';
 import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 import { Select } from 'antd';
@@ -17,6 +15,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   const [values, setValues] = useState(DefaultSciptSettings['seedingPost']);
   const [userContent, setUserContent] = useState('');
   const [textContent, setTextContent] = useState('');
+  const [commentContent, setCommentContent] = useState('');
 
   useEffect(() => {
     updateDesignScript(values, component, id);
@@ -30,9 +29,10 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
       if (currentSetup.userList && currentSetup.userList.length) {
         setUserContent(currentSetup.userList.join('\n'));
       }
-      setTimeout(() => {
-        setValues(currentSetup);
-      }, 50);
+      if (currentSetup.commentText && currentSetup.commentText.length) {
+        setUserContent(currentSetup.commentText.join('\n'));
+      }
+      setValues(currentSetup);
     }
   }, [currentSetup]);
 
@@ -49,6 +49,14 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
       setValues({ ...values, userList: userContent.split('\n') });
     } else {
       setValues({ ...values, userList: [] });
+    }
+  }, [userContent]);
+
+  useEffect(() => {
+    if (userContent.length) {
+      setValues({ ...values, commentText: userContent.split('\n') });
+    } else {
+      setValues({ ...values, commentText: [] });
     }
   }, [userContent]);
 
@@ -98,6 +106,10 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
   const handleDivUserListClick = () => {
     document.getElementById('userList').focus();
+  };
+
+  const handleDivCommentTextClick = () => {
+    document.getElementById('commentText').focus();
   };
 
   const hightlightWithLineNumbers = (input, language, content) =>
@@ -387,6 +399,40 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                   </div>
                 </div>
               </div>
+              {values.isComment && (
+                <div className="KeywordContent">
+                  <div className="Keyword_Header">
+                    <p>Comment</p>
+                    {/* <span>({values.line})</span> */}
+                  </div>
+                  <div className="component-item " style={{ position: 'relative' }}>
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
+                      <Editor
+                        value={commentContent}
+                        onValueChange={(text) => {
+                          setCommentContent(text);
+                        }}
+                        highlight={(text) => hightlightWithLineNumbers(text, languages.js, commentContent)}
+                        padding={15}
+                        className="editor"
+                        textareaId="commentText"
+                        style={{
+                          background: '#f5f5f5',
+                          fontSize: 15,
+                        }}
+                      />
+                    </div>
+                    <div onClick={handleDivCommentTextClick} className={`placeholder ${commentContent ? 'hide' : ''}`}>
+                      <p>
+                        <span style={{ marginRight: '14px' }}>1</span>Enter the content here
+                      </p>
+                      <p>
+                        <span>2</span>Each UID/line
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="component-item">
                 <div className="component-item__header">
                   <input
@@ -418,7 +464,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                   </div>
                 </div>
               )}
-              {values.typeShare === 'user' && (
+              {values.isShare && values.typeShare === 'user' && (
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
                     <p>User list</p>
@@ -443,12 +489,11 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                     </div>
                     <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
                       <p>
-                        Enter the content here
-                        {/* <span>1</span>Enter the content here */}
+                        <span style={{ marginRight: '14px' }}>1</span>Enter the content here
                       </p>
-                      {/* <p>
-                      <span>2</span>Each UID/line
-                    </p> */}
+                      <p>
+                        <span>2</span>Each UID/line
+                      </p>
                     </div>
                   </div>
                 </div>

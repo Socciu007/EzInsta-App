@@ -180,6 +180,7 @@
     "isComment": false,
     "commentStart": 0,
     "commentEnd": 5,
+    "commentText": [],
     "line": 0,
     "postUID": []
   },

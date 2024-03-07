@@ -103,8 +103,13 @@ body {
             cursor: pointer;
             margin-right: 30px;
             margin-bottom: 10px;
+            p {
+              margin-left: 5px;
+            }
           }
           .categoryActive {
+            display: inline;
+            position: relative;
             border: none;
             background-color: #fff;
             cursor: pointer;
@@ -112,6 +117,17 @@ body {
             padding-bottom: 8px;
             border-bottom: 2px solid;
             font-weight: 700;
+            img {
+              display: inline;
+              position: relative;
+              top: 50%;
+              left: 0;
+              transform: translate(0px, 1px);
+            }
+            p {
+              margin-left: 3px;
+              display: inline;
+            }
           }
         }
         &__container {
