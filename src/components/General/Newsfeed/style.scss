@@ -181,6 +181,11 @@
           padding-left: 10% !important;
           padding-top: 4% !important;
         }
+        .editor #messageContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4% !important;
+        }
         .editor pre {
           padding-left: 10% !important;
           padding-top: 4% !important;
@@ -260,4 +265,21 @@
 }
 .component-item__header {
   width: 45% !important;
+}
+.username {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  p {
+    width: 45%;
+  }
+}
+.usernameWrapper {
+  margin-bottom: 10px;
+}
+.message {
+  display: flex;
+  width: 45%;
+  align-items: center;
 }

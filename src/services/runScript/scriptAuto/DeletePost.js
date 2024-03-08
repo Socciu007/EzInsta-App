@@ -2,7 +2,6 @@ export const deletePost = (setting) => {
   const strSetting = `{
       delayTimeStart: ${setting.delayTimeStart},
       delayTimeEnd: ${setting.delayTimeEnd},
-      lineCount: ${setting.lineCount},
       viewTimeStart: ${setting.viewTimeStart},
       viewTimeEnd: ${setting.viewTimeEnd},
       text: ${JSON.stringify(setting.text)},
@@ -96,10 +95,8 @@ const returnPost = async (page, id, fbid) => {
         await delay(2000);
       
         let randomViewTime = getRandomIntBetween(post.viewTimeStart * 1000, post.viewTimeEnd * 1000);
-      
-        let countDelete = 0;
-        logger('Cần delete'+ post.lineCount+ 'bài');
-        while (randomViewTime > 0 && countDelete < post.lineCount) {
+        logger('Cần xóa '+ post.text.length + ' bài');
+        while (randomViewTime > 0) {
           await returnHomePage(page);
           const startTime = Date.now();
           const userID = await page.evaluate(() => {
