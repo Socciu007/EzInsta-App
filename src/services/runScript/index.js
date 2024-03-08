@@ -233,9 +233,11 @@ for (const key in obj) {
 return obj;
 };
 
-const checkExistElementOnScreen = async (page, JSpath) => {
+
+
+const checkExistElementOnScreen = async (page, element) => {
 try {
-  const element = await page.$eval(JSpath, (el) => {
+  return await page.evaluate((el) => {
     if (el.getBoundingClientRect().top <= 0) {
       return -1;
     } else if (el.getBoundingClientRect().top + el.getBoundingClientRect().height > window.innerHeight) {
@@ -243,8 +245,8 @@ try {
     } else {
       return 0;
     }
-  });
-  return element;
+  }, element);
+ 
 } catch (error) {
   return error;
 }
@@ -551,7 +553,7 @@ try {
               };
               requestAnimationFrame(animation);
             };
-            let scrollAmount = getRandomIntBetween(400, 800);
+            let scrollAmount = getRandomIntBetween(300, 600);
             const targetPosition = window.scrollY + scrollAmount;
             let currentPosition = window.scrollY;
             if (currentPosition < targetPosition) {
