@@ -15,7 +15,7 @@
     "isShare": false,
     "shareStart": 2,
     "shareEnd": 2,
-    "typeShare": "randomShare",
+    "typeShare": "user",
     "shareText": []
   },
   "watchVideo": {
@@ -29,13 +29,14 @@
     "isShare": false,
     "shareStart": 2,
     "shareEnd": 2,
-    "typeShare": "randomShare",
+    "typeShare": "user",
     "shareText": [],
     "isComment": false,
     "commentStart": 2,
     "commentEnd": 2,
     "typeComment": "text",
-    "commentText": []
+    "commentText": [],
+    "userList": []
   },
   "newsFeed": {
     "scrollTimeStart": 300,
@@ -187,6 +188,9 @@
     "likeStart": 2,
     "likeEnd": 5,
     "isShare": false,
+    "shareStart": 1,
+    "shareEnd": 3,
+    "shareContent": [],
     "typeShare": "user",
     "userList": [],
     "isComment": false,

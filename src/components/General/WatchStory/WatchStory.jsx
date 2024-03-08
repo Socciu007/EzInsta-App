@@ -18,6 +18,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   const [values, setValues] = useState(DefaultSciptSettings['watchStory']);
   const [textContent, setTextContent] = useState('');
   const [shareContent, setShareContent] = useState('');
+  const [userContent, setUserContent] = useState('');
   useEffect(() => {
     if (currentSetup) {
       if (currentSetup.commentText && currentSetup.commentText.length) {
@@ -25,6 +26,9 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
       }
       if (currentSetup.shareText && currentSetup.shareText.length) {
         setShareContent(currentSetup.shareText.join('\n'));
+      }
+      if (currentSetup.userList && currentSetup.userList.length) {
+        setShareContent(currentSetup.userList.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -50,6 +54,13 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
       setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
+  useEffect(() => {
+    if (shareContent.length) {
+      setValues({ ...values, userList: shareContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
+    }
+  }, [userContent]);
   const changeTimeStart = (time) => {
     setValues({ ...values, timeStart: parseToNumber(time) });
   };
@@ -106,6 +117,9 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   };
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
+  };
+  const handleDivUserClick = () => {
+    document.getElementById('userContent').focus();
   };
   const changeCommentOption = (value) => {
     setValues({ ...values, typeComment: value });
@@ -455,7 +469,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     value={values.typeShare}
                     bordered={2 < 1 ? false : undefined}
                   >
-                    <MenuItem value="randomShare">Share random</MenuItem>
+                    <MenuItem value="suggested">Suggested</MenuItem>
                     <MenuItem value="user">User</MenuItem>
                   </Select>
                 </div>
@@ -466,22 +480,22 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                       <div style={{ position: 'relative' }} className="component-item box">
                         <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                           <Editor
-                            value={shareContent}
+                            value={userContent}
                             onValueChange={(text) => {
-                              setShareContent(text);
+                              setUserContent(text);
                             }}
-                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
+                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
                             padding={15}
                             className="editor"
-                            textareaId="shareContent"
-                            onClick={handleDivShareClick}
+                            textareaId="userContent"
+                            onClick={handleDivUserClick}
                             style={{
                               background: '#FFFFFF',
                               fontSize: 15,
                             }}
                           />
-                          {shareContent.length ? null : (
-                            <div onClick={handleDivShareClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
+                          {userContent.length ? null : (
+                            <div onClick={handleDivUserClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
                               <p>
                                 <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                               </p>
@@ -496,6 +510,41 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                   </div>
                 )}
               </div>
+              {values.isShare && (
+                <div className="commentContent1">
+                  <p style={{ fontWeight: 700 }}>Message</p>
+                  <div style={{ position: 'relative' }} className="component-item box">
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                      <Editor
+                        value={shareContent}
+                        onValueChange={(text) => {
+                          setShareContent(text);
+                        }}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
+                        padding={15}
+                        className={`editor`}
+                        textareaId="shareContent"
+                        onClick={handleDivShareClick}
+                        style={{
+                          background: '#FFFFFF',
+                          fontSize: 15,
+                        }}
+                      />
+                      {shareContent.length ? null : (
+                        <div onClick={handleDivShareClick} className={`placeholder`}>
+                          <p>
+                            <span style={{ marginLeft: '2px' }}>1</span>
+                            Enter the content here
+                          </p>
+                          <p>
+                            <span>2 </span>Each content/line
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

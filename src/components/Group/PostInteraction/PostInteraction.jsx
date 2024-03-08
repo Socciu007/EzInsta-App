@@ -16,6 +16,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   const [userContent, setUserContent] = useState('');
   const [textContent, setTextContent] = useState('');
   const [commentContent, setCommentContent] = useState('');
+  const [shareContent, setShareContent] = useState('');
 
   useEffect(() => {
     updateDesignScript(values, component, id);
@@ -30,9 +31,14 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
         setUserContent(currentSetup.userList.join('\n'));
       }
       if (currentSetup.commentText && currentSetup.commentText.length) {
-        setUserContent(currentSetup.commentText.join('\n'));
+        setCommentContent(currentSetup.commentText.join('\n'));
       }
-      setValues(currentSetup);
+      if (currentSetup.shareContent && currentSetup.shareContent.length) {
+        setCommentContent(currentSetup.shareContent.join('\n'));
+      }
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -54,11 +60,19 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
   useEffect(() => {
     if (userContent.length) {
-      setValues({ ...values, commentText: userContent.split('\n') });
+      setValues({ ...values, commentText: commentContent.split('\n') });
     } else {
       setValues({ ...values, commentText: [] });
     }
-  }, [userContent]);
+  }, [commentContent]);
+
+  useEffect(() => {
+    if (userContent.length) {
+      setValues({ ...values, shareContent: commentContent.split('\n') });
+    } else {
+      setValues({ ...values, shareContent: [] });
+    }
+  }, [shareContent]);
 
   const changeTypeShare = (value) => {
     setValues({ ...values, typeShare: value });
@@ -99,6 +113,12 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   const handleChangeShare = (value) => {
     setValues({ ...values, isShare: value });
   };
+  const changeShareStart = (time) => {
+    setValues({ ...values, shareStart: parseToNumber(time) });
+  };
+  const changeShareEnd = (time) => {
+    setValues({ ...values, shareEnd: parseToNumber(time) });
+  };
 
   const handleDivKeywordClick = () => {
     document.getElementById('keyword').focus();
@@ -110,6 +130,10 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
   const handleDivCommentTextClick = () => {
     document.getElementById('commentText').focus();
+  };
+
+  const handleDivShareClick = () => {
+    document.getElementById('shareText').focus();
   };
 
   const hightlightWithLineNumbers = (input, language, content) =>
@@ -443,6 +467,59 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                   />
                   <p>Share:</p>
                 </div>
+                {values.isShare && (
+                  <div className={`component-item__content ${values.isComment ? 'show' : 'hide'}`}>
+                    <div className="component-item__number">
+                      <div className="component-item__number__icon">
+                        <img
+                          src={iconIncrease}
+                          alt="Increase icon"
+                          onClick={() => {
+                            changeShareStart(values.shareStart + 1);
+                          }}
+                        />
+                        <img
+                          src={iconDecrease}
+                          alt="Decrease icon"
+                          onClick={() => {
+                            changeShareStart(values.shareStart - 1);
+                          }}
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        name="Start"
+                        value={!values.isComment ? 0 : values.shareStart}
+                        onChange={(event) => changeShareStart(event.target.value)}
+                      />
+                    </div>
+                    <span>to</span>
+                    <div className="component-item__number">
+                      <div className="component-item__number__icon">
+                        <img
+                          src={iconIncrease}
+                          alt="Increase icon"
+                          onClick={() => {
+                            changeShareEnd(values.shareEnd + 1);
+                          }}
+                        />
+                        <img
+                          src={iconDecrease}
+                          alt="Decrease icon"
+                          onClick={() => {
+                            changeShareEnd(values.shareEnd - 1);
+                          }}
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        name="End"
+                        value={!values.isComment ? 0 : values.shareEnd}
+                        onChange={(event) => changeShareEnd(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
               {values.isShare && (
                 <div className="component-item -type-follower">
@@ -454,6 +531,10 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                       onChange={changeTypeShare}
                       bordered={false}
                       options={[
+                        {
+                          value: 'suggested',
+                          label: 'Suggested',
+                        },
                         {
                           value: 'user',
                           label: 'User',
@@ -488,6 +569,40 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                       />
                     </div>
                     <div onClick={handleDivUserListClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                      <p>
+                        <span style={{ marginRight: '14px' }}>1</span>Enter the content here
+                      </p>
+                      <p>
+                        <span>2</span>Each UID/line
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {values.isShare && (
+                <div className="KeywordContent">
+                  <div className="Keyword_Header">
+                    <p>Message</p>
+                    {/* <span>({values.line})</span> */}
+                  </div>
+                  <div className="component-item " style={{ position: 'relative' }}>
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
+                      <Editor
+                        value={shareContent}
+                        onValueChange={(text) => {
+                          setShareContent(text);
+                        }}
+                        highlight={(text) => hightlightWithLineNumbers(text, languages.js, shareContent)}
+                        padding={15}
+                        className="editor"
+                        textareaId="shareText"
+                        style={{
+                          background: '#f5f5f5',
+                          fontSize: 15,
+                        }}
+                      />
+                    </div>
+                    <div onClick={handleDivShareClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
                       <p>
                         <span style={{ marginRight: '14px' }}>1</span>Enter the content here
                       </p>

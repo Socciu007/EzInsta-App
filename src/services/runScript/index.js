@@ -11,11 +11,8 @@ import { watchStory } from './scriptAuto/WatchStory';
 import { addFriend } from './scriptAuto/AddFriend';
 import { watchVideo } from './scriptAuto/WatchVideo';
 import Promise from 'bluebird';
-import { createPostGroup } from './scriptAuto/CreatePostGroup';
-import { boostLikeComment } from './scriptAuto/BoostLikeComment';
-import { boostFollower } from './scriptAuto/BoostFollower';
-import { boostView } from './scriptAuto/BoostView';
-import { inviteGroup } from './scriptAuto/inviteGroup';
+import { unfollow } from './scriptAuto/seedingUnfollow';
+import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
 import { joinGroup } from './scriptAuto/joinGroup';
 import { leftGroup } from './scriptAuto/leaveGroup';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
@@ -865,14 +862,6 @@ const convertToFunc = (script) => {
       return `{
         ${viewNoti(script)}
       }`;
-    // case 'replyMsg':
-    //   return `{
-    //     ${replyMsg(script)}
-    //   }`;
-    // case 'sendMsg':
-    //   return `{
-    //     ${sendMsg(script)}
-    //   }`;
     case 'deletePost':
       return `{
         ${deletePost(script)}
@@ -897,36 +886,22 @@ const convertToFunc = (script) => {
       return `{
           ${watchVideo(script)}
         }`;
-    case 'createPostGroup':
+    case 'unfollow':
       return `{
-          ${createPostGroup(script)}
+          ${unfollow(script)}
         }`;
-    case 'inviteGroup':
+    case 'seedingPost':
       return `{
-              ${inviteGroup(script)}
+              ${seedingPostInteraction(script)}
             }`;
-    case 'joinGroup':
+    case 'directMsg':
       return `{
           ${joinGroup(script)}
         }`;
-    case 'leftGroup':
+    case 'follow':
       return `{
           ${leftGroup(script)}
         }`;
-
-    case 'likeComment':
-      return `{
-                  ${boostLikeComment(script)}
-                }`;
-    case 'follower':
-      return `{
-                  ${boostFollower(script)}
-                }`;
-    case 'viewVideo':
-      return `{
-                  ${boostView(script)}
-                }`;
-
     default:
       return `logger("Can't find func");`;
   }

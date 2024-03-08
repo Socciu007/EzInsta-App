@@ -219,7 +219,8 @@
           font-family: 'GoogleSans';
         }
 
-        .editor #codeArea {
+        .editor #codeArea,
+        .editor #userList {
           outline: none;
           padding-left: 10% !important;
           padding-top: 5% !important;
@@ -227,11 +228,11 @@
         .editor #shareContent {
           outline: none;
           padding-left: 10% !important;
-          padding-top: 4.8% !important;
+          padding-top: 5% !important;
         }
         .editor pre {
           padding-left: 10% !important;
-          padding-top: 4.8% !important;
+          padding-top: 5% !important;
           width: 100%;
         }
 

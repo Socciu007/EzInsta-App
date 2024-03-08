@@ -20,40 +20,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   const [values, setValues] = useState(DefaultSciptSettings['watchVideo']);
   const [textContent, setTextContent] = useState('');
   const [shareContent, setShareContent] = useState('');
-  // const { getRootProps, getInputProps } = useDropzone({
-  //   maxFiles: 10,
-  //   noClick: true,
-  //   accept: {
-  //     'image/png': ['.png', '.jpg', '.jpeg'],
-  //   },
-  //   onDrop: (acceptedFiles) => {
-  //     const newFiles = acceptedFiles.map((file) => {
-  //       console.log(file);
-  //       return file.path;
-  //     });
-
-  //     setValues({ ...values, photos: [...values.photos, ...newFiles] });
-  //   },
-  // });
-  const { getRootProps, getInputProps } = useDropzone({
-    maxFiles: 10,
-    noClick: true,
-    accept: {
-      'image/png': ['.png'],
-      'image/jpeg': ['.jpg', '.jpeg'],
-      'image/bmp': ['.bmp'],
-      'image/gif': ['.gif'],
-      'image/tiff': ['.tif', '.tiff'],
-    },
-    onDrop: (acceptedFiles) => {
-      const newFiles = acceptedFiles.map((file) => {
-        console.log(file);
-        return file.path;
-      });
-
-      setValues({ ...values, photos: [...values.photos, ...newFiles] });
-    },
-  });
+  const [userContent, setUserContent] = useState('');
 
   useEffect(() => {
     updateDesignScript(values, component, id);
@@ -66,6 +33,9 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
       }
       if (currentSetup.shareText && currentSetup.shareText.length) {
         setShareContent(currentSetup.shareText.join('\n'));
+      }
+      if (currentSetup.userList && currentSetup.userList.length) {
+        setShareContent(currentSetup.userList.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -87,6 +57,13 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
       setValues({ ...values, shareText: [] });
     }
   }, [shareContent]);
+  useEffect(() => {
+    if (shareContent.length) {
+      setValues({ ...values, userList: shareContent.split('\n') });
+    } else {
+      setValues({ ...values, userList: [] });
+    }
+  }, [userContent]);
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
       .split('\n')
@@ -150,6 +127,9 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   };
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
+  };
+  const handleDivUserClick = () => {
+    document.getElementById('userList').focus();
   };
   return (
     <div className="watch-video">
@@ -486,13 +466,13 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
               <div className={`PostContent ${values.isShare ? 'show' : 'hide'}`}>
                 <div className="component-item postOption">
                   <Select
-                    name="postOption"
+                    name="typeShare"
                     className="PostType"
                     onChange={(event) => changeShareOption(event.target.value)}
                     value={values.typeShare}
                     bordered={2 < 1 ? false : undefined}
                   >
-                    <MenuItem value="randomShare">Share random</MenuItem>
+                    <MenuItem value="suggested">Suggested</MenuItem>
                     <MenuItem value="user">User</MenuItem>
                   </Select>
                 </div>
@@ -532,6 +512,40 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     </div>
                   </div>
                 )}
+              </div>
+              <div className={`commentContent ${values.isShare ? 'show' : 'hide'}`}>
+                <div className="Text">
+                  <p style={{ fontWeight: 700 }}>Message</p>
+                  <div style={{ position: 'relative' }} className="component-item box">
+                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                      <Editor
+                        value={userContent}
+                        onValueChange={(text) => {
+                          setUserContent(text);
+                        }}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
+                        padding={15}
+                        className="editor"
+                        textareaId="userList"
+                        onClick={handleDivUserClick}
+                        style={{
+                          background: '#FFFFFF',
+                          fontSize: 15,
+                        }}
+                      />
+                      {userContent.length ? null : (
+                        <div onClick={handleDivUserClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                          <p>
+                            <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                          </p>
+                          <p>
+                            <span>2</span>Each content/line
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
