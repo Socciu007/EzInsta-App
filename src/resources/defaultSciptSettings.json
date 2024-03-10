@@ -16,6 +16,7 @@
     "shareStart": 2,
     "shareEnd": 2,
     "typeShare": "user",
+    "userList": [],
     "shareText": []
   },
   "watchVideo": {

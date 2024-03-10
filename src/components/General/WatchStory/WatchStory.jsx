@@ -28,7 +28,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
         setShareContent(currentSetup.shareText.join('\n'));
       }
       if (currentSetup.userList && currentSetup.userList.length) {
-        setShareContent(currentSetup.userList.join('\n'));
+        setUserContent(currentSetup.userList.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -56,7 +56,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   }, [shareContent]);
   useEffect(() => {
     if (shareContent.length) {
-      setValues({ ...values, userList: shareContent.split('\n') });
+      setValues({ ...values, userList: userContent.split('\n') });
     } else {
       setValues({ ...values, userList: [] });
     }
