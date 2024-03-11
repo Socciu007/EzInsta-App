@@ -34,7 +34,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
         setCommentContent(currentSetup.commentText.join('\n'));
       }
       if (currentSetup.shareContent && currentSetup.shareContent.length) {
-        setCommentContent(currentSetup.shareContent.join('\n'));
+        setShareContent(currentSetup.shareContent.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -59,7 +59,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   }, [userContent]);
 
   useEffect(() => {
-    if (userContent.length) {
+    if (commentContent.length) {
       setValues({ ...values, commentText: commentContent.split('\n') });
     } else {
       setValues({ ...values, commentText: [] });
@@ -67,8 +67,8 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
   }, [commentContent]);
 
   useEffect(() => {
-    if (userContent.length) {
-      setValues({ ...values, shareContent: commentContent.split('\n') });
+    if (shareContent.length) {
+      setValues({ ...values, shareContent: shareContent.split('\n') });
     } else {
       setValues({ ...values, shareContent: [] });
     }

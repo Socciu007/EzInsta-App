@@ -9,7 +9,7 @@ import { newFeed } from './scriptAuto/NewsFeed';
 import { cancelFriend } from './scriptAuto/CancelFriend';
 import { watchStory } from './scriptAuto/WatchStory';
 import { addFriend } from './scriptAuto/AddFriend';
-import { watchVideo } from './scriptAuto/WatchVideo';
+import { watchReels } from './scriptAuto/watchReels';
 import Promise from 'bluebird';
 import { unfollow } from './scriptAuto/seedingUnfollow';
 import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
@@ -752,7 +752,7 @@ return new Promise(async (resolve) => {
       "--proxy-bypass-list=https://scontent.cdninstagram.com",
       "--flag-switches-begin",
       "--flag-switches-end",
-      "--window-size=360,760",
+      "--window-size=760,760",
       "--enable-chrome-browser-cloud-management",
       "--force-device-scale-factor=0.8",
       "--window-position=${positionBrowser}"
@@ -886,7 +886,7 @@ const convertToFunc = (script) => {
         }`;
     case 'watchVideo':
       return `{
-          ${watchVideo(script)}
+          ${watchReels(script)}
         }`;
     case 'unfollow':
       return `{
