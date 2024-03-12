@@ -16,6 +16,7 @@ import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
 import { directMsg } from './scriptAuto/directMsg';
 import { leftGroup } from './scriptAuto/leaveGroup';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
+import { updateProfileScript } from './scriptAuto/updateProfile';
 import { getInfor } from './scriptAuto/GetInfo';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -903,6 +904,10 @@ const convertToFunc = (script) => {
     case 'follow':
       return `{
           ${leftGroup(script)}
+        }`;
+    case 'updateProfile':
+      return `{
+          ${updateProfileScript(script)}
         }`;
     default:
       return `logger("Can't find func");`;

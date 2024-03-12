@@ -54,8 +54,13 @@
     "shareEnd": 3,
     "userStart": 2,
     "userEnd": 3,
+    "randomStart": 2,
+    "randomEnd": 3,
     "message": [],
+    "randomMessage": [],
+    "randomShareText": [],
     "isMessage": false,
+    "isRandomMessage": false,
     "typeShare": "randomShare",
     "shareText": [],
     "isComment": false,
@@ -105,7 +110,8 @@
     "notificationEnd": 5,
     "delayTimeStart": 5,
     "delayTimeEnd": 10,
-    "option": "randomFriend"
+    "viewTimeStart": 60,
+    "viewTimeEnd": 120
   },
   "sendMsg": null,
   "replyMsg": null,

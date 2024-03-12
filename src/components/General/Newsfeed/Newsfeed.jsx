@@ -14,10 +14,12 @@ import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
+  const [values, setValues] = useState(DefaultSciptSettings['newsFeed']);
   const [textContent, setTextContent] = useState('');
   const [shareContent, setShareContent] = useState('');
-  const [values, setValues] = useState(DefaultSciptSettings['newsFeed']);
   const [message, setMessage] = useState('');
+  const [shareRandom, setShareRandom] = useState('');
+  const [randomMessage, setRandomMessage] = useState('');
   useEffect(() => {
     if (currentSetup) {
       if (currentSetup.commentText && currentSetup.commentText.length) {
@@ -28,6 +30,12 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
       }
       if (currentSetup.message && currentSetup.message.length) {
         setMessage(currentSetup.message.join('\n'));
+      }
+      if (currentSetup.randomShareText && currentSetup.randomShareText.length) {
+        setShareRandom(currentSetup.randomShareText.join('\n'));
+      }
+      if (currentSetup.randomMessage && currentSetup.randomMessage.length) {
+        setRandomMessage(currentSetup.randomMessage.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -61,6 +69,20 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
       setValues({ ...values, message: [] });
     }
   }, [message]);
+  useEffect(() => {
+    if (shareRandom.length) {
+      setValues({ ...values, randomShareText: shareRandom.split('\n') });
+    } else {
+      setValues({ ...values, randomShareText: [] });
+    }
+  }, [shareRandom]);
+  useEffect(() => {
+    if (randomMessage.length) {
+      setValues({ ...values, randomMessage: randomMessage.split('\n') });
+    } else {
+      setValues({ ...values, randomMessage: [] });
+    }
+  }, [randomMessage]);
 
   const changeTimeStart = (time) => {
     setValues({ ...values, scrollTimeStart: parseToNumber(time) });
@@ -86,6 +108,9 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   };
   const handleChangeMessage = (value) => {
     setValues({ ...values, isMessage: value });
+  };
+  const handleChangeRandomMessage = (value) => {
+    setValues({ ...values, isRandomMessage: value });
   };
 
   const handleChangeComment = (value) => {
@@ -120,14 +145,27 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
   const handleChangeUserEnd = (value) => {
     setValues({ ...values, userEnd: parseToNumber(value) });
   };
+  const handleChangeRandomStart = (value) => {
+    setValues({ ...values, randomStart: parseToNumber(value) });
+  };
+
+  const handleChangeRandomEnd = (value) => {
+    setValues({ ...values, randomEnd: parseToNumber(value) });
+  };
   const handleDivClick = () => {
     document.getElementById('codeArea').focus();
   };
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
   };
+  const handleDivShareRandomClick = () => {
+    document.getElementById('shareRandomContent').focus();
+  };
   const handleDivMessageClick = () => {
     document.getElementById('messageContent').focus();
+  };
+  const handleDivRandomMessageClick = () => {
+    document.getElementById('messageRandomContent').focus();
   };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
@@ -589,6 +627,142 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                             />
                             {message.length ? null : (
                               <div onClick={handleDivMessageClick} className={`placeholder ${message ? 'hide' : ''}`}>
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {values.typeShare === 'randomShare' && (
+                  <div className="commentContent">
+                    <div className="Text">
+                      <div className="usernameWrapper">
+                        <div className="username">
+                          <p style={{ fontWeight: 700 }}>Quality user/post</p>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeRandomStart(values.randomStart + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() =>
+                                  handleChangeRandomStart(values.randomStart - 1 > 0 ? values.randomStart - 1 : 0)
+                                }
+                              />
+                            </div>
+                            <input
+                              type="text"
+                              name="Start"
+                              value={values.randomStart}
+                              onChange={(event) => handleChangeRandomStart(event.target.value)}
+                            />
+                          </div>
+                          <span>to</span>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeRandomEnd(values.randomEnd + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() =>
+                                  handleChangeRandomEnd(values.randomEnd - 1 > 0 ? values.randomEnd - 1 : 0)
+                                }
+                              />
+                            </div>
+                            <input
+                              type="text"
+                              name="End"
+                              value={values.randomEnd}
+                              onChange={(event) => handleChangeRandomEnd(event.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ position: 'relative' }} className="component-item box">
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={shareRandom}
+                              onValueChange={(text) => {
+                                setShareRandom(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareRandom)}
+                              padding={15}
+                              className="editor"
+                              textareaId="shareRandomContent"
+                              onClick={handleDivShareRandomClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {shareRandom.length ? null : (
+                              <div
+                                onClick={handleDivShareRandomClick}
+                                className={`placeholder ${shareRandom ? 'hide' : ''}`}
+                              >
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="usernameMessage">
+                        <div className="username">
+                          <div className="message">
+                            <input
+                              type="checkbox"
+                              name="randomShare"
+                              checked={values.isRandomMessage}
+                              onChange={(event) => handleChangeRandomMessage(event.target.checked)}
+                            />
+                            <p style={{ fontWeight: 700 }}>Message</p>
+                          </div>
+                        </div>
+                        <div
+                          style={{ position: 'relative' }}
+                          className={`component-item box ${values.isRandomMessage ? 'show' : 'hide'}`}
+                        >
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={randomMessage}
+                              onValueChange={(text) => {
+                                setRandomMessage(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, randomMessage)}
+                              padding={15}
+                              className="editor"
+                              textareaId="messageRandomContent"
+                              onClick={handleDivRandomMessageClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {randomMessage.length ? null : (
+                              <div
+                                onClick={handleDivRandomMessageClick}
+                                className={`placeholder ${randomMessage ? 'hide' : ''}`}
+                              >
                                 <p>
                                   <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                                 </p>
