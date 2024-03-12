@@ -11,12 +11,17 @@ export const newFeed = (setting) => {
       isShare: ${setting.isShare},
       shareStart: ${setting.shareStart},
       shareEnd: ${setting.shareEnd},
+      randomStart: ${setting.randomStart},
+      randomEnd: ${setting.randomEnd},
       userStart: ${setting.userStart},
       userEnd: ${setting.userEnd},
       message: ${JSON.stringify(setting.message)},
+      randomMessage: ${JSON.stringify(setting.randomMessage)},
       isMessage:  ${setting.isMessage},
+      isRandomMessage:  ${setting.isRandomMessage},
       typeShare: ${JSON.stringify(setting.typeShare)},
       shareText: ${JSON.stringify(setting.shareText)},
+      randomShareText: ${JSON.stringify(setting.randomShareText)},
       isComment: ${setting.isComment},
       commentStart: ${setting.commentStart},
       commentEnd: ${setting.commentEnd},
@@ -24,17 +29,67 @@ export const newFeed = (setting) => {
     }`;
   console.log(strSetting);
   return `
-const randomShare = async (page) => {
-  const radioBtns = await findBtns(page, "radio");
-  if (!radioBtns || radioBtns.length == 0) {
-    logger("Can not find any radio buttons")
-    return false;
+const randomShare = async (page, news) => {
+  const numsUser = getRandomIntBetween(news.randomStart, news.randomEnd);
+  logger("Cần gửi cho " + numsUser + " người");
+  await delay(5000);
+  let arr = [];
+  let count = 0;
+  for(let i = 0; i < numsUser * 2 ; i++){ 
+    let search = await getElement(page, '[name="queryBox"]');
+    if(!search) {
+      logger("Can not find search button")
+      return false;
+    }
+    await search.click();
+    await delay(2000);
+    let content = news.randomShareText;
+    let randomString = content[getRandomInt(content.length)];
+    await delay(2000);
+    await page.keyboard.type(randomString, { delay: 100 });
+    await delay(5000);
+    let radioBtns = await findBtns(page, "radio");
+    await delay(5000);
+    if(!radioBtns) {
+      await search.click();
+      await page.keyboard.down('Control'); 
+      await page.keyboard.press('A');
+      await page.keyboard.up('Control'); 
+      await page.keyboard.press('Backspace');
+      await delay(3000);
+      continue;
+    }
+    let randomIndex = getRandomInt(radioBtns.length);
+    await page.evaluate((el) => {
+       el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }, radioBtns[randomIndex]);
+    await delay(2000);
+    await radioBtns[randomIndex].click();
+    await delay(2000);
+    count++;
+    logger("Đã gửi cho" + count +  " người");
+    if(count == numsUser) {
+      logger("Đã gửi cho đủ người");
+      break;
+    }
   }
-  let randomIndex = getRandomInt(radioBtns.length);
-  await scrollSmoothIfElementNotExistOnScreen(page, radioBtns[randomIndex]);
-  await delay(2000);
-  await radioBtns[randomIndex].click();
-  await delay(2000);
+   
+  if(news.isRandomMessage == true) {
+    const messageArea = await getElement(page, '[name="shareCommentText"]');
+    if(!messageArea) {
+      logger("Không tìm thấy vùng ghi lời nhắn");
+      return false;
+    }
+    await delay(2000);
+    await messageArea.click();
+    await delay(2000);
+    let message = news.randomMessage;
+    let randomString = message[getRandomInt(message.length)];
+    await delay(2000);
+    await page.keyboard.type(randomString, { delay: 100 });
+    await delay(2000);
+  }
+
   const sendBtns = await findBtns(page, "send");
   if (!sendBtns || sendBtns.length == 0) {
     logger("Can not find any send buttons")
@@ -46,41 +101,47 @@ const randomShare = async (page) => {
   
 } 
 const userShare = async (page, news) => {
-  const search = await getElement(page, '[name="queryBox"]');
-  if(!search) {
-    logger("Can not find search button")
-    return false;
-  }
-  await search.click();
-  await delay(2000);
-  let content = news.shareText;
-  let randomString = content[getRandomInt(content.length)];
-  await delay(2000);
-  await page.keyboard.type(randomString, { delay: 100 });
-  await delay(5000);
   const numsUser = getRandomIntBetween(news.userStart, news.userEnd);
   logger("Cần gửi cho " + numsUser + " người");
-  await delay(3000);
-  const radioBtns = await findBtns(page, "radio");
-  if (!radioBtns || radioBtns.length == 0) {
-    logger("Can not find any radio buttons")
-    return false;
-  }
-  if(radioBtns.length < numsUser) {
-    numsUser = radioBtns.length;
-  }
+  await delay(5000);
   let arr = [];
-  for(let i = 0; i < numsUser; i++){
-    let randomIndex = getRandomInt(radioBtns.length);
-    if(arr.indexOf(randomIndex) == -1) {
-      arr.push(randomIndex);
-    } else {
-      i--;
+  let count = 0;
+  for(let i = 0; i < numsUser * 2 ; i++){
+    const search = await getElement(page, '[name="queryBox"]');
+    if(!search) {
+      logger("Can not find search button")
+      return false;
     }
-    await scrollSmoothIfElementNotExistOnScreen(page, radioBtns[randomIndex]);
+    await search.click();
     await delay(2000);
-    await radioBtns[randomIndex].click();
+    let content = news.shareText;
+    let randomString = content[getRandomInt(content.length)];
     await delay(2000);
+    await page.keyboard.type(randomString, { delay: 100 });
+    await delay(5000);
+    let radioBtns = await findBtns(page, "radio");
+    await delay(5000);
+    if(!radioBtns) {
+      await search.click();
+      await page.keyboard.down('Control'); 
+      await page.keyboard.press('A');
+      await page.keyboard.up('Control'); 
+      await page.keyboard.press('Backspace');
+      await delay(3000);
+      continue;
+    }
+    await page.evaluate((el) => {
+       el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }, radioBtns[0]);
+    await delay(2000);
+    await radioBtns[0].click();
+    await delay(2000);
+    count++;
+    logger("Đã gửi cho" + count +  " người");
+    if(count == numsUser) {
+      logger("Đã gửi cho đủ người");
+      break;
+    }
   }
   
   if(news.isMessage == true) {
@@ -259,7 +320,7 @@ try {
                 await shareBtns[i].click();
                 await delay(2000);
                 if(news.typeShare == "randomShare"){
-                  const isShare = await randomShare(page);
+                  const isShare = await randomShare(page, news);
                   if(isShare) {
                     count++;
                     logger("Share thành công " + count + " bài");

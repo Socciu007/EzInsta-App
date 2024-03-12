@@ -16,6 +16,7 @@ import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
 import { joinGroup } from './scriptAuto/joinGroup';
 import { leftGroup } from './scriptAuto/leaveGroup';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
+import { updateProfileScript } from './scriptAuto/updateProfile';
 import { getInfor } from './scriptAuto/GetInfo';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -752,7 +753,7 @@ return new Promise(async (resolve) => {
       "--proxy-bypass-list=https://scontent.cdninstagram.com",
       "--flag-switches-begin",
       "--flag-switches-end",
-      "--window-size=360,760",
+      "--window-size=760,760",
       "--enable-chrome-browser-cloud-management",
       "--force-device-scale-factor=0.8",
       "--window-position=${positionBrowser}"
@@ -903,6 +904,10 @@ const convertToFunc = (script) => {
     case 'follow':
       return `{
           ${leftGroup(script)}
+        }`;
+    case 'updateProfile':
+      return `{
+          ${updateProfileScript(script)}
         }`;
     default:
       return `logger("Can't find func");`;

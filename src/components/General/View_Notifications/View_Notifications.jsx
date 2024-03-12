@@ -33,6 +33,13 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
   const changeDelayTimeEnd = (time) => {
     setValues({ ...values, delayTimeEnd: parseToNumber(time) });
   };
+  const changeViewTimeStart = (viewTime) => {
+    setValues({ ...values, viewTimeStart: parseToNumber(viewTime) });
+  };
+
+  const changeViewTimeEnd = (viewTime) => {
+    setValues({ ...values, viewTimeEnd: parseToNumber(viewTime) });
+  };
   useEffect(() => {
     if (currentSetup) {
       setTimeout(() => {
@@ -104,6 +111,60 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
                   name="End"
                   value={values.notificationEnd}
                   onChange={(event) => changeNotificationEnd(event.target.value)}
+                />
+              </div>
+            </div>
+            <div className="component-item viewTime">
+              <p className="component-item__header">
+                View time<span style={{ marginLeft: '2px' }}> (s):</span>
+              </p>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeViewTimeStart(values.viewTimeStart + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeViewTimeStart(values.viewTimeStart - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="Start"
+                  value={values.viewTimeStart}
+                  onChange={(event) => changeViewTimeStart(event.target.value)}
+                />
+              </div>
+              <span>to</span>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeViewTimeEnd(values.viewTimeEnd + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeViewTimeEnd(values.viewTimeEnd - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="End"
+                  value={values.viewTimeEnd}
+                  onChange={(event) => changeViewTimeEnd(event.target.value)}
                 />
               </div>
             </div>
