@@ -72,12 +72,14 @@ export const loginFacebook = (account) => {
             account.password.length))
       ) {
         await returnHomePage(page);
-        const email = await getElementEmail(page);
+        const email = await getElementEmail(page, 15);
         const password = await getElementPassword(page);
         if (email && password) {
-          await email.type(account.uid, { delay: 100 });
+          await simMoveToAndClick(page, email);
+          await simKeyboardType(page, account.uid);
           await delay(1000);
-          await password.type(account.password, { delay: 100 });
+          await simMoveToAndClick(page, password);
+          await simKeyboardType(page, account.password);
           await delay(1000);
           const emailText = await getInputText(page, email);
           const passwordText = await getInputText(page, password);
@@ -235,6 +237,7 @@ export const loginFacebook = (account) => {
       if (!isLogin) {
         return { isLogin, error };
       }
+      
       if (account.cookies) {
         logger("Delete Cookie|" + account.cookies);
       }

@@ -1,60 +1,49 @@
 export const getInfor = (profile) => {
   if (!profile.fllower) {
     return `{
-            try{
-                const checkPageIsLive = checkIsLive(page);
-                if (!checkPageIsLive) {
-                logger("Page null!");
-                return false;
-                }
-
-    await page.goto('https://mbasic.facebook.com/me', {
-          waitUntil: 'networkidle2',
-          timeout: 60000,
-        });
-         const elName = await getElement(page,'span strong');
-         if(elName){
-            const name = await getText(page, elName);
-            let isClick = false;
-            const elFriends = await getElements(page,'a');
-            logger(elFriends.length);
-            for(let i=0;i<elFriends.length;i++){
-                const href = await elFriends[i].evaluate(element => element.href);
-                if(href && href.includes('friends&lst')){
-                    await elFriends[i].click();
-                    isClick = true;
-                    break;
-                }
-            }
-            if(!isClick){
-                await page.goto('https://mbasic.facebook.com/me/friends', {
-                    waitUntil: 'networkidle2',
-                    timeout: 60000,
-                  });
-            }
-            const more = await getElement(page,'[id="m_more_friends"]', 15);
-            if(more){
-                let textFriends = '';
-                const elTexts =  await getElements(page,'h3', 2);
-                for(let i=0;i< elTexts.length;i++){
-                    const text = await getText(page, elTexts[i]);
-                    if(text.includes('(')){
-                        textFriends = text.split("(")[1] ? text.split("(")[1].replace(")","") : '';
-                        break;
-                    }
-                }
-                logger('${profile.id}','Update name:' + name + "|" + textFriends);
-            }
-            else{
-                logger('${profile.id}','Update name:' + name);
-            }
+        try {
+          const checkPageIsLive = checkIsLive(page);
+          if (!checkPageIsLive) {
+            logger("Page null!");
+            return false;
+          }
+      
+          await returnHomePage(page);
+          await delay(2000);
+          const disibleNoti = await getElement(
+            page,
+            '[class="_a9-- _ap36 _a9_1"]',
+            10
+          );
+          if (disibleNoti) {
+            await disibleNoti.click();
+          }
+          const elProfile = await getElement(page, "a span img");
+          if (elProfile) {
+            await elProfile.click();
+            await delay(5000);
+            let follower;
+            let following;
+            const elLinks = await getElements(page, "a");
            
-         }
-         
-            }catch(e){
-                logger(e)
+            if (elLinks && elLinks.length) {
+              for (let i = 0; i < elLinks.length; i++) {
+                const href = await elLinks[i].evaluate((element) => element.href);
+                if (href && href.toString().includes("/followers")) {
+                  follower = await getText(page, elLinks[i]);
+                } else if (href && href.toString().includes("/following")) {
+                  following = await getText(page, elLinks[i]);
+                }
+              }
             }
-        }`;
+            if(follower && following){
+              logger('${profile.id}','Update follower:' + follower + "|" + following);
+            }
+          }
+        } catch (e) {
+          logger(e);
+        }
+      }`;
   }
   return '';
 };

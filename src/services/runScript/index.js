@@ -48,12 +48,12 @@ const splitToChunks = (array, length, thread) => {
 
 const getPosition = async (index) => {
   let x, y;
-  const browserWidth = 450;
+  const browserWidth = 760;
   const { width } = await getWindowsize();
   let maxBrowserRow = (width / browserWidth) | 0;
   const indexBrowser = index % maxBrowserRow;
   const indexNewBrowser = index % (maxBrowserRow * 2);
-  x = indexBrowser * 450;
+  x = indexBrowser * 760;
   if (indexBrowser < maxBrowserRow && indexNewBrowser < maxBrowserRow) {
     y = 0;
   } else {
@@ -200,6 +200,419 @@ event.reply("ipc-logger",['${profile.uid}',...params]);
 };
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+const sleepRd = (a, b) => {
+  const rd1 = rd(a, b);
+  return sleep(rd1);
+};
+
+const rd = (min, max, pon1 = false) => {
+  const c = max - min + 1;
+  return Math.floor(Math.random() * c + min) * (pon1 ? pon() : 1);
+};
+
+let _mouseCurrPos = { x: rd(0, 450), y: rd(0, 660) };
+
+const arrRd = (arr) => {
+  if (!arr || !arr.length) {
+    throw new TypeError("arr must not be empty");
+  }
+  return arr[rd(0, arr.length - 1)];
+};
+
+const pon = () => {
+  return rd(0, 10) >= 5 ? 1 : -1;
+};
+
+const threeBezier = (t, p1, cp1, cp2, p2) => {
+  const [x1, y1] = p1;
+  const [x2, y2] = p2;
+  const [cx1, cy1] = cp1;
+  const [cx2, cy2] = cp2;
+  let x =
+    x1 * (1 - t) * (1 - t) * (1 - t) +
+    3 * cx1 * t * (1 - t) * (1 - t) +
+    3 * cx2 * t * t * (1 - t) +
+    x2 * t * t * t;
+  let y =
+    y1 * (1 - t) * (1 - t) * (1 - t) +
+    3 * cy1 * t * (1 - t) * (1 - t) +
+    3 * cy2 * t * t * (1 - t) +
+    y2 * t * t * t;
+  return [x, y];
+};
+
+const mouseMovementTrack = (startPos, endPos, maxPoints = 30, cpDelta = 1) => {
+  let nums = [];
+  let maxNum = 0;
+  let moveStep = 1;
+
+  for (let n = 0; n < maxPoints; ++n) {
+    nums.push(maxNum);
+    if (n < (maxPoints * 1) / 10) {
+      moveStep += rd(60, 100);
+    } else if (n >= (maxPoints * 9) / 10) {
+      moveStep -= rd(60, 100);
+      moveStep = Math.max(20, moveStep);
+    }
+    maxNum += moveStep;
+  }
+
+  const result = [];
+
+  const p1 = [startPos.x, startPos.y];
+  const cp1 = [
+    (startPos.x + endPos.x) / 2 + rd(30, 100, true) * cpDelta,
+    (startPos.y + endPos.y) / 2 + rd(30, 100, true) * cpDelta,
+  ];
+
+  const cp2 = [
+    (startPos.x + endPos.x) / 2 + rd(30, 100, true) * cpDelta,
+    (startPos.y + endPos.y) / 2 + rd(30, 100, true) * cpDelta,
+  ];
+  const p2 = [endPos.x, endPos.y];
+
+  for (let num of nums) {
+    const [x, y] = threeBezier(num / maxNum, p1, cp1, cp2, p2);
+    result.push({ x, y });
+  }
+
+  return result;
+};
+
+const simMouseMove = async (
+  page,
+  options = {
+    startPos,
+    endPos,
+    maxPoints,
+    timestamp,
+    cpDelta,
+  }
+) => {
+  const points = mouseMovementTrack(
+    options.startPos,
+    options.endPos,
+    options.maxPoints || rd(15, 30),
+    options.cpDelta || 1
+  );
+
+  for (let n = 0; n < points.length; n += 1) {
+    const point = points[n];
+    await page.mouse.move(point.x, point.y, { steps: rd(1, 2) });
+
+    await sleep(
+      (options.timestamp || rd(300, 800)) / points.length
+    );
+  }
+};
+
+const simMouseMoveTo = async (
+  currPage,
+  endPos,
+  maxPoints,
+  timestamp,
+  cpDelta
+) => {
+  console.log(endPos);
+
+  const closeToEndPos = {
+    x: endPos.x + rd(5, 30, true),
+    y: endPos.y + rd(5, 20, true),
+  };
+
+  await simMouseMove(currPage, {
+    startPos: _mouseCurrPos,
+    endPos: closeToEndPos,
+    maxPoints,
+    timestamp,
+    cpDelta,
+  });
+
+  // The last pos must correction
+  await currPage.mouse.move(endPos.x, endPos.y, { steps: rd(3, 9) });
+
+  _mouseCurrPos = endPos;
+
+  return true;
+};
+
+const simRandomMouseMove = async (innerWidth, innerHeight) => {
+  const startX = innerWidth / 4;
+  const startY = innerHeight / 6;
+  const endX = (innerWidth * 3) / 4;
+  const endY = (innerHeight * 5) / 6;
+
+  const endPos = { x: rd(startX, endX), y: rd(startY, endY) };
+  await simMouseMoveTo(endPos);
+  await sleepRd(300, 800);
+
+  return true;
+};
+
+const simClick = async (
+  currPage,
+  options = {
+    pauseAfterMouseUp: true,
+  }
+) => {
+  console.log("Click element");
+  await currPage.mouse.down();
+  await sleepRd(30, 80);
+  await currPage.mouse.up();
+
+  if (options && options.pauseAfterMouseUp) {
+    await sleepRd(150, 600);
+  }
+
+  return true;
+};
+
+const convertPointClick = (boundingBox) => {
+  if (boundingBox) {
+    return {
+      x: boundingBox.x + boundingBox.width / 2,
+      y: boundingBox.y + boundingBox.height / 2,
+    };
+  }
+  return null;
+};
+
+const simMoveToAndClickPositon = async (
+  currPage,
+  endPos,
+  options = {
+    pauseAfterMouseUp: true,
+  }
+) => {
+  await simMouseMove(currPage, {
+    startPos: { x: 50, y: 50 },
+    endPos: { x: 500, y: 660 },
+    timestamp: rd(500, 1000),
+  });
+
+  await simMouseMoveTo(currPage, endPos, rd(15, 30), 1000, 1);
+  await currPage.mouse.move(endPos.x + rd(-10, 10), endPos.y, {
+    steps: rd(8, 20),
+  });
+
+  _mouseCurrPos = endPos;
+  await sleepRd(300, 800);
+
+  return simClick(currPage, options);
+};
+
+const simMoveToAndClick = async (
+  currPage,
+  element,
+  options = {
+    pauseAfterMouseUp: true,
+  }
+) => {
+  const boundingBox = await element.boundingBox();
+  if (!boundingBox) return false;
+
+  await simMouseMove(currPage, {
+    startPos: { x: 50, y: 50 },
+    endPos: { x: 1280, y: 720 },
+    timestamp: rd(2000, 4000),
+  });
+
+  const endPos = convertPointClick(boundingBox);
+  await simMouseMoveTo(currPage, endPos, rd(15, 30), 1000, 1);
+  await currPage.mouse.move(endPos.x + rd(-10, 10), endPos.y, {
+    steps: rd(8, 20),
+  });
+
+  _mouseCurrPos = endPos;
+  await sleepRd(300, 800);
+
+  return simClick(currPage, options);
+};
+
+const simMouseMoveToElement = async (currPage, eh) => {
+  // get height
+  let height = 1000;
+  let box;
+
+  box = await adjustElementPositionWithMouse(eh, currPage, height);
+
+  if (box) {
+    // The position of each element click should not be the center of the element
+    // size of the clicked element must larger than 10 x 10
+    const endPos = {
+      x: box.x + box.width / 2 + rd(0, 5, true),
+      y: box.y + box.height / 2 + rd(0, 5, true),
+    };
+
+    await simMouseMoveTo(endPos);
+
+    // Pause
+    await sleepRd(300, 800);
+
+    return true;
+  }
+
+  return false;
+};
+
+const simClickElement = async (
+  eh,
+  options = {
+    pauseAfterMouseUp: true,
+  }
+) => {
+  console.log("simMouseMoveToElement");
+  const moveToEl = await simMouseMoveToElement(eh);
+  console.log(moveToEl);
+  if (!moveToEl) {
+    return false;
+  }
+
+  // click
+  if (await simClick(options)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const boundingBox = async (eh) => {
+  if (!eh) {
+    return null;
+  }
+
+  let box = await eh.boundingBox();
+
+  return box;
+};
+
+const adjustElementPositionWithMouse = async (eh, currPage, innerHeight) => {
+  let box = null;
+  for (;;) {
+    box = await boundingBox(eh);
+
+    if (box) {
+      // Check the node is in the visible area
+      // @ts-ignore
+      let deltaX = 0;
+      let deltaY = 0;
+
+      let viewportAdjust = false;
+
+      // If the top of the node is less than 0
+      if (box.y <= 0) {
+        // deltaY always positive
+
+        // ---------------------
+        //     30px           |
+        //    [   ]           |
+        // ..         Distance to be moved
+        // ..                 |
+        // ..                 |
+        // ---------------------body top
+
+        deltaY = Math.min(-(box.y - 30) - 0, rd(150, 300));
+
+        deltaY = -deltaY;
+        viewportAdjust = true;
+      } else if (box.y + box.height >= innerHeight) {
+        // If the bottom is beyond
+
+        deltaY = Math.min(
+          box.y + box.height + 30 - innerHeight,
+          rd(150, 300)
+        );
+
+        viewportAdjust = true;
+      }
+
+      if (viewportAdjust) {
+        await currPage.mouse.wheel({ deltaY });
+        await sleepRd(100, 400);
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+
+  return box;
+};
+
+const simKeyboardPress = async (
+  currPage,
+  text,
+  options = {
+    pauseAfterKeyUp: true,
+  }
+) => {
+  await currPage.keyboard.press(text);
+  if (options && options.pauseAfterKeyUp) {
+    await sleepRd(300, 1000);
+  }
+  return true;
+};
+
+const simKeyboardEnter = async (
+  options = {
+    pauseAfterKeyUp: true,
+  }
+) => {
+  return await simKeyboardPress("Enter", options);
+};
+
+const simKeyboardEsc = async (
+  options = {
+    pauseAfterKeyUp: true,
+  }
+) => {
+  return await simKeyboardPress("Escape", options);
+};
+
+const simKeyboardType = async (
+  currPage,
+  text,
+  options = {
+    pauseAfterLastKeyUp: true,
+  }
+) => {
+  const needsShiftKey = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
+
+  // TODO: check if shiftKey, alt, ctrl can be fired in mobile browsers
+  for (let ch of text) {
+    let needsShift = false;
+    if (needsShiftKey.includes(ch)) {
+      needsShift = true;
+      await currPage.keyboard.down("ShiftLeft");
+      await sleepRd(500, 1000);
+    }
+
+    // if a Chinese character
+    const isCh = ch.match(/^[\u4e00-\u9fa5]/);
+    const delay = isCh ? rd(200, 800) : rd(30, 100);
+
+    await currPage.keyboard.type("" + ch, { delay });
+
+    if (needsShift) {
+      await sleepRd(150, 450);
+      await currPage.keyboard.up("ShiftLeft");
+    }
+
+    await sleepRd(30, 100);
+  }
+
+  if (options && options.pauseAfterLastKeyUp) {
+    await sleepRd(300, 1000);
+  }
+
+  return true;
+};
 
 const getRandomIntBetween = (min, max) => {
 min = Math.ceil(min);
@@ -681,27 +1094,28 @@ for (let i = 0; i < loop; i++) {
 }
 };
 
-const getElementEmail = async (page) => {
-for (let i = 0; i < 30; i++) {
-  logger("GET Email");
-  let email;
-  email = await getElement(page, '[name="username"]', 1);
-  if (email) return email;
-  await delay(500);
-}
-return null;
-};
-
-const getElementPassword = async (page) => {
-try {
-  let password;
-  password = await getElement(page, '[type="password"]');
-  if (!password) password = await getElementByID(page, "pass");
-  return password;
-} catch (err) {
+const getElementEmail = async (page,round=30) => {
+  for (let i = 0; i < round; i++) {
+    logger("GET Email");
+    let email;
+    email = await getElement(page, '[name="username"]', 1);
+    if (email) return email;
+    await delay(500);
+  }
   return null;
-}
-};
+  };
+
+  const getElementPassword = async (page) => {
+    try {
+      let password;
+      password = await getElement(page, '[type="password"]');
+      if (!password) password = await getElementByID(page, "pass");
+      return password;
+    } catch (err) {
+      return null;
+    }
+    };
+
 
 const toOTPCode = async (code, proxy)=>{
   const res = await apiAxiosWithProxy('https://2fa.live/tok/'+code,proxy);
@@ -806,6 +1220,7 @@ return new Promise(async (resolve) => {
   });
 
   {${loginFacebook(profile)}}
+  ${getInfor(profile)}
   ${getAllFunc(arrfunction)}
 
 } catch (error) {
