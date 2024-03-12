@@ -84,7 +84,7 @@ export const seedingPostInteraction = (setting) => {
         }
         await delay(3000);
       }
-      logger("Post interaction complete");
+      logger("Complete post interaction");
     } catch (error) {
       logger("Err access" + error.message);
     }

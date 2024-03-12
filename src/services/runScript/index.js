@@ -13,7 +13,7 @@ import { watchReels } from './scriptAuto/watchReels';
 import Promise from 'bluebird';
 import { unfollow } from './scriptAuto/seedingUnfollow';
 import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
-import { joinGroup } from './scriptAuto/joinGroup';
+import { directMsg } from './scriptAuto/directMsg';
 import { leftGroup } from './scriptAuto/leaveGroup';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
 import { getInfor } from './scriptAuto/GetInfo';
@@ -898,7 +898,7 @@ const convertToFunc = (script) => {
             }`;
     case 'directMsg':
       return `{
-          ${joinGroup(script)}
+          ${directMsg(script)}
         }`;
     case 'follow':
       return `{
