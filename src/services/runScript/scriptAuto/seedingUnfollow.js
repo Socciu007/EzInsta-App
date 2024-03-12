@@ -81,7 +81,7 @@ export const unfollow = (setting) => {
             countUnFollow++;
             logger("Unfollow " + countUnFollow + " person");
           } else {
-            logger("User is not following");
+            logger("Debug|Unfollow|User is not following");
             return;
           }
         }
@@ -147,9 +147,12 @@ export const unfollow = (setting) => {
             }
           }
         }
+      } else {
+        logger("Debug|Unfollow|User is not select type unfollow. Ex: random, user,...");
+        return;
       }
     } catch (error) {
-      logger("Err action unfollow " + error.message);
+      logger("Debug|Unfollow|Err action unfollow " + error.message);
       return;
     }
   };
@@ -276,7 +279,7 @@ export const unfollow = (setting) => {
  try {
   const isLive = await checkIsLive(page);
   if (!isLive) {
-    logger("Page is die");
+    logger("Debug|Unfollow|Page is die");
     return;
   }
   await returnHomePage(page);
@@ -287,11 +290,11 @@ export const unfollow = (setting) => {
   if (isAccessProfile) {
     await actionUnFollow(page, unFollowObj);
   } else {
-    logger("Err access profile");
+    logger("Debug|Unfollow|Err access profile");
     return;
   }
 } catch (error) {
-  logger("Err unfollow " + error.message);
+  logger("Debug|Unfollow|Err unfollow " + error.message);
 }
   `;
 };

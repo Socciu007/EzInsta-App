@@ -9,7 +9,7 @@ import { newFeed } from './scriptAuto/NewsFeed';
 import { cancelFriend } from './scriptAuto/CancelFriend';
 import { watchStory } from './scriptAuto/WatchStory';
 import { addFriend } from './scriptAuto/AddFriend';
-import { watchVideo } from './scriptAuto/WatchVideo';
+import { watchReels } from './scriptAuto/watchReels';
 import Promise from 'bluebird';
 import { unfollow } from './scriptAuto/seedingUnfollow';
 import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
@@ -887,7 +887,7 @@ const convertToFunc = (script) => {
         }`;
     case 'watchVideo':
       return `{
-          ${watchVideo(script)}
+          ${watchReels(script)}
         }`;
     case 'unfollow':
       return `{

@@ -35,7 +35,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
         setShareContent(currentSetup.shareText.join('\n'));
       }
       if (currentSetup.userList && currentSetup.userList.length) {
-        setShareContent(currentSetup.userList.join('\n'));
+        setUserContent(currentSetup.userList.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -58,8 +58,8 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
     }
   }, [shareContent]);
   useEffect(() => {
-    if (shareContent.length) {
-      setValues({ ...values, userList: shareContent.split('\n') });
+    if (userContent.length) {
+      setValues({ ...values, userList: userContent.split('\n') });
     } else {
       setValues({ ...values, userList: [] });
     }
@@ -483,11 +483,11 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                       <div style={{ position: 'relative' }} className="component-item box">
                         <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                           <Editor
-                            value={shareContent}
+                            value={userContent}
                             onValueChange={(text) => {
-                              setShareContent(text);
+                              setUserContent(text);
                             }}
-                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
+                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
                             padding={15}
                             className="editor"
                             textareaId="shareContent"
@@ -497,8 +497,8 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                               fontSize: 15,
                             }}
                           />
-                          {shareContent.length ? null : (
-                            <div onClick={handleDivShareClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
+                          {userContent.length ? null : (
+                            <div onClick={handleDivShareClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
                               <p>
                                 <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                               </p>
@@ -519,11 +519,11 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                   <div style={{ position: 'relative' }} className="component-item box">
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                       <Editor
-                        value={userContent}
+                        value={shareContent}
                         onValueChange={(text) => {
-                          setUserContent(text);
+                          setShareContent(text);
                         }}
-                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
+                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
                         padding={15}
                         className="editor"
                         textareaId="userList"
@@ -533,8 +533,8 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                           fontSize: 15,
                         }}
                       />
-                      {userContent.length ? null : (
-                        <div onClick={handleDivUserClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                      {shareContent.length ? null : (
+                        <div onClick={handleDivUserClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
                           <p>
                             <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                           </p>

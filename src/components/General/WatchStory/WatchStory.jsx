@@ -55,12 +55,18 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
     }
   }, [shareContent]);
   useEffect(() => {
-    if (shareContent.length) {
+    if (userContent.length) {
       setValues({ ...values, userList: userContent.split('\n') });
     } else {
       setValues({ ...values, userList: [] });
     }
   }, [userContent]);
+  const changeNumsStoryStart = (value) => {
+    setValues({ ...values, numsStoryStart: parseToNumber(value) });
+  };
+  const changeNumsStoryEnd = (value) => {
+    setValues({ ...values, numsStoryEnd: parseToNumber(value) });
+  };
   const changeTimeStart = (time) => {
     setValues({ ...values, timeStart: parseToNumber(time) });
   };
@@ -142,9 +148,64 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
               />
               <p>Watch Story</p>
             </div>
-
             <div className="component-item watchingTime">
-              <p className="component-item__header">Watching time (s):</p>
+              <p className="component-item__header">
+                Number of story<span style={{ marginLeft: '2px' }}>(s):</span>
+              </p>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeNumsStoryStart(values.numsStoryStart + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeNumsStoryStart(values.numsStoryStart - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  name="Start"
+                  type="text"
+                  value={values.numsStoryStart}
+                  onChange={(event) => changeNumsStoryStart(event.target.value)}
+                />
+              </div>
+              <span>to</span>
+              <div className="component-item__number">
+                <div className="component-item__number__icon">
+                  <img
+                    src={iconIncrease}
+                    alt="Increase icon"
+                    onClick={() => {
+                      changeNumsStoryEnd(values.numsStoryEnd + 1);
+                    }}
+                  />
+                  <img
+                    src={iconDecrease}
+                    alt="Decrease icon"
+                    onClick={() => {
+                      changeNumsStoryEnd(values.numsStoryEnd - 1);
+                    }}
+                  />
+                </div>
+                <input
+                  name="End"
+                  type="text"
+                  value={values.numsStoryEnd}
+                  onChange={(event) => changeNumsStoryEnd(event.target.value)}
+                />
+              </div>
+            </div>
+            <div className="component-item watchingTime">
+              <p className="component-item__header">
+                Watching time<span style={{ marginLeft: '2px' }}>(s):</span>
+              </p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
@@ -196,7 +257,9 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
               </div>
             </div>
             <div className="component-item numberOfStory">
-              <p className="component-item__header">Delay time(s):</p>
+              <p className="component-item__header">
+                Delay time<span style={{ marginLeft: '2px' }}>(s):</span>
+              </p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img
