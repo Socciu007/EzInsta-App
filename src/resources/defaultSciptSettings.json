@@ -228,7 +228,7 @@
     "typeFollow": "followers",
     "postList": [],
     "userList": [],
-    "search": [],
+    "search": "searchByKey",
     "searchByKeyword": [],
     "searchByUser": []
   },

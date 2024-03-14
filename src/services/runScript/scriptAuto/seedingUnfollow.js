@@ -49,9 +49,7 @@ export const unfollow = (setting) => {
             const index = getRandomInt(listFollowing.length);
             if (listFollowing[index]) {
               await listFollowing[index].scrollIntoView({
-                behavior: "smooth",
-                // block: "center",
-                inline: "center",
+                behavior: "smooth", block: "center", inline: "nearest"
               });
         
               await delay(getRandomIntBetween(1000, 3000));

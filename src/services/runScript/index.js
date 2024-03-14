@@ -14,7 +14,7 @@ import Promise from 'bluebird';
 import { unfollow } from './scriptAuto/seedingUnfollow';
 import { seedingPostInteraction } from './scriptAuto/seedingPostInteraction';
 import { directMsg } from './scriptAuto/directMsg';
-import { leftGroup } from './scriptAuto/leaveGroup';
+import { seedingFollow } from './scriptAuto/seedingFollow';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
 import { updateProfileScript } from './scriptAuto/updateProfile';
 import { getInfor } from './scriptAuto/GetInfo';
@@ -1318,7 +1318,7 @@ const convertToFunc = (script) => {
         }`;
     case 'follow':
       return `{
-          ${leftGroup(script)}
+          ${seedingFollow(script)}
         }`;
     case 'updateProfile':
       return `{

@@ -83,7 +83,7 @@
         &::-webkit-scrollbar {
           display: none;
         }
-        .editor {
+        .editorText {
           max-width: 99.5%;
           min-width: 99.5%;
           min-height: 100%;
@@ -93,21 +93,21 @@
           -webkit-text-fill-color: #333;
         }
 
-        .editor #codeArea {
+        .editorText #codeArea {
           outline: none;
           padding-top: 1.5% !important;
           padding-left: 5.6% !important;
           color: #01162b !important;
         }
 
-        .editor pre {
+        .editorText pre {
           color: #01162b !important;
           padding-top: 1.5% !important;
           padding-left: 5.6% !important;
           width: 100%;
         }
 
-        .editor .editorLineNumber {
+        .editorText .editorLineNumber {
           position: absolute;
           left: 0px;
           color: #cccccc;
@@ -222,14 +222,14 @@
           .textProxy {
             margin: 1% 0;
             position: relative;
-            .editor #textareaProxy {
+            .editorText #textareaProxy {
               outline: none;
               padding-top: 1.5% !important;
               padding-left: 5.6% !important;
               color: #01162b !important;
             }
 
-            .editor pre {
+            .editorText pre {
               color: #01162b !important;
               padding-top: 1.5% !important;
               padding-left: 5.6% !important;
