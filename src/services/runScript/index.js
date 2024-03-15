@@ -17,6 +17,8 @@ import { directMsg } from './scriptAuto/directMsg';
 import { seedingFollow } from './scriptAuto/seedingFollow';
 import { updateProfile, updateProfiles } from '../../redux/profileSlice';
 import { updateProfileScript } from './scriptAuto/updateProfile';
+import { followInteraction } from './scriptAuto/followInteraction';
+import { hashtagInteraction } from './scriptAuto/hashtagInteraction';
 import { getInfor } from './scriptAuto/GetInfo';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -1323,6 +1325,14 @@ const convertToFunc = (script) => {
     case 'updateProfile':
       return `{
           ${updateProfileScript(script)}
+        }`;
+    case 'followInteraction':
+      return `{
+          ${followInteraction(script)}
+        }`;
+    case 'hashtagInteraction':
+      return `{
+          ${hashtagInteraction(script)}
         }`;
     default:
       return `logger("Can't find func");`;

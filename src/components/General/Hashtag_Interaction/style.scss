@@ -146,12 +146,32 @@
         .editor #codeArea {
           outline: none;
           padding-left: 10% !important;
-          padding-top: 4.8% !important;
+          padding-top: 4.6% !important;
         }
-        .editor #shareContent {
+        .editor #hashtagContent {
           outline: none;
           padding-left: 10% !important;
-          padding-top: 4.8% !important;
+          padding-top: 4.6% !important;
+        }
+        .editor #shareRandomContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4.6% !important;
+        }
+        .editor #messageRandomContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4.6% !important;
+        }
+        .editor #shareUserContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4.6% !important;
+        }
+        .editor #messageUserContent {
+          outline: none;
+          padding-left: 10% !important;
+          padding-top: 4.6% !important;
         }
         .editor pre {
           padding-left: 10% !important;

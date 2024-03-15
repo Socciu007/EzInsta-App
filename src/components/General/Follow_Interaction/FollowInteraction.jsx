@@ -15,15 +15,32 @@ import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 
 const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
   const [values, setValues] = useState(DefaultSciptSettings['followInteraction']);
+  const [usernameList, setUsernameList] = useState('');
   const [textContent, setTextContent] = useState('');
-  const [shareContent, setShareContent] = useState('');
+  const [shareUserContent, setshareUserContent] = useState('');
+  const [userMessage, setUserMessage] = useState('');
+  const [shareRandomContent, setshareRandomContent] = useState('');
+  const [randomMessage, setRandomMessage] = useState('');
+
   useEffect(() => {
     if (currentSetup) {
       if (currentSetup.commentText && currentSetup.commentText.length) {
         setTextContent(currentSetup.commentText.join('\n'));
       }
-      if (currentSetup.shareText && currentSetup.shareText.length) {
-        setShareContent(currentSetup.shareText.join('\n'));
+      if (currentSetup.shareUserText && currentSetup.shareUserText.length) {
+        setshareUserContent(currentSetup.shareUserText.join('\n'));
+      }
+      if (currentSetup.shareRandomText && currentSetup.shareRandomText.length) {
+        setshareRandomContent(currentSetup.shareRandomText.join('\n'));
+      }
+      if (currentSetup.usernameList && currentSetup.usernameList.length) {
+        setUsernameList(currentSetup.usernameList.join('\n'));
+      }
+      if (currentSetup.randomMessage && currentSetup.randomMessage.length) {
+        setRandomMessage(currentSetup.randomMessage.join('\n'));
+      }
+      if (currentSetup.userMessage && currentSetup.userMessage.length) {
+        setUserMessage(currentSetup.userMessage.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -43,12 +60,41 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
     }
   }, [textContent]);
   useEffect(() => {
-    if (shareContent.length) {
-      setValues({ ...values, shareText: shareContent.split('\n') });
+    if (shareUserContent.length) {
+      setValues({ ...values, shareUserText: shareUserContent.split('\n') });
     } else {
-      setValues({ ...values, shareText: [] });
+      setValues({ ...values, shareUserText: [] });
     }
-  }, [shareContent]);
+  }, [shareUserContent]);
+  useEffect(() => {
+    if (userMessage.length) {
+      setValues({ ...values, userMessage: userMessage.split('\n') });
+    } else {
+      setValues({ ...values, userMessage: [] });
+    }
+  }, [userMessage]);
+  useEffect(() => {
+    if (shareRandomContent.length) {
+      setValues({ ...values, shareRandomText: shareRandomContent.split('\n') });
+    } else {
+      setValues({ ...values, shareRandomText: [] });
+    }
+  }, [shareRandomContent]);
+  useEffect(() => {
+    if (randomMessage.length) {
+      setValues({ ...values, randomMessage: randomMessage.split('\n') });
+    } else {
+      setValues({ ...values, randomMessage: [] });
+    }
+  }, [randomMessage]);
+  useEffect(() => {
+    if (usernameList.length) {
+      setValues({ ...values, usernameList: usernameList.split('\n') });
+    } else {
+      setValues({ ...values, usernameList: [] });
+    }
+  }, [usernameList]);
+
   const changeAccountStart = (num) => {
     setValues({ ...values, accountStart: parseToNumber(num) });
   };
@@ -77,6 +123,12 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
   const handleChangeLiked = (value) => {
     setValues({ ...values, isLike: value });
   };
+  const handleChangeUserStart = (value) => {
+    setValues({ ...values, userStart: parseToNumber(value) });
+  };
+  const handleChangeUserEnd = (value) => {
+    setValues({ ...values, userEnd: parseToNumber(value) });
+  };
   const handleChangeLikeStart = (value) => {
     setValues({ ...values, likeStart: parseToNumber(value) });
   };
@@ -97,7 +149,13 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
   const handleChangeShareEnd = (value) => {
     setValues({ ...values, shareEnd: parseToNumber(value) });
   };
+  const handleChangeRandomStart = (value) => {
+    setValues({ ...values, randomStart: parseToNumber(value) });
+  };
 
+  const handleChangeRandomEnd = (value) => {
+    setValues({ ...values, randomEnd: parseToNumber(value) });
+  };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
       .split('\n')
@@ -107,14 +165,42 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
   const handleDivClick = () => {
     document.getElementById('codeArea').focus();
   };
+
+  const handleUsernameClick = () => {
+    document.getElementById('userContent').focus();
+  };
   const handleChangeShared = (value) => {
     setValues({ ...values, isShare: value });
   };
   const handleDivShareClick = () => {
-    document.getElementById('shareContent').focus();
+    document.getElementById('shareUserContent').focus();
   };
   const changeShareOption = (value) => {
     setValues({ ...values, typeShare: value });
+  };
+  const changeInteractOption = (value) => {
+    setValues({ ...values, typeInteract: value });
+  };
+  const changeOption = (value) => {
+    setValues({ ...values, option: value });
+  };
+  const handleChangeRandomMessage = (value) => {
+    setValues({ ...values, isRandomMessage: value });
+  };
+  const handleChangeUserMessage = (value) => {
+    setValues({ ...values, isUserMessage: value });
+  };
+  const handleDivShareRandomClick = () => {
+    document.getElementById('shareRandomContent').focus();
+  };
+  const handleDivShareUserClick = () => {
+    document.getElementById('shareUserContent').focus();
+  };
+  const handleDivRandomMessageClick = () => {
+    document.getElementById('messageRandomContent').focus();
+  };
+  const handleDivUserMessageClick = () => {
+    document.getElementById('messageUserContent').focus();
   };
   return (
     <div className={`watch-story`}>
@@ -131,7 +217,85 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
               />
               <p>Follow Interaction</p>
             </div>
-            <div className="component-item watchingTime">
+            <div className="component-item share typeInteract">
+              <div className="top">
+                <div className="component-item__header">
+                  <p>Interact with</p>
+                </div>
+              </div>
+              <div className="PostContent">
+                <div className="component-item postOption">
+                  <Select
+                    name="postOption"
+                    className="PostType"
+                    onChange={(event) => changeInteractOption(event.target.value)}
+                    value={values.typeInteract}
+                    bordered={2 < 1 ? false : undefined}
+                  >
+                    <MenuItem value="follower">Follower</MenuItem>
+                    <MenuItem value="following">Following</MenuItem>
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className="component-item share typeOption">
+              <div className="top">
+                <div className="component-item__header">
+                  <p>Type </p>
+                </div>
+              </div>
+              <div className="PostContent">
+                <div className="component-item postOption">
+                  <Select
+                    name="postOption"
+                    className="PostType"
+                    onChange={(event) => changeOption(event.target.value)}
+                    value={values.option}
+                    bordered={2 < 1 ? false : undefined}
+                  >
+                    <MenuItem value="random">Random</MenuItem>
+                    <MenuItem value="username">Username</MenuItem>
+                  </Select>
+                </div>
+                {values.option === 'username' && (
+                  <div className="commentContent1">
+                    <div className="Text">
+                      <p style={{ fontWeight: 700 }}>Username list</p>
+                      <div style={{ position: 'relative' }} className="component-item box">
+                        <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                          <Editor
+                            value={usernameList}
+                            onValueChange={(text) => {
+                              setUsernameList(text);
+                            }}
+                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, usernameList)}
+                            padding={15}
+                            className="editor"
+                            textareaId="userContent"
+                            onClick={handleUsernameClick}
+                            style={{
+                              background: '#FFFFFF',
+                              fontSize: 15,
+                            }}
+                          />
+                          {usernameList.length ? null : (
+                            <div onClick={handleUsernameClick} className={`placeholder ${usernameList ? 'hide' : ''}`}>
+                              <p>
+                                <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                              </p>
+                              <p>
+                                <span>2</span>Each content/line
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="component-item watchingTime account">
               <p className="component-item__header">Number of accounts:</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -505,34 +669,268 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
                 {values.typeShare === 'user' && (
                   <div className="commentContent1">
                     <div className="Text">
-                      <p style={{ fontWeight: 700 }}>User</p>
-                      <div style={{ position: 'relative' }} className="component-item box">
-                        <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
-                          <Editor
-                            value={shareContent}
-                            onValueChange={(text) => {
-                              setShareContent(text);
-                            }}
-                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
-                            padding={15}
-                            className="editor"
-                            textareaId="shareContent"
-                            onClick={handleDivShareClick}
-                            style={{
-                              background: '#FFFFFF',
-                              fontSize: 15,
-                            }}
-                          />
-                          {shareContent.length ? null : (
-                            <div onClick={handleDivShareClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
-                              <p>
-                                <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
-                              </p>
-                              <p>
-                                <span>2</span>Each content/line
-                              </p>
+                      <div className="usernameWrapper">
+                        <div className="username">
+                          <p style={{ fontWeight: 700 }}>Quality user/post</p>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeUserStart(values.userStart + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() =>
+                                  handleChangeUserStart(values.userStart - 1 > 0 ? values.userStart - 1 : 0)
+                                }
+                              />
                             </div>
-                          )}
+                            <input
+                              type="text"
+                              name="Start"
+                              value={values.userStart}
+                              onChange={(event) => handleChangeUserStart(event.target.value)}
+                            />
+                          </div>
+                          <span>to</span>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeUserEnd(values.userEnd + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() => handleChangeUserEnd(values.userEnd - 1 > 0 ? values.randomEnd - 1 : 0)}
+                              />
+                            </div>
+                            <input
+                              type="text"
+                              name="End"
+                              value={values.userEnd}
+                              onChange={(event) => handleChangeUserEnd(event.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ position: 'relative' }} className="component-item box">
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={shareUserContent}
+                              onValueChange={(text) => {
+                                setshareUserContent(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareUserContent)}
+                              padding={15}
+                              className="editor"
+                              textareaId="shareUserContent"
+                              onClick={handleDivShareUserClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {shareUserContent.length ? null : (
+                              <div
+                                onClick={handleDivShareUserClick}
+                                className={`placeholder ${shareUserContent ? 'hide' : ''}`}
+                              >
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="usernameMessage">
+                        <div className="username">
+                          <div className="message">
+                            <input
+                              type="checkbox"
+                              name="randomShare"
+                              checked={values.isUserMessage}
+                              onChange={(event) => handleChangeUserMessage(event.target.checked)}
+                            />
+                            <p style={{ fontWeight: 700 }}>Message</p>
+                          </div>
+                        </div>
+                        <div
+                          style={{ position: 'relative' }}
+                          className={`component-item box ${values.isUserMessage ? 'show' : 'hide'}`}
+                        >
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={userMessage}
+                              onValueChange={(text) => {
+                                setUserMessage(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, userMessage)}
+                              padding={15}
+                              className="editor"
+                              textareaId="messageUserContent"
+                              onClick={handleDivUserMessageClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {userMessage.length ? null : (
+                              <div
+                                onClick={handleDivUserMessageClick}
+                                className={`placeholder ${userMessage ? 'hide' : ''}`}
+                              >
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}{' '}
+                {values.typeShare === 'randomShare' && (
+                  <div className="commentContent">
+                    <div className="Text">
+                      <div className="usernameWrapper">
+                        <div className="username">
+                          <p style={{ fontWeight: 700 }}>Quality user/post</p>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeRandomStart(values.randomStart + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() =>
+                                  handleChangeRandomStart(values.randomStart - 1 > 0 ? values.randomStart - 1 : 0)
+                                }
+                              />
+                            </div>
+                            <input
+                              type="text"
+                              name="Start"
+                              value={values.randomStart}
+                              onChange={(event) => handleChangeRandomStart(event.target.value)}
+                            />
+                          </div>
+                          <span>to</span>
+                          <div className="component-item__number">
+                            <div className="component-item__number__icon">
+                              <img
+                                src={iconIncrease}
+                                alt="Increase icon"
+                                onClick={() => handleChangeRandomEnd(values.randomEnd + 1)}
+                              />
+                              <img
+                                src={iconDecrease}
+                                alt="Decrease icon"
+                                onClick={() =>
+                                  handleChangeRandomEnd(values.randomEnd - 1 > 0 ? values.randomEnd - 1 : 0)
+                                }
+                              />
+                            </div>
+                            <input
+                              type="text"
+                              name="End"
+                              value={values.randomEnd}
+                              onChange={(event) => handleChangeRandomEnd(event.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ position: 'relative' }} className="component-item box">
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={shareRandomContent}
+                              onValueChange={(text) => {
+                                setshareRandomContent(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareRandomContent)}
+                              padding={15}
+                              className="editor"
+                              textareaId="shareRandomContent"
+                              onClick={handleDivShareRandomClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {shareRandomContent.length ? null : (
+                              <div
+                                onClick={handleDivShareRandomClick}
+                                className={`placeholder ${shareRandomContent ? 'hide' : ''}`}
+                              >
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="usernameMessage">
+                        <div className="username">
+                          <div className="message">
+                            <input
+                              type="checkbox"
+                              name="randomShare"
+                              checked={values.isRandomMessage}
+                              onChange={(event) => handleChangeRandomMessage(event.target.checked)}
+                            />
+                            <p style={{ fontWeight: 700 }}>Message</p>
+                          </div>
+                        </div>
+                        <div
+                          style={{ position: 'relative' }}
+                          className={`component-item box ${values.isRandomMessage ? 'show' : 'hide'}`}
+                        >
+                          <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                            <Editor
+                              value={randomMessage}
+                              onValueChange={(text) => {
+                                setRandomMessage(text);
+                              }}
+                              highlight={(code) => hightlightWithLineNumbers(code, languages.js, randomMessage)}
+                              padding={15}
+                              className="editor"
+                              textareaId="messageRandomContent"
+                              onClick={handleDivRandomMessageClick}
+                              style={{
+                                background: '#FFFFFF',
+                                fontSize: 15,
+                              }}
+                            />
+                            {randomMessage.length ? null : (
+                              <div
+                                onClick={handleDivRandomMessageClick}
+                                className={`placeholder ${randomMessage ? 'hide' : ''}`}
+                              >
+                                <p>
+                                  <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                                </p>
+                                <p>
+                                  <span>2</span>Each content/line
+                                </p>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
