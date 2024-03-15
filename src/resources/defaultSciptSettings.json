@@ -233,6 +233,9 @@
     "searchByUser": []
   },
   "followInteraction": {
+    "typeInteract": "follower",
+    "option": "random",
+    "usernameList": [],
     "accountStart": 2,
     "accountEnd": 5,
     "timeStart": 7,
@@ -248,11 +251,21 @@
     "commentText": [],
     "isShare": false,
     "shareStart": 2,
-    "shareEnd": 2,
+    "shareEnd": 3,
+    "userStart": 2,
+    "userEnd": 3,
+    "randomStart": 2,
+    "randomEnd": 3,
     "typeShare": "randomShare",
-    "shareText": []
+    "shareUserText": [],
+    "shareRandomText": [],
+    "isRandomMessage": false,
+    "isUserMessage": false,
+    "userMessage": [],
+    "randomMessage": []
   },
   "hashtagInteraction": {
+    "hashtag": [],
     "postStart": 2,
     "postEnd": 5,
     "timeStart": 7,
@@ -269,8 +282,17 @@
     "isShare": false,
     "shareStart": 2,
     "shareEnd": 2,
+    "userStart": 2,
+    "userEnd": 3,
+    "randomStart": 2,
+    "randomEnd": 3,
     "typeShare": "randomShare",
-    "shareText": []
+    "shareUserText": [],
+    "shareRandomText": [],
+    "isRandomMessage": false,
+    "isUserMessage": false,
+    "userMessage": [],
+    "randomMessage": []
   },
   "updateProfile": {
     "gender": "male",
