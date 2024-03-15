@@ -15,7 +15,6 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
   const [values, setValues] = useState(DefaultSciptSettings['follow']);
   const [userContent, setUserContent] = useState('');
   const [postContent, setPostContent] = useState('');
-  const [searchContent, setSearchContent] = useState('');
   const [searchByKeyContent, setSearchByKeyContent] = useState('');
   const [searchByUserContent, setSearchByUserContent] = useState('');
 
@@ -31,16 +30,15 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
       if (currentSetup.userList && currentSetup.userList.length) {
         setUserContent(currentSetup.userList.join('\n'));
       }
-      if (currentSetup.search && currentSetup.search.length) {
-        setSearchContent(currentSetup.search.join('\n'));
-      }
       if (currentSetup.searchByKeyword && currentSetup.searchByKeyword.length) {
         setSearchByKeyContent(currentSetup.searchByKeyword.join('\n'));
       }
       if (currentSetup.searchByUser && currentSetup.searchByUser.length) {
         setSearchByUserContent(currentSetup.searchByUser.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 
@@ -59,14 +57,6 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
       setValues({ ...values, userList: [] });
     }
   }, [userContent]);
-
-  useEffect(() => {
-    if (searchContent.length) {
-      setValues({ ...values, search: searchContent.split('\n') });
-    } else {
-      setValues({ ...values, search: [] });
-    }
-  }, [searchContent]);
 
   useEffect(() => {
     if (searchByKeyContent.length) {
@@ -96,14 +86,15 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
     setValues({ ...values, typeFollow: value });
   };
 
+  const changeTypeSearch = (value) => {
+    setValues({ ...values, search: value });
+  };
+
   const handleDivClick = () => {
     document.getElementById('userList').focus();
   };
   const handlePostDivClick = () => {
     document.getElementById('postList').focus();
-  };
-  const handleSearchDivClick = () => {
-    document.getElementById('search').focus();
   };
   const handleSearchByKeyDivClick = () => {
     document.getElementById('byKey').focus();
@@ -215,12 +206,8 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                       label: "Follow user's following",
                     },
                     {
-                      value: 'searchByKey',
-                      label: 'Follow base on keywords',
-                    },
-                    {
-                      value: 'searchByUser',
-                      label: 'Follow base on user',
+                      value: 'search',
+                      label: 'Follow base on search',
                     },
                   ]}
                 />
@@ -294,41 +281,37 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {(values.typeFollow === 'searchByKey' || values.typeFollow === 'searchByUser') && (
-              <div className="UIDContent">
-                <div className="UID_Header">
-                  <p>Search</p>
-                  {/* <span>({values.lineCount})</span> */}
-                </div>
-                <div className="component-item " style={{ position: 'relative' }}>
-                  <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="UIDText">
-                    <Editor
-                      value={searchContent}
-                      onValueChange={(text) => {
-                        setSearchContent(text);
-                      }}
-                      highlight={(text) => hightlightWithLineNumbers(text, languages.js, searchContent)}
-                      padding={15}
-                      className="editor"
-                      textareaId="search"
-                      style={{
-                        background: '#f5f5f5',
-                        fontSize: 15,
-                      }}
-                    />
-                  </div>
-                  <div onClick={handleSearchDivClick} className={`placeholder ${searchContent ? 'hide' : ''}`}>
-                    <p>
-                      <span style={{ marginRight: '14px' }}>1</span>Enter the content here
-                    </p>
-                    <p>
-                      <span>2</span>Each content/line
-                    </p>
-                  </div>
+            {values.typeFollow === 'search' && (
+              <div className="component-item">
+                <div className="component-item__header">
+                  <p>Search by:</p>
                 </div>
               </div>
             )}
-            {values.typeFollow === 'searchByKey' && (
+            {values.typeFollow === 'search' && (
+              <div className="component-item -type-follower">
+                <div className="PostContent">
+                  <Select
+                    id="typeProfile"
+                    className="PostContent__select PostContent__details"
+                    value={values.search}
+                    onChange={changeTypeSearch}
+                    bordered={false}
+                    options={[
+                      {
+                        value: 'searchByKey',
+                        label: 'Keywords',
+                      },
+                      {
+                        value: 'searchByUser',
+                        label: 'Username',
+                      },
+                    ]}
+                  />
+                </div>
+              </div>
+            )}
+            {values.typeFollow === 'search' && values.search === 'searchByKey' && (
               <div className="UIDContent">
                 <div className="UID_Header">
                   <p>Keyword</p>
@@ -365,10 +348,10 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                 </div>
               </div>
             )}
-            {values.typeFollow === 'searchByUser' && (
+            {values.typeFollow === 'search' && values.search === 'searchByUser' && (
               <div className="UIDContent">
                 <div className="UID_Header">
-                  <p>User</p>
+                  <p>Username</p>
                   {/* <span>({values.lineCount})</span> */}
                 </div>
                 <div className="component-item " style={{ position: 'relative' }}>

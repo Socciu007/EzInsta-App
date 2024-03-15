@@ -28,7 +28,9 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
       if (currentSetup.messageList && currentSetup.messageList.length) {
         setMessageContent(currentSetup.messageList.join('\n'));
       }
-      setValues(currentSetup);
+      setTimeout(() => {
+        setValues(currentSetup);
+      }, 20);
     }
   }, [currentSetup]);
 

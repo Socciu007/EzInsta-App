@@ -196,23 +196,11 @@
                 min-height: 50px;
                 vertical-align: middle;
               }
-              // tr.ant-table-row-selected {
-              //   background: #f2f8ff;
-              // }
-              // tr.ant-table-row-selected:focus-within {
-              //   background: #f2f8ff;
-              // }
-              // tr.ant-table-row.ant-table-row-level-0:hover {
-              //   background: #f2f8ff !important;
-              // }
+
               .pinned-row {
                 background-color: #fffbea !important;
               }
             }
-
-            // .ant-table-tbody .ant-table-row.ant-table-row-selected > .ant-table-cell-row-hover {
-            //   background: #f2f8ff;
-            // }
           }
         }
       }
@@ -225,6 +213,10 @@
         color: rgba(1, 22, 43, 0.6);
         min-height: 50px;
         vertical-align: middle;
+        padding: 10px 16px !important;
+      }
+      .ant-table-tbody > tr > td {
+        padding: 10px 16px !important;
       }
       .ant-spin-container .ant-table .ant-table-content table > tbody.ant-table-tbody tr.ant-table-row-selected {
         background-color: #fffbea !important;

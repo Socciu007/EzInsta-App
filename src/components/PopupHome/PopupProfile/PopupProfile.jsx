@@ -69,7 +69,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
           tag:
             values.isTag && values.tag.split(',').length
               ? values.tag.split(',').map((e) => {
-                  if (!e.startsWith('#')) {
+                  if (e && e.toString().trim().length && !e.startsWith('#')) {
                     return '#' + e;
                   }
                   return e;
@@ -261,7 +261,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                       }}
                       highlight={(text) => hightlightWithLineNumbers(text, languages.js, textContent)}
                       padding={15}
-                      className="editor"
+                      className="editorText"
                       textareaId="codeArea"
                       style={{
                         background: '#fff',
@@ -334,7 +334,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                             }}
                             highlight={(text) => hightlightWithLineNumbers(text, languages.js, proxyContent)}
                             padding={15}
-                            className="editor"
+                            className="editorText"
                             textareaId="textareaProxy"
                             style={{
                               background: '#fff',

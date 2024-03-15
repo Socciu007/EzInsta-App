@@ -56,10 +56,15 @@ const ProfilesPage = () => {
 
   if (!window.electron.ipcRenderer.eventNames().includes('ipc-logger')) {
     window.electron.ipcRenderer.on('ipc-logger', (...params) => {
-      if (params[0].length == 3 && params[0][1] && params[0][2] && params[0][2].toString().includes('Update name:')) {
-        const name = params[0][2].split('|')[0].replace('Update name:', '');
-        const friend = params[0][2].split('|')[1] ? params[0][2].split('|')[1] : '';
-        updateAccount(params[0][1], name, friend);
+      if (
+        params[0].length == 3 &&
+        params[0][1] &&
+        params[0][2] &&
+        params[0][2].toString().includes('Update follower:')
+      ) {
+        const follower = params[0][2].split('|')[0].replace('Update follower:', '');
+        const following = params[0][2].split('|')[1] ? params[0][2].split('|')[1] : '';
+        updateAccount(params[0][1], follower, following);
       }
 
       if (params[0][1] && params[0][1].toString().includes('Debug|')) {
@@ -102,14 +107,18 @@ const ProfilesPage = () => {
     );
   };
 
-  const updateAccount = async (id, accountName, friends) => {
+  const updateAccount = async (id, follower, following) => {
     const newData = await dbGetLocally(storageProfiles);
     const index = newData.findIndex((profile) => id == profile.id);
     if (index >= 0) {
-      const profile = newData[index];
-      console.log(profile);
-      profile.nameAccount = accountName;
-      profile.friends = friends;
+      let profile = newData[index];
+      let follow = '';
+      const followers = follower.split('\n');
+      const followings = following.split('\n');
+      follow += /\d/.test(followers[0]) ? followers[0] : followers[1];
+      follow += '/';
+      follow += /\d/.test(followings[0]) ? followings[0] : followings[1];
+      profile = { ...profile, follower: follow };
       newData.splice(index, 1, {
         ...profile,
       });
@@ -365,7 +374,14 @@ const ProfilesPage = () => {
         width: 200,
         editable: true,
         render: (tag) => {
-          return <Input name="tag" value={tag} className="-tag-profiles" onChange={(e) => e.target.value}></Input>;
+          return (
+            <Input
+              name="tag"
+              value={tag ? tag.filter((e) => e.toString().startsWith('#')).join(', ') : ''}
+              className="-tag-profiles"
+              onChange={(e) => e.target.value}
+            ></Input>
+          );
         },
         sorter: (a, b) => {
           if (!a.isPin && !b.isPin) {

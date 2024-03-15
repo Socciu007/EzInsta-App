@@ -364,7 +364,14 @@ const ScriptManager = () => {
       dataIndex: 'tag',
       editable: true,
       render: (tag) => {
-        return <Input name="tag" value={tag} className="-tag-script" onChange={(e) => e.target.value}></Input>;
+        return (
+          <Input
+            name="tag"
+            value={tag ? tag.filter((e) => e.toString().startsWith('#')).join(', ') : ''}
+            className="-tag-profiles"
+            onChange={(e) => e.target.value}
+          ></Input>
+        );
       },
       sorter: (a, b) => {
         if (!a.isPin && !b.isPin) {
