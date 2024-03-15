@@ -59,7 +59,7 @@ const accessChat = async page => {
       if (type === "follower") {
         let followersEle = await selectorHref(page, "/followers/");
         if (!followersEle) {
-          logger("Err find following button");
+          logger("Err find followers button");
           return false;
         }
         await clickElement(followersEle);
@@ -80,6 +80,7 @@ const accessChat = async page => {
           quantityChat < directMsgObj.UIDList.length
             ? quantityChat
             : directMsgObj.UIDList.length;
+        const arrIdUser = directMsgObj.UIDList.sort(() => Math.random() - 0.5);
         for (let i = 0; i < quantityNeedChat; i++) {
           let msgNewEle = await getElement(
             page,
@@ -109,7 +110,7 @@ const accessChat = async page => {
           );
           await delay(getRandomIntBetween(3000, 5000));
           if (searchEle) {
-            await searchEle.type(directMsgObj.UIDList[i], { delay: 500 });
+            await searchEle.type(arrIdUser[i], { delay: 200 });
             await delay(getRandomIntBetween(3000, 5000));
             const selectEle = await getElement(
               page,
@@ -135,12 +136,15 @@ const accessChat = async page => {
                   continue;
                 }
               } else {
+                logger("No select chat with user")
                 await clickElement(closeEle);
               }
             } else {
+              logger("No find person to chat")
               await clickElement(closeEle);
             }
           } else {
+            logger("No find search element")
             await clickElement(closeEle);
           }
         }
@@ -159,10 +163,10 @@ const accessChat = async page => {
     page,
     directMsgObj,
     quantityChat,
-    indexOfUID
+    indexOfUID,
+    arrIndex
   ) => {
     try {
-      let arrIndex = [];
       if (directMsgObj.typeNew === "random") {
         let followingEle = await getElements(
           page,
@@ -215,8 +219,9 @@ const accessChat = async page => {
             const isChat = await actionChat(page, directMsgObj);
             if (isChat) {
               logger("Done send message");
+              await delay(getRandomIntBetween(3000, 5000));
+              return arrIndex;
             }
-            await delay(getRandomIntBetween(3000, 5000));
           }
         } else {
           logger("Debug|DirectMessage|No following to direct message");
@@ -242,13 +247,13 @@ const accessChat = async page => {
           }
         }
         if (searchEle) {
-          await searchEle.type(directMsgObj.UIDList[indexOfUID], { delay: 500 });
+          await searchEle.type(directMsgObj.UIDList[indexOfUID], { delay: 200 });
           await delay(getRandomIntBetween(3000, 5000));
-          let followingEle = await getElement(page, '[class="_aarh"]');
+          let followingEle = await getElement(page, '[class="_ap3a _aaco _aacw _aacx _aad7 _aade"]');
           if (!followingEle) {
             followingEle = await getElement(
               page,
-              '[class="_ap3a _aaco _aacw _aacx _aad7 _aade"]'
+              '[class="_aarh"]'
             );
           }
           await delay(getRandomIntBetween(3000, 5000));
@@ -297,14 +302,14 @@ const accessChat = async page => {
     page,
     directMsgObj,
     quantityChat,
-    indexOfUID
+    indexOfUID,
+    arrIndex
   ) => {
     try {
-      let arrIndex = [];
       if (directMsgObj.typeNew === "random") {
         const listFollower = await getElements(
           page,
-          'button[type="button"] [class="_ap3a _aacn _aacw _aad6"]'
+          '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w x972fbf xcfux6l x1qhh985 xm0m39n xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x18d9i69 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x1ypdohk x78zum5 x1f6kntn xwhw2v2 x10w6t97 xl56j7k x17ydfre x1swvt13 x1pi30zi x1n2onr6 x2b8uid xlyipyv x87ps6o x14atkfc xcdnw81 x1i0vuye x1gjpkn9 x5n08af xsz8vos"]'
         );
         const followingEle = await getElements(
           page,
@@ -329,6 +334,7 @@ const accessChat = async page => {
             }
           }
           arrIndex.push(index);
+          logger(arrIndex)
           await followingEle[index].scrollIntoView({
             behavior: "smooth",
             // block: "center",
@@ -343,12 +349,10 @@ const accessChat = async page => {
             'button[class=" _acan _acap _acas _aj1- _ap30"]'
           );
           await delay(getRandomIntBetween(3000, 5000));
-          if (!followBackEle) {
-            logger("Debug|DirectMessage|No follow back user");
-            return;
+          if (followBackEle) {
+            await clickElement(followBackEle);
+            await delay(getRandomIntBetween(3000, 5000));
           }
-          await clickElement(followBackEle);
-          await delay(getRandomIntBetween(3000, 5000));
           //message of user
           let messageEle = await getElement(
             page,
@@ -367,6 +371,7 @@ const accessChat = async page => {
             const isChat = await actionChat(page, directMsgObj);
             if (isChat) {
               logger("Done send message");
+              return arrIndex;
             }
             await delay(getRandomIntBetween(3000, 5000));
           }
@@ -413,12 +418,10 @@ const accessChat = async page => {
               'button[class=" _acan _acap _acas _aj1- _ap30"]'
             );
             await delay(getRandomIntBetween(3000, 5000));
-            if (!followBackEle) {
-              logger("No follow back user");
-              return;
+            if (followBackEle) {
+              await clickElement(followBackEle);
+              await delay(getRandomIntBetween(3000, 5000));
             }
-            await clickElement(followBackEle);
-            await delay(getRandomIntBetween(3000, 5000));
             //message of user
             let messageEle = await getElement(
               page,
@@ -462,7 +465,7 @@ const accessChat = async page => {
       }
       await delay(getRandomIntBetween(3000, 5000));
       if (importMsgEle) {
-        await importMsgEle.type(contentMsg, { delay: 500 });
+        await importMsgEle.type(contentMsg, { delay: 200 });
         await delay(getRandomIntBetween(3000, 5000));
         const sendEle = await getElement(
           page,
@@ -553,6 +556,8 @@ const accessChat = async page => {
       logger("Debug|DirectMessage|Page is die");
       return;
     }
+    await returnHomePage(page);
+  await delay(2000);
     directMsgObj = await checkObject(directMsgObj);
     const quantityChat = getRandomIntBetween(
       directMsgObj.numberStart,
@@ -569,13 +574,14 @@ const accessChat = async page => {
       }
     } else if (directMsgObj.typeDirectMSg === "following") {
       if (directMsgObj.typeNew === "random") {
+        let arrIndex = [];
         for (let i = 0; i < quantityChat; i++) {
           const isAccessProfile = await accessProfile(
             page,
             directMsgObj.typeDirectMSg
           );
           if (isAccessProfile) {
-            await actionChatWithFollowing(page, directMsgObj, quantityChat);
+            await actionChatWithFollowing(page, directMsgObj, quantityChat, arrIndex);
             await delay(getRandomIntBetween(3000, 5000));
           } else {
             i--;
@@ -606,13 +612,14 @@ const accessChat = async page => {
       }
     } else if (directMsgObj.typeDirectMSg === "follower") {
       if (directMsgObj.typeNew === "random") {
+        let arrIndex = [];
         for (let i = 0; i < quantityChat; i++) {
           const isAccessProfile = await accessProfile(
             page,
             directMsgObj.typeDirectMSg
           );
           if (isAccessProfile) {
-            await actionChatWithFollowers(page, directMsgObj, quantityChat);
+            arrIndex = await actionChatWithFollowers(page, directMsgObj, quantityChat, arrIndex);
             await delay(getRandomIntBetween(3000, 5000));
           } else {
             i--;
@@ -624,6 +631,7 @@ const accessChat = async page => {
           quantityChat < directMsgObj.UIDList.length
             ? quantityChat
             : directMsgObj.UIDList.length;
+        
         for (let i = 0; i < quantityNeedChat; i++) {
           const isAccessProfile = await accessProfile(
             page,

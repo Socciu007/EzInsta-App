@@ -63,12 +63,14 @@ export const seedingFollow = (setting) => {
           );
           if (listFollowEles.length > 0) {
             const index = getRandomInt(listFollowEles.length);
-            await scrollSmoothIfNotExistOnScreen1(listFollowEles[index]);
+            // await scrollSmoothIfElementNotExistOnScreen1(page, listFollowEles[index], '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1uhb9sk x6ikm8r x10wlt62 x1iyjqo2 x2lwn1j xeuugli xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]');
+            await scrollSmoothIfNotExistOnScreen1(listFollowEles[index])
             await delay(getRandomIntBetween(3000, 5000));
             await clickElement(listFollowEles[index]);
             await delay(getRandomIntBetween(3000, 5000));
             count++;
             logger("Done follow " + count + " person");
+            await delay(getRandomIntBetween(3000, 5000));
           } else {
             logger("Debug|Follow|No liked person to follow");
             return;
@@ -99,6 +101,7 @@ export const seedingFollow = (setting) => {
           await clickElement(listFollower[i]);
           await delay(getRandomIntBetween(3000, 5000));
           logger("Follow " + i + 1 + " person");
+          await delay(getRandomIntBetween(3000, 5000));
         }
         logger(
           "The number of follow request is greater than number of followers, so just follow up " +
@@ -113,6 +116,7 @@ export const seedingFollow = (setting) => {
             await clickElement(listFollower[index]);
             await delay(getRandomIntBetween(3000, 5000));
             logger("Follow " + i + 1 + " person");
+            await delay(getRandomIntBetween(3000, 5000));
           } else {
             i--;
             continue;
@@ -155,6 +159,7 @@ export const seedingFollow = (setting) => {
                 await delay(getRandomIntBetween(3000, 5000));
                 count++;
                 logger("Done follow " + count + " person");
+                await delay(getRandomIntBetween(3000, 5000));
               } else {
                 logger("Debug|Follow|No user's follower to follow");
                 return;
@@ -182,12 +187,14 @@ export const seedingFollow = (setting) => {
                 await delay(getRandomIntBetween(3000, 5000));
                 count++;
                 logger("Done follow " + count + " person");
+                await delay(getRandomIntBetween(3000, 5000));
               } else {
                 logger("Debug|Follow|No user's following to follow");
                 return;
               }
             }
           }
+          await delay(getRandomIntBetween(3000, 5000));
         }
         logger("Complete follow by users follower/ following");
       } else {
@@ -413,6 +420,7 @@ export const seedingFollow = (setting) => {
             block: "center",
           });
         });
+        logger('scroll')
         await delay(getRandomIntBetween(1000, 3000));
         return true;
       }
@@ -471,6 +479,78 @@ export const seedingFollow = (setting) => {
       }
     } catch (err) {
       logger(err.message);
+      return false;
+    }
+  };
+  const scrollSmoothIfElementNotExistOnScreen1 = async (page, element, containerSelector) => {
+    try {
+      await page.evaluate(async (element, containerSelector) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 100 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+        if (element && !isInViewport(element, container)) {
+          const elementRect = element.getBoundingClientRect();
+          const viewportHeight =
+            container.innerHeight || document.documentElement.clientHeight;
+          const targetPosition =
+            container.scrollTop +
+            elementRect.top -
+            (elementRect.top > viewportHeight ? viewportHeight : 0);
+          let currentPosition = container.scrollTop;
+          while (
+            Math.abs(currentPosition - targetPosition) > 0 &&
+            !isInViewport(element, container)
+          ) {
+            const stepSize =
+              getRandomIntBetween(100, 300) *
+              (currentPosition > targetPosition ? -1 : 1);
+            const durationPerStep = getRandomIntBetween(1000, 2000);
+            const nextPosition = currentPosition + stepSize;
+            smoothScrollByStep(nextPosition, durationPerStep, container);
+            await delay(getRandomIntBetween(1000,2000));
+            if(Math.random() < 0.3){
+              await delay(getRandomIntBetween(3000,5000));
+            }
+            currentPosition = window.scrollTop;
+          }
+        }
+      }, element, containerSelector);
+      return true;
+    } catch (error) {
+      console.log(error);
       return false;
     }
   };

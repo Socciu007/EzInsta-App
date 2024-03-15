@@ -172,7 +172,7 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                 />
               </div>
             </div>
-            {values.typeDirectMSg != 'user' && (
+            {(values.typeDirectMSg === 'follower' || values.typeDirectMSg === 'following') && (
               <div className="component-item -type-direct">
                 <p>Type</p>
                 <div className="PostContent">
