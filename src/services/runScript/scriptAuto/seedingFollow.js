@@ -35,7 +35,7 @@ export const seedingFollow = (setting) => {
     }
   };
   
-  const followUserLikingPost = async (page, listPost, numsFollow) => {
+  const followUserLikingPost = async (page, listPost, numsFollow, err) => {
     try {
       for (let i = 0; i < listPost.length; i++) {
         let count = 0;
@@ -72,19 +72,19 @@ export const seedingFollow = (setting) => {
             logger("Done follow " + count + " person");
             await delay(getRandomIntBetween(3000, 5000));
           } else {
-            logger("Debug|Follow|No liked person to follow");
+            err["err"] = "Debug|Follow|No liked person to follow"
             return;
           }
         }
       }
       logger("Complete follow user's liking posts");
     } catch (error) {
-      logger("Debug|Follow|Err follow user liking posts " + error.message);
+      err["err"] = "Debug|Follow|Err follow user liking posts " + error.message
       return;
     }
   };
   
-  const followByFollowers = async (page, numsFollow) => {
+  const followByFollowers = async (page, numsFollow, err) => {
     try {
       const listFollower = await getElements(
         page,
@@ -92,7 +92,7 @@ export const seedingFollow = (setting) => {
       );
   
       if (!listFollower || listFollower.length < 1) {
-        logger("Debug|Follow|No follower to follow");
+        err["err"] = "Debug|Follow|No follower to follow"
         return;
       } else if (numsFollow >= listFollower.length) {
         for (let i = 0; i < listFollower.length; i++) {
@@ -124,12 +124,12 @@ export const seedingFollow = (setting) => {
         }
       }
     } catch (error) {
-      logger("Debug|Follow|Err follow by followers " + error.message);
+      err["err"] = "Debug|Follow|Err follow by followers" + error.message
       return;
     }
   };
   
-  const followByUserFollowerOrFollowing = async (page, typeFollow, numsFollow, listUsers) => {
+  const followByUserFollowerOrFollowing = async (page, typeFollow, numsFollow, listUsers, err) => {
     try {
       if (listUsers.length && listUsers.length > 0) {
         for (let i = 0; i < listUsers.length; i++) {
@@ -161,7 +161,7 @@ export const seedingFollow = (setting) => {
                 logger("Done follow " + count + " person");
                 await delay(getRandomIntBetween(3000, 5000));
               } else {
-                logger("Debug|Follow|No user's follower to follow");
+                err["err"] = "Debug|Follow|No user's follower to follow"
                 return;
               }
             }
@@ -189,7 +189,7 @@ export const seedingFollow = (setting) => {
                 logger("Done follow " + count + " person");
                 await delay(getRandomIntBetween(3000, 5000));
               } else {
-                logger("Debug|Follow|No user's following to follow");
+                err["err"] = "Debug|Follow|No user's following to follow"
                 return;
               }
             }
@@ -198,16 +198,16 @@ export const seedingFollow = (setting) => {
         }
         logger("Complete follow by users follower/ following");
       } else {
-        logger("Debug|Follow|You need import user list");
+        err["err"] = "Debug|Follow|You need import user list"
         return;
       }
     } catch (error) {
-      logger("Debug|Follow|Err follow by user follower/ user following " + error.message);
+      err["err"] = "Debug|Follow|Err follow by user follower/ user following " + error.message
       return;
     }
   };
   
-  const followBySearch = async (page, typeSearch, listUsers, listKeywords) => {
+  const followBySearch = async (page, typeSearch, listUsers, listKeywords, err) => {
     try {
       let countFollow = 0;
       if (typeSearch === "searchByUser") {
@@ -246,7 +246,7 @@ export const seedingFollow = (setting) => {
           }
           logger("Complete follow by search user");
         } else {
-          logger("Debug|Follow|You need import username into input search");
+          err["err"] = "Debug|Follow|You need import username into input search";
           return;
         }
       }
@@ -286,12 +286,12 @@ export const seedingFollow = (setting) => {
           }
           logger("Complete follow by search keywords");
         } else {
-          logger("Debug|Follow|You need import keywords into input search");
+          err["err"] = "Debug|Follow|You need import keywords into input search"
           return;
         }
       }
     } catch (error) {
-      logger("Debug|Follow|Err click search " + error.message);
+      err["err"] = "Debug|Follow|Err click search " + error.message
       return;
     }
   };
@@ -565,50 +565,66 @@ try {
   await returnHomePage(page);
   await delay(2000);
   followObj = await checkObject(followObj);
+  let errFollow = {};
   const numsFollow = getRandomIntBetween(
     followObj.numberStart,
     followObj.numberEnd
   );
+  if (numsFollow < 1) {
+    logger("Debug|Follow|Number of follow greater than one follow. you need to re-enter")
+    return;
+  }
   if (followObj.typeFollow === "followers") {
     const isAccessProfile = await accessProfile(page);
     if (isAccessProfile) {
       await delay(getRandomIntBetween(3000, 5000));
-      await followByFollowers(page, numsFollow);
+      await followByFollowers(page, numsFollow, errFollow);
       await delay(getRandomIntBetween(3000, 5000));
-  logger("Complete follow");
     } else {
       logger("Debug|Follow|Err access profile");
       return;
     }
   }
   if (followObj.typeFollow === "byUserLikePost") {
-    await followUserLikingPost(page, followObj.postList, numsFollow);
+    if (followObj.postList.length < 1) {
+      logger("Debug|Follow|Post ID is null. You need re-enter");
+      return;
+    }
+    await followUserLikingPost(page, followObj.postList, numsFollow, errFollow);
     await delay(getRandomIntBetween(3000, 5000));
-  logger("Complete follow");
   }
   if (
     followObj.typeFollow === "byUserFollowing" ||
     followObj.typeFollow === "byUserFollower"
   ) {
+    if (followObj.userList.length < 1) {
+      logger("Debug|Follow|User ID is null. You need re-enter");
+      return;
+    }
     await followByUserFollowerOrFollowing(
       page,
       followObj.typeFollow,
       numsFollow,
-      followObj.userList
+      followObj.userList,
+      errFollow
     );
     await delay(getRandomIntBetween(3000, 5000));
-  logger("Complete follow");
   }
   if (followObj.typeFollow === "search") {
     await followBySearch(
       page,
       followObj.search,
       followObj.searchByUser,
-      followObj.searchByKeyword
+      followObj.searchByKeyword,
+      errFollow
     );
     await delay(getRandomIntBetween(3000, 5000));
-  logger("Complete follow");
   }
+  if (errFollow.err != '') {
+    logger(errFollow.err)
+    return;
+  }
+  logger("Complete follow");
 } catch (error) {
   logger("Debug|Follow|Err follow " + error.message);
   return;

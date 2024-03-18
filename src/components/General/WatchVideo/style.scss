@@ -12,6 +12,7 @@
     display: flex;
     margin: 1rem 0;
     height: 5%;
+    cursor: pointer;
     p {
       color: var(--font-color-para);
       font-size: 18px;
@@ -60,6 +61,11 @@
         font-size: 15px;
         font-weight: 700;
         display: flex;
+      }
+      .watchReels {
+        .component-item__content {
+          height: 40px;
+        }
       }
       .component-item {
         display: flex;

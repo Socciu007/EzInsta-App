@@ -255,7 +255,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 />
               </div>
             </div>
-            <div className="component-item Like">
+            <div className="component-item Like watchReels">
               <div className="component-item__header">
                 <input
                   type="checkbox"
@@ -319,7 +319,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 </div>
               </div>
             </div>
-            <div className="component-item comment">
+            <div className="component-item comment watchReels">
               <div className="top">
                 <div className="component-item__header">
                   <input
@@ -411,7 +411,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 </div>
               </div>
             </div>
-            <div className="component-item share">
+            <div className="component-item share watchReels">
               <div className="top">
                 <div className="component-item__header">
                   <input

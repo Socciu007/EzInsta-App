@@ -84,7 +84,7 @@ export const watchStory = (setting) => {
           commentEle = await getElement(page, '[class="_abx2"]');
         }
         if (commentEle) {
-          await commentEle.type(contentComment, { delay: 500 });
+          await commentEle.type(contentComment, { delay: 200 });
           await delay(getRandomIntBetween(3000, 5000));
           await page.keyboard.press("Enter");
           logger("Comment story success");

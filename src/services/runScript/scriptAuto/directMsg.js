@@ -72,7 +72,7 @@ const accessChat = async page => {
     }
   };
   
-  const actionChatUser = async (page, directMsgObj, quantityChat) => {
+  const actionChatUser = async (page, directMsgObj, quantityChat, err) => {
     try {
       let countChat = 0;
       if (directMsgObj.UIDList.length > 0) {
@@ -150,12 +150,12 @@ const accessChat = async page => {
         }
         logger("Done direct message");
       } else {
-        logger("Debug|DirectMessage|UserId is null. You need import ID");
-        return;
+        err["err"] = "Debug|DirectMessage|UserId is null. You need import ID"
+        return     
       }
     } catch (error) {
-      logger("Debug|DirectMessage|Err action chat with user " + error.message);
-      return;
+      err["err"] = 'Debug|DirectMessage|Err action chat with user ' + error.message
+      return
     }
   };
   
@@ -163,8 +163,8 @@ const accessChat = async page => {
     page,
     directMsgObj,
     quantityChat,
-    indexOfUID,
-    arrIndex
+    arrIndex,
+    indexOfUID
   ) => {
     try {
       if (directMsgObj.typeNew === "random") {
@@ -176,23 +176,16 @@ const accessChat = async page => {
           followingEle = await getElements(page, '[class="_aarh"]');
         }
         await delay(getRandomIntBetween(3000, 5000));
+       
         if (followingEle.length > 0) {
-          let index = getRandomInt(followingEle.length);
-          if (quantityChat > followingEle.length) {
-            const loopIndex = Math.ceil(quantityChat / followingEle.length);
-            let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex);
-            while (isDuplicate) {
-              index = getRandomInt(followingEle.length);
-              isDuplicate = await checkDuplicate(arrIndex, index, loopIndex);
-            }
+          let index = getRandomInt(followingEle.length);  
+          const loopIndex = Math.ceil(quantityChat / followingEle.length);
+          let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
+          while (isDuplicate) {
+            index = getRandomInt(followingEle.length);
+            isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
           }
-          if (quantityChat <= followingEle.length) {
-            let isDuplicate = await checkDuplicate(arrIndex, index);
-            while (isDuplicate) {
-              index = getRandomInt(followingEle.length);
-              isDuplicate = await checkDuplicate(arrIndex, index);
-            }
-          }
+          
           arrIndex.push(index);
           await followingEle[index].scrollIntoView({
             behavior: "smooth",
@@ -220,7 +213,7 @@ const accessChat = async page => {
             if (isChat) {
               logger("Done send message");
               await delay(getRandomIntBetween(3000, 5000));
-              return arrIndex;
+          
             }
           }
         } else {
@@ -258,12 +251,6 @@ const accessChat = async page => {
           }
           await delay(getRandomIntBetween(3000, 5000));
           if (followingEle) {
-            await followingEle.scrollIntoView({
-              behavior: "smooth",
-              // block: "center",
-              inline: "center",
-            });
-            await delay(getRandomIntBetween(3000, 5000));
             await clickElement(followingEle);
             await delay(getRandomIntBetween(3000, 5000));
             let messageEle = await getElement(
@@ -288,13 +275,13 @@ const accessChat = async page => {
             }
           } else {
             logger("Debug|DirectMessage|No find following to direct message");
-            return;
+            return ;
           }
         }
-      }
+      } 
     } catch (error) {
       logger("Debug|DirectMessage|Err action chat with user " + error.message);
-      return;
+      return ;
     }
   };
   
@@ -302,8 +289,8 @@ const accessChat = async page => {
     page,
     directMsgObj,
     quantityChat,
-    indexOfUID,
-    arrIndex
+    arrIndex,
+    indexOfUID
   ) => {
     try {
       if (directMsgObj.typeNew === "random") {
@@ -318,23 +305,14 @@ const accessChat = async page => {
         await delay(getRandomIntBetween(3000, 5000));
         if (listFollower.length > 0 && followingEle.length > 0) {
           let index = getRandomInt(listFollower.length);
-          if (quantityChat > listFollower.length) {
-            const loopIndex = Math.ceil(quantityChat / listFollower.length);
-            let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex);
-            while (isDuplicate) {
-              index = getRandomInt(listFollower.length);
-              isDuplicate = await checkDuplicate(arrIndex, index, loopIndex);
-            }
-          }
-          if (quantityChat <= listFollower.length) {
-            let isDuplicate = await checkDuplicate(arrIndex, index);
-            while (isDuplicate) {
-              index = getRandomInt(listFollower.length);
-              isDuplicate = await checkDuplicate(arrIndex, index);
-            }
+          const loopIndex = Math.ceil(quantityChat / listFollower.length);
+          logger('loop', loopIndex)
+          let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
+          while (isDuplicate) {
+            index = getRandomInt(listFollower.length);
+            isDuplicate = await checkDuplicate(arrIndex, index, loopIndex -1 );
           }
           arrIndex.push(index);
-          logger(arrIndex)
           await followingEle[index].scrollIntoView({
             behavior: "smooth",
             // block: "center",
@@ -371,9 +349,8 @@ const accessChat = async page => {
             const isChat = await actionChat(page, directMsgObj);
             if (isChat) {
               logger("Done send message");
-              return arrIndex;
+              await delay(getRandomIntBetween(3000, 5000));
             }
-            await delay(getRandomIntBetween(3000, 5000));
           }
         } else {
           logger("Debug|DirectMessage|No following to direct message");
@@ -448,7 +425,7 @@ const accessChat = async page => {
             return;
           }
         }
-      }
+      } 
     } catch (error) {
       logger("Debug|DirectMessage|Err action chat with user " + error.message);
       return;
@@ -563,11 +540,16 @@ const accessChat = async page => {
       directMsgObj.numberStart,
       directMsgObj.numberEnd
     );
+    let errMsg = {}
     if (directMsgObj.typeDirectMSg === "user") {
       const isAccessChat = await accessChat(page);
       if (isAccessChat) {
-        await actionChatUser(page, directMsgObj, quantityChat);
+        await actionChatUser(page, directMsgObj, quantityChat, errMsg);
         await delay(getRandomIntBetween(3000, 5000));
+        if (errMsg.err) {
+          logger(errMsg.err);
+          return;
+        }
       } else {
         logger("Debug|DirectMessage|Can not access chat");
         return;
@@ -588,7 +570,12 @@ const accessChat = async page => {
             continue;
           }
         }
+        logger("Done direct message by random following")
       } else if (directMsgObj.typeNew === "user") {
+        if (directMsgObj.UIDList.length < 1 || quantityChat < 1) {
+          logger("Debug|DirectMessage|User id following is null or quanlity greater than one person. You need import uid or quantity person");
+          return;
+        }
         const quantityNeedChat =
           quantityChat < directMsgObj.UIDList.length
             ? quantityChat
@@ -599,13 +586,14 @@ const accessChat = async page => {
             directMsgObj.typeDirectMSg
           );
           if (isAccessProfile) {
-            await actionChatWithFollowing(page, directMsgObj, i);
+            await actionChatWithFollowing(page, directMsgObj, 0, [], i);
             await delay(getRandomIntBetween(3000, 5000));
           } else {
             i--;
             continue;
           }
         }
+        logger("Done direct message by user following")
       } else {
         logger("Debug|DirectMessage|You need import type of following. Ex: random, user,...");
         return;
@@ -614,19 +602,26 @@ const accessChat = async page => {
       if (directMsgObj.typeNew === "random") {
         let arrIndex = [];
         for (let i = 0; i < quantityChat; i++) {
+          logger('check', arrIndex)
           const isAccessProfile = await accessProfile(
             page,
             directMsgObj.typeDirectMSg
           );
           if (isAccessProfile) {
-            arrIndex = await actionChatWithFollowers(page, directMsgObj, quantityChat, arrIndex);
+            await actionChatWithFollowers(page, directMsgObj, quantityChat, arrIndex);
             await delay(getRandomIntBetween(3000, 5000));
           } else {
             i--;
             continue;
           }
-        }
+        } 
+        logger("Done direct message by random follower")
       } else if (directMsgObj.typeNew === "user") {
+
+        if (directMsgObj.UIDList.length < 1 || quantityChat < 1) {
+          logger("Debug|DirectMessage|User id follower is null or quanlity greater than one person. You need import uid or quantity person");
+          return;
+        }
         const quantityNeedChat =
           quantityChat < directMsgObj.UIDList.length
             ? quantityChat
@@ -645,6 +640,7 @@ const accessChat = async page => {
             continue;
           }
         }
+        logger("Done direct message by user follower")
       } else {
         logger("Debug|DirectMessage|You need import type of followers. Ex: random, user,...");
         return;

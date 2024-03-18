@@ -244,7 +244,7 @@ export const watchReels = (setting) => {
           }
           await delay(getRandomIntBetween(3000, 5000));
           if (importComment) {
-            await importComment.type(contentComment, { delay: 500 });
+            await importComment.type(contentComment, { delay: 200 });
             await delay(getRandomIntBetween(3000, 3000));
             await page.keyboard.press("Enter");
             logger("Comment post success");
@@ -344,7 +344,7 @@ export const watchReels = (setting) => {
                 'input[name="shareCommentText"]'
               );
               await delay(getRandomIntBetween(3000, 5000));
-              await importShareEle.type(contentShare, { delay: 500 });
+              await importShareEle.type(contentShare, { delay: 200 });
               await delay(getRandomIntBetween(3000, 5000));
             }
             //send share post

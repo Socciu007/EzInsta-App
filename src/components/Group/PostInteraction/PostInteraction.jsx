@@ -457,7 +457,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                   </div>
                 </div>
               )}
-              <div className="component-item">
+              <div className="component-item" style={{ height: 40 }}>
                 <div className="component-item__header">
                   <input
                     type="checkbox"
@@ -545,11 +545,10 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                   </div>
                 </div>
               )}
-              {values.isShare && values.typeShare === 'user' && (
+              {values.isShare && (
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
                     <p>User list</p>
-                    {/* <span>({values.line})</span> */}
                   </div>
                   <div className="component-item " style={{ position: 'relative' }}>
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">

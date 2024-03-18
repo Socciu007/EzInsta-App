@@ -20,7 +20,7 @@ export const boostLikeComment = (setting) => {
   }`;
   console.log('strSetting', strSetting);
   return `
-  const getPostID = async (page, boostObj) => {
+  const getPostID = aFsync (page, boostObj) => {
     try {
       const numsTag = getRandomIntBetween(
         boostObj.tagFriendStart,
