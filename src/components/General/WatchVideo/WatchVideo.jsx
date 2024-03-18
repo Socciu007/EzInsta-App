@@ -110,6 +110,9 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
   const handleChangeShareEnd = (value) => {
     setValues({ ...values, shareEnd: parseToNumber(value) });
   };
+  const handleChangeMessage = (value) => {
+    setValues({ ...values, isMessage: value });
+  };
   const changeLike = (value) => {
     setValues({ ...values, isLike: value });
   };
@@ -476,29 +479,71 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     <MenuItem value="user">User</MenuItem>
                   </Select>
                 </div>
-                {values.typeShare === 'user' && (
-                  <div className="commentContent">
-                    <div className="Text">
-                      <p style={{ fontWeight: 700 }}>User</p>
+
+                <div className="commentContent">
+                  <div className="Text">
+                    <p style={{ fontWeight: 700 }}>User</p>
+                    <div style={{ position: 'relative' }} className="component-item box">
+                      <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
+                        <Editor
+                          value={userContent}
+                          onValueChange={(text) => {
+                            setUserContent(text);
+                          }}
+                          highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
+                          padding={15}
+                          className="editor"
+                          textareaId="shareContent"
+                          onClick={handleDivShareClick}
+                          style={{
+                            background: '#FFFFFF',
+                            fontSize: 15,
+                          }}
+                        />
+                        {userContent.length ? null : (
+                          <div onClick={handleDivShareClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                            <p>
+                              <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                            </p>
+                            <p>
+                              <span>2</span>Each content/line
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="Text" style={{ marginTop: '19px' }}>
+                    <div className="message">
+                      <input
+                        type="checkbox"
+                        name="randomShare"
+                        checked={values.isMessage}
+                        onChange={(event) => handleChangeMessage(event.target.checked)}
+                      />
+                      <p style={{ fontWeight: 700 }}>Message</p>
+                    </div>
+                    {values.isMessage && (
                       <div style={{ position: 'relative' }} className="component-item box">
                         <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                           <Editor
-                            value={userContent}
+                            value={shareContent}
                             onValueChange={(text) => {
-                              setUserContent(text);
+                              setShareContent(text);
                             }}
-                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, userContent)}
+                            highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
                             padding={15}
                             className="editor"
-                            textareaId="shareContent"
-                            onClick={handleDivShareClick}
+                            textareaId="userList"
+                            onClick={handleDivUserClick}
                             style={{
                               background: '#FFFFFF',
                               fontSize: 15,
                             }}
                           />
-                          {userContent.length ? null : (
-                            <div onClick={handleDivShareClick} className={`placeholder ${userContent ? 'hide' : ''}`}>
+                          {shareContent.length ? null : (
+                            <div onClick={handleDivUserClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
                               <p>
                                 <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
                               </p>
@@ -509,41 +554,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                           )}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className={`commentContent ${values.isShare ? 'show' : 'hide'}`}>
-                <div className="Text">
-                  <p style={{ fontWeight: 700 }}>Message</p>
-                  <div style={{ position: 'relative' }} className="component-item box">
-                    <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
-                      <Editor
-                        value={shareContent}
-                        onValueChange={(text) => {
-                          setShareContent(text);
-                        }}
-                        highlight={(code) => hightlightWithLineNumbers(code, languages.js, shareContent)}
-                        padding={15}
-                        className="editor"
-                        textareaId="userList"
-                        onClick={handleDivUserClick}
-                        style={{
-                          background: '#FFFFFF',
-                          fontSize: 15,
-                        }}
-                      />
-                      {shareContent.length ? null : (
-                        <div onClick={handleDivUserClick} className={`placeholder ${shareContent ? 'hide' : ''}`}>
-                          <p>
-                            <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
-                          </p>
-                          <p>
-                            <span>2</span>Each content/line
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

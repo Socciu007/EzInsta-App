@@ -18,6 +18,7 @@
     "shareStart": 1,
     "shareEnd": 3,
     "typeShare": "user",
+    "isMessage": false,
     "userList": [],
     "shareText": []
   },
@@ -38,6 +39,7 @@
     "commentStart": 2,
     "commentEnd": 2,
     "typeComment": "text",
+    "isMessage": false,
     "commentText": [],
     "userList": []
   },
@@ -73,7 +75,6 @@
     "postEnd": 2,
     "delayTimeStart": 5,
     "delayTimeEnd": 10,
-
     "text": [],
     "photos": []
   },
@@ -113,8 +114,6 @@
     "viewTimeStart": 60,
     "viewTimeEnd": 120
   },
-  "sendMsg": null,
-  "replyMsg": null,
   "addFriend": {
     "option": "suggestions",
     "requestsStart": 2,
@@ -144,53 +143,6 @@
     "optionUnfriend": "UID",
     "requestsStart": 3,
     "requestsEnd": 4
-  },
-  "joinGroup": {
-    "groupStart": 5,
-    "groupEnd": 10,
-    "delayTimeStart": 5,
-    "delayTimeEnd": 10,
-    "isAutoAnswer": false,
-    "option": "suggestions",
-    "text": [],
-    "answer": [],
-    "lineCount": 0
-  },
-  "leftGroup": {
-    "groupEnd": 5,
-    "groupStart": 3,
-    "delayTimeEnd": 5,
-    "delayTimeStart": 3,
-    "member": 5,
-    "text": [],
-    "option": "random"
-  },
-  "inviteGroup": {
-    "groupFriendsStart": 3,
-    "groupFriendsEnd": 5,
-    "delayTimeStart": 3,
-    "delayTimeEnd": 5,
-    "option": "suggestions",
-    "text": [],
-    "lineCount": 0
-  },
-  "createPostGroup": {
-    "postStart": 1,
-    "postEnd": 2,
-    "delayTimeStart": 5,
-    "delayTimeEnd": 10,
-    "option": "text/photo",
-    "text": [],
-    "photos": [],
-    "photoStart": 1,
-    "photoEnd": 2,
-    "isTag": false,
-    "typeTag": "random",
-    "numberFriendTagStart": 1,
-    "numberFriendTagEnd": 2,
-    "UID": [],
-    "UIDGroup": [],
-    "lineCount": 0
   },
   "seedingPost": {
     "viewTimeStart": 10,
