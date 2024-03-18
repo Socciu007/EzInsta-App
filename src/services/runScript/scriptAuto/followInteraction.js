@@ -36,6 +36,9 @@ export const followInteraction = (setting) => {
   return `
 const randomShare = async (page, obj) => {
   const numsUser = getRandomIntBetween(obj.randomStart, obj.randomEnd);
+    if(numsUser == 0) {
+    return false;
+  }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){ 
     let search = await getElement(page, '[name="queryBox"]');
@@ -105,6 +108,9 @@ const randomShare = async (page, obj) => {
 } 
 const userShare = async (page, obj) => {
   const numsUser = getRandomIntBetween(obj.userStart, obj.userEnd);
+   if(numsUser == 0) {
+    return false;
+  }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){
     const search = await getElement(page, '[name="queryBox"]');
@@ -470,6 +476,7 @@ const interactWithFollower = async (page, obj, numAccounts) => {
                     logger("còn phải share " + numShares + " bài")
                   } else {
                     await clickClose(page);
+                    logger("share failed!");
                     await delay(2000);
                   }
                 }
@@ -480,6 +487,7 @@ const interactWithFollower = async (page, obj, numAccounts) => {
                     logger("còn phải share " + numShares + " bài")
                   } else {
                     await clickClose(page);
+                    logger("share failed!");
                     await delay(2000);
                   }
                 }
@@ -625,6 +633,7 @@ const interactWithFollowing = async (page, obj, numAccounts) => {
             await delay(viewTime);
             if(numLikes > posts.length - 1){
               numLikes = posts.length - 1;
+              logger("numLikes " + numLikes)
             }
             if(numShares > posts.length - 1){
               numShares = posts.length - 1;
@@ -655,6 +664,7 @@ const interactWithFollowing = async (page, obj, numAccounts) => {
                     logger("còn phải share " + numShares + " bài")
                   } else {
                     await clickClose(page);
+                    logger("share failed");
                     await delay(2000);
                   }
                 }
@@ -665,6 +675,7 @@ const interactWithFollowing = async (page, obj, numAccounts) => {
                     logger("còn phải share " + numShares + " bài")
                   } else {
                     await clickClose(page);
+                    logger("share failed");
                     await delay(2000);
                   }
                 }
@@ -721,6 +732,9 @@ try {
         await delay(3000);
         const elProfile = await getElement(page, "a span img");
         if(!elProfile) {
+           logger(
+            "Debug" + "|" + "Follow Interaction" + "|" + "Cannot find profile button"
+          );
             return false;
         }
         await elProfile.click();
@@ -763,17 +777,25 @@ try {
     if(obj.typeInteract === 'follower'){
         const followerBtn = await getElement(page, '[href = "' + hrefFollower + '"]');
         if(!followerBtn){
+           logger(
+            "Debug" + "|" + "Follow Interaction" + "|" + "Cannot find follower button"
+          );
             return false;
         }
         await delay(2000);
         await followerBtn.click();
         await delay(5000);
         let numAccounts = getRandomIntBetween(obj.accountStart, obj.accountEnd);
+        if(numAccounts == 0){
+          return false;
+        }
         const rs = await interactWithFollower(page, obj, numAccounts);
         if(rs){
           logger("đã tương tác đủ ");
         } else {
-          logger("tương tác thất bại");
+           logger(
+            "Debug" + "|" + "Follow Interaction" + "|" + "Follower interaction failed"
+          );
         }
         
     } 
@@ -781,17 +803,25 @@ try {
     if(obj.typeInteract === 'following'){
        const followingBtn = await getElement(page, '[href = "' + hrefFollowing + '"]');
         if(!followingBtn){
+          logger(
+            "Debug" + "|" + "Follow Interaction" + "|" + "Cannot find following button"
+          );
             return false;
         }
         await delay(2000);
         await followingBtn.click();
         await delay(5000);
         let numAccounts = getRandomIntBetween(obj.accountStart, obj.accountEnd);
+        if(numAccounts == 0){
+          return false;
+        }
         const rs = await interactWithFollowing(page, obj, numAccounts);
         if(rs){
           logger("đã tương tác đủ ");
         } else {
-          logger("tương tác thất bại");
+          logger(
+            "Debug" + "|" + "Follow Interaction" + "|" + "Following interaction failed"
+          );
         }
     }
 

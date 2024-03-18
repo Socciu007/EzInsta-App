@@ -177,6 +177,7 @@
         .TagType {
           top: 0;
           width: 100%;
+          margin-top: 2%;
           border-radius: 5px;
           background: var(--bg-input);
           height: 40px;
@@ -332,9 +333,6 @@
       }
     }
   }
-  .hide {
-    display: none;
-  }
 }
 .MuiButtonBase-root {
   font-family: 'GoogleSans' !important;
@@ -353,4 +351,13 @@
   opacity: 0.5;
   font-size: 15px;
   font-weight: 400;
+}
+.hide {
+  display: none !important;
+}
+.show {
+  display: block !important;
+}
+.Text {
+  margin-top: 5%;
 }

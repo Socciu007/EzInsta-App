@@ -3,7 +3,10 @@ export const updateProfileScript = (setting) => {
       gender: ${JSON.stringify(setting.gender)},
       customGender: ${JSON.stringify(setting.customGender)},
       bio: ${JSON.stringify(setting.bio)},
-      photos: ${JSON.stringify(setting.photos)}
+      photos: ${JSON.stringify(setting.photos)},
+      isUpdateAvatar: ${setting.isUpdateAvatar},
+      isUpdateBio: ${setting.isUpdateBio},
+      isUpdateGender: ${setting.isUpdateGender}
     }`;
   return `
     const scrollSmoothIfElementNotExistOnScreen1 = async (page, element, container) => {
@@ -185,14 +188,27 @@ export const updateProfileScript = (setting) => {
     } catch(error) {
         logger(error);
     }
-  }          
+  }   
+  const clickReturn = async (page) => {
+  try {
+    const returnBtns = await getElements(page, '[d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]');
+    if(!returnBtns) {
+      await page.goBack();
+    }
+    await delay(2000);
+    await returnBtns[returnBtns.length - 1].click();
+    await delay(2000);
+    logger("click return");
+  } catch(error) {
+    logger(error);
+  }
+}       
   const updateProfile = ${strSetting}
       try {
         //Check obj start < end ? random(start,end) : random(end,start)
         let updateObj = await checkObject(updateProfile);
         // check page is live return -1, return 1, return 0
         const isLive = checkIsLive(page);
-        logger('Tình trạng trang web:'+ isLive);
         if (!isLive) return -1;
         await returnHomePage(page);
         await delay(3000);
@@ -228,7 +244,7 @@ export const updateProfileScript = (setting) => {
                 logger("không tìm thấy nút avatar");
                 return false;
             }
-        if(updateObj.photos.length != 0) {
+        if(updateObj.photos.length != 0 && updateObj.isUpdateAvatar) {
             await delay(3000);
             await avatarBtns[0].click();
             await delay(3000); 
@@ -243,7 +259,7 @@ export const updateProfileScript = (setting) => {
             await fileChooser.accept([updateObj.photos[randomImg]]);
             await delay(10000);
         }
-        if(updateObj.bio.length != 0){
+        if(updateObj.bio.length != 0 && updateObj.isUpdateBio){
             const inputValue = await page.$eval('#pepBio', el => el.value);
             // focus on the input field
             await page.click('#pepBio');
@@ -257,7 +273,7 @@ export const updateProfileScript = (setting) => {
             await page.keyboard.type(randomString, { delay: 100 });
             await delay(2000);
         }
-        if(updateObj.gender){
+        if(updateObj.isUpdateGender){
              await delay(2000);
              const input = await getElement(page, '[id="pepGender"]');
              if(!input) {
@@ -274,14 +290,22 @@ export const updateProfileScript = (setting) => {
                 await handleRadio(page, updateObj); 
              }   
         }
+        if(!updateObj.isUpdateAvatar && !updateObj.isUpdateGender && !updateObj.isUpdateBio){
+          logger(
+                   "Debug" + "|" + "Update Profile" + "|" + "input prop is not checked"
+                  );
+          return false;
+        }
         await delay(2000);
         const rs = await page.evaluate((element) => {
             element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
             return element.innerHTML;
         }, avatarBtns[2]);
-        await delay(5000);
+        await delay(3000);
         await avatarBtns[2].click();
-        await delay(5000)
+        await delay(3000);
+        await clickReturn(page);
+        await delay(5000);
       } catch (error) {
         logger(error);
       }

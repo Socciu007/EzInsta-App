@@ -34,6 +34,9 @@ export const hashtagInteraction = (setting) => {
   return `
 const randomShare = async (page, obj) => {
   const numsUser = getRandomIntBetween(obj.randomStart, obj.randomEnd);
+  if(numsUser == 0) {
+    return false;
+  }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){ 
     let search = await getElement(page, '[name="queryBox"]');
@@ -103,6 +106,9 @@ const randomShare = async (page, obj) => {
 } 
 const userShare = async (page, obj) => {
   const numsUser = getRandomIntBetween(obj.userStart, obj.userEnd);
+      if(numsUser == 0) {
+    return false;
+  }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){
     const search = await getElement(page, '[name="queryBox"]');
@@ -391,20 +397,28 @@ const interactWithHashtag = async (page, obj, numPosts) => {
                   const isShare = await randomShare(page, obj);
                   if(isShare){
                     numShares--;
-                    logger("còn phải share " + numShares + " bài")
+                    logger("còn phải share " + numShares + " bài");
+                    await delay(5000);
                   } else {
                     await clickClose(page);
-                    await delay(2000);
+                    logger(
+                   "Debug" + "|" + "NewsFeed" + "|" + "Share failed!"
+                  );
+                    await delay(3000);
                   }
                 }
                 if(obj.typeShare == "user"){
                   const isShare = await userShare(page, obj);
                   if(isShare){
                     numShares--;
-                    logger("còn phải share " + numShares + " bài")
+                    logger("còn phải share " + numShares + " bài");
+                    await delay(5000);
                   } else {
                     await clickClose(page);
-                    await delay(2000);
+                    logger(
+                   "Debug" + "|" + "NewsFeed" + "|" + "Share failed!"
+                  );
+                    await delay(3000);
                   }
                 }
               }
@@ -422,19 +436,21 @@ const interactWithHashtag = async (page, obj, numPosts) => {
                 await page.keyboard.press("Enter");
                 await delay(randomDelay);
                 numComments--;
-                logger("còn phải comment " + numComments + " bài")
+                logger("còn phải comment " + numComments + " bài");
+                await delay(5000);
               }
             }
             await clickClose(page);
             await delay(3000);
         }
-          await delay(2000);
+          await delay(3000);
           await clickReturn(page);
-          await delay(2000);
+          await delay(3000);
           count++;
           await delay(2000);
           if(count == numPosts) {
             isInteract = true;
+            await delay(2000);
           }
       return isInteract;
     } catch (error){
@@ -477,7 +493,9 @@ try {
         }
         let search = await getElement(page, '[placeholder="Search"]');
         if(!search) {
-            logger("Can not find search button");
+            logger(
+            "Debug" + "|" + "Hashtag Interaction" + "|" + "Cannot find search button"
+          );
             return false;
         }
         await search.click();
@@ -487,7 +505,12 @@ try {
         await page.keyboard.type(hashtag, { delay: 100 });
         await delay(2000);
         const hashtagBtns = await getElements(page, '[role="dialog"] a[role="link"]');
-        if(!hashtagBtns) return false;
+        if(!hashtagBtns){
+            logger(
+            "Debug" + "|" + "Hashtag Interaction" + "|" + "Cannot find any hashtag buttons"
+          );
+          return false;
+        } 
         await delay(2000);
         await hashtagBtns[0].click();
         await delay(5000);
@@ -496,11 +519,11 @@ try {
         if(rs){
             logger("đã tương tác đủ bài");
         } else {
-            logger("tương tác thất bại");
+            logger(
+            "Debug" + "|" + "Hashtag Interaction" + "|" + "Interact failed"
+          );
         }
     }
-    
-
 } catch (err) {
   logger(err);
 }

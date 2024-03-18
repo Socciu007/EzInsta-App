@@ -17,7 +17,6 @@ import DefaultSciptSettings from '../../../resources/defaultSciptSettings.json';
 const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, component }) => {
   const [values, setValues] = useState(DefaultSciptSettings['createPost']);
   const [textContent, setTextContent] = useState('');
-  const [UIDContent, setUIDContent] = useState('');
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 10,
@@ -49,11 +48,8 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
 
   useEffect(() => {
     if (currentSetup) {
-      if (currentSetup.UID && currentSetup.UID.length) {
-        setUIDContent(currentSetup.UID.join('\n'));
-      }
-      if (currentSetup.text && currentSetup.text.length) {
-        setTextContent(currentSetup.text.join('\n'));
+      if (currentSetup.caption && currentSetup.caption.length) {
+        setTextContent(currentSetup.caption.join('\n'));
       }
       setTimeout(() => {
         setValues(currentSetup);
@@ -63,44 +59,14 @@ const CreatePost = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
 
   useEffect(() => {
     if (textContent.length) {
-      setValues({ ...values, text: textContent.split('\n') });
+      setValues({ ...values, caption: textContent.split('\n') });
     } else {
-      setValues({ ...values, text: [] });
+      setValues({ ...values, caption: [] });
     }
   }, [textContent]);
 
-  useEffect(() => {
-    if (UIDContent.length) {
-      setValues({ ...values, UID: UIDContent.split('\n') });
-    } else {
-      setValues({ ...values, UID: [] });
-    }
-  }, [UIDContent]);
-
-  const changePostStart = (post) => {
-    setValues({ ...values, postStart: parseToNumber(post) });
-  };
-
-  const changePostEnd = (post) => {
-    setValues({ ...values, postEnd: parseToNumber(post) });
-  };
-
-  const changeDelayTimeStart = (time) => {
-    setValues({ ...values, delayTimeStart: parseToNumber(time) });
-  };
-  const changeDelayTimeEnd = (time) => {
-    setValues({ ...values, delayTimeEnd: parseToNumber(time) });
-  };
-
-  const changeOption = (value) => {
-    setValues({ ...values, option: value });
-  };
-
   const handleDivClick = () => {
     document.getElementById('text').focus();
-  };
-  const handleUIDDivClick = () => {
-    document.getElementById('UID').focus();
   };
   const hightlightWithLineNumbers = (input, language, content) =>
     highlight(input, language)
