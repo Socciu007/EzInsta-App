@@ -40,7 +40,7 @@ export const viewNoti = (setting) => {
               };
               requestAnimationFrame(animation);
             };
-            let scrollAmount = getRandomIntBetween(80, 120);
+            let scrollAmount = getRandomIntBetween(150, 250);
             const targetPosition = window.scrollY + scrollAmount;
             let currentPosition = window.scrollY;
             if (currentPosition < targetPosition) {
@@ -59,24 +59,7 @@ export const viewNoti = (setting) => {
         return 0;
       }
     };
-const getScrollHeight = async (page) =>{
-    return page.evaluate(() => document.documentElement.scrollHeight);
-}
-const scrollPageAndCompareHeight = async (page) =>{
-    const beforeScrollHeight = await getScrollHeight(page);
-
-    await scrollNotiSmooth(page, 1);
-    await delay(2000);
-
-    const afterScrollHeight = await getScrollHeight(page);
-
-    if (afterScrollHeight == beforeScrollHeight) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
+    
   const notiObj = ${strSetting}
 try {
   //Check obj start < end ? random(start,end) : random(end,start)
@@ -127,7 +110,9 @@ try {
       '[data-pressable-container="true"]'
     );
     if (!notifications) {
-      logger("không tìm thấy notifications");
+       logger(
+            "Debug" + "|" + "View Notifications" + "|" + "Cannot find any notifications"
+          );
       return false;
     }
 
@@ -175,7 +160,7 @@ try {
     }
     else {
       await scrollNotiSmooth(page, 1);
-      await delay(getRandomIntBetween(3000,5000));
+      await delay(getRandomIntBetween(2000,4000));
     }
 
     let endTime = Date.now();

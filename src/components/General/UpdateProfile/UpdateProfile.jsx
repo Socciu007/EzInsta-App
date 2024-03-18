@@ -80,6 +80,15 @@ const UpdateProfile = ({ onGoBackClick, id, updateDesignScript, currentSetup, co
   const changeGenderOption = (value) => {
     setValues({ ...values, gender: value });
   };
+  const handleChangeAvatar = (value) => {
+    setValues({ ...values, isUpdateAvatar: value });
+  };
+  const handleChangeBio = (value) => {
+    setValues({ ...values, isUpdateBio: value });
+  };
+  const handleChangeGender = (value) => {
+    setValues({ ...values, isUpdateGender: value });
+  };
   const handleDivShareClick = () => {
     document.getElementById('shareContent').focus();
   };
@@ -108,34 +117,55 @@ const UpdateProfile = ({ onGoBackClick, id, updateDesignScript, currentSetup, co
               <p>Update Profile</p>
             </div>
 
-            <div className="component-item Post">
-              <div className="PostContent">
+            <div className=" Post">
+              <div className="PostContent ">
                 <div className="photoOrVideo">
-                  <p className="component-item__header">Update avatar</p>
-                  {values.photos.length === 0 ? (
-                    <div {...getRootProps({ className: 'component-item dragVideoOrPhoto' })}>
-                      <input {...getInputProps()} />
-                      <img className="mx-auto h-40" src={DragButton} alt="addfile" />
-                      <p>Drag the photo/video folder here</p>
-                    </div>
-                  ) : (
-                    <div className={`folderPhoto`}>
-                      <div className="URLImg">
-                        <span style={{ opacity: '0.5' }}>Folder:</span>
-                        <div style={{ width: '100%' }}>
-                          {values.photos.map((filePath, index) => (
-                            <span key={index}>{filePath.replace(/^.*[\\/]/, '')}</span>
-                          ))}
-                        </div>
+                  <div className="component-item__header">
+                    <input
+                      type="checkbox"
+                      name="randomLike"
+                      checked={values.isUpdateAvatar}
+                      onChange={(event) => handleChangeAvatar(event.target.checked)}
+                    />
+                    <p>Update avatar</p>
+                  </div>
+                  <div className={` ${values.isUpdateAvatar ? 'show' : 'hide'}`}>
+                    {values.photos.length === 0 ? (
+                      <div {...getRootProps({ className: 'component-item dragVideoOrPhoto' })}>
+                        <input {...getInputProps()} />
+                        <img className="mx-auto h-40" src={DragButton} alt="addfile" />
+                        <p>Drag the photo/video folder here</p>
                       </div>
-                      <img src={DeleteButton} alt="Delete Button" onClick={handleDeleteButtonClick} />
-                    </div>
-                  )}
+                    ) : (
+                      <div className={`folderPhoto`}>
+                        <div className="URLImg">
+                          <span style={{ opacity: '0.5' }}>Folder:</span>
+                          <div style={{ width: '100%' }}>
+                            {values.photos.map((filePath, index) => (
+                              <span key={index}>{filePath.replace(/^.*[\/]/, '')}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <img src={DeleteButton} alt="Delete Button" onClick={handleDeleteButtonClick} />
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div className="Text">
-                  <p className="selectPost__header">Update Bio</p>
-                  <div style={{ position: 'relative' }} className="component-item">
+                <div className="Text ">
+                  <div className="component-item__header">
+                    <input
+                      type="checkbox"
+                      name="randomLike"
+                      checked={values.isUpdateBio}
+                      onChange={(event) => handleChangeBio(event.target.checked)}
+                    />
+                    <p>Update Bio</p>
+                  </div>
+                  <div
+                    style={{ position: 'relative' }}
+                    className={`component-item ${values.isUpdateBio ? 'show' : 'hide'}`}
+                  >
                     <div className="text" style={{ width: '100%', height: 204, overflow: 'auto' }}>
                       <Editor
                         value={textContent}
@@ -162,9 +192,15 @@ const UpdateProfile = ({ onGoBackClick, id, updateDesignScript, currentSetup, co
 
                 <div className="component-item share">
                   <div className="component-item__header">
-                    <p>Gender</p>
+                    <input
+                      type="checkbox"
+                      name="randomLike"
+                      checked={values.isUpdateGender}
+                      onChange={(event) => handleChangeGender(event.target.checked)}
+                    />
+                    <p>Update Gender</p>
                   </div>
-                  <div className={`PostContent ${values.gender ? 'show' : 'hide'}`}>
+                  <div className={`PostContent ${values.isUpdateGender ? 'show' : 'hide'}`}>
                     <div className="component-item postOption">
                       <Select
                         name="postOption"

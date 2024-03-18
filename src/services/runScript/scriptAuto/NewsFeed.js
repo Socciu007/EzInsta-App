@@ -31,9 +31,11 @@ export const newFeed = (setting) => {
   return `
 const randomShare = async (page, news) => {
   const numsUser = getRandomIntBetween(news.randomStart, news.randomEnd);
+  if(numsUser == 0) {
+    return false;
+  }
   logger("Cần gửi cho " + numsUser + " người");
   await delay(5000);
-  let arr = [];
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){ 
     let search = await getElement(page, '[name="queryBox"]');
@@ -102,9 +104,11 @@ const randomShare = async (page, news) => {
 } 
 const userShare = async (page, news) => {
   const numsUser = getRandomIntBetween(news.userStart, news.userEnd);
+    if(numsUser == 0) {
+    return false;
+  }
   logger("Cần gửi cho " + numsUser + " người");
   await delay(5000);
-  let arr = [];
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){
     const search = await getElement(page, '[name="queryBox"]');
@@ -204,7 +208,20 @@ const findBtns = async (page, content) => {
         page,
         '[type="checkbox"]'
       );
-      return buttons;
+      let arr = [];
+      for(let i = 0 ; i < buttons.length; i++){
+        const check = await page.evaluate((el) => {
+          if(el.hasAttribute('checked')){
+            return false
+          } else {
+            return true
+          }
+        }, buttons[i]);
+        if(check){
+          arr.push(buttons[i]);
+        }
+      }
+      return arr;
     }
     if(content === "send") {
       let buttons = await getElements(
@@ -218,257 +235,220 @@ const findBtns = async (page, content) => {
   }
 };
 const newsfeed = ${strSetting};
-try {
   //Check obj start < end ? random(start,end) : random(end,start)
   let news = await checkObject(newsfeed);
   // check page is live return -1, return 1, return 0
   const isLive = checkIsLive(page);
-  logger('Tình trạng trang web: '+ isLive);
   if (!isLive) {
-    logger("Debug" + "|" + "NewsFeed" + "|" + "Page is dead!");
     return -1;
   }
   let randomDelay = getRandomIntBetween(newsfeed.delayTimeStart * 1000, newsfeed.delayTimeEnd * 1000);
   let scrollTime = getRandomIntBetween(newsfeed.scrollTimeStart * 1000, newsfeed.scrollTimeEnd * 1000);
-  let loopLike = 0;
-  let loopComment = 0;
-  let loopShare = 0;
-  // await delay(999999999);
-  while (scrollTime > 0) {
-    try{
+  let numLikes = getRandomIntBetween(news.likeStart, news.likeEnd);
+  let numShares = getRandomIntBetween(news.shareStart, news.shareEnd);
+  let numComments = getRandomIntBetween(news.commentStart, news.commentEnd);
+  let like = 0;
+  let share = 0; 
+  let comment = 0;
+  logger("Thực hiện chức năng trong " + scrollTime/1000 + " giây");
+while (scrollTime > 0) {
+  try {
     let startTime = Date.now();
     await returnHomePage(page);
     await delay(2000);
-    await scrollSmooth(page,1);
-    await delay(1000);
-    if (news.isLike == true && loopLike == 0) {
-      let count = 0;
-      let numLikes = getRandomIntBetween(news.likeStart, news.likeEnd);
-      logger('Cần like ' + numLikes + ' bài');
-      for (let i = 0; i < numLikes * 2; i++) {
-        try {
-          let temp = 0;
-          await returnHomePage(page);
-          await delay(2000);
-          await scrollSmooth(page,getRandomIntBetween(1,5));
-          await delay(2000);
-          let likeBtns = await findBtns(page, "like");
-          await delay(1000);
-          if (likeBtns.length == 0 || !likeBtns) {
-            logger("Debug" + "|" + "NewsFeed" + "|" + "Can not find any like buttons");
-            break;
-          }
-          for(let i=0;i<likeBtns.length - 1;i++){
-            const onScreen = await checkExistElementOnScreen(likeBtns[i]);
-            if(onScreen == 0){
-              const rd = getRandomIntBetween(0,100);
-              if(rd < 50){
-                await delay(randomDelay);
-                await scrollSmoothIfElementNotExistOnScreen(page, likeBtns[i]);
-                await delay(1000);
-                await likeBtns[i].click();
-                await delay(2000);
-                count++;
-                logger("Like thành công " + count + " bài")
-                break;
-              } else {
-                temp = 1;
-                break;
-              }
-            }
-          }
-          if(temp == 1){
-            i--;
-            logger("Xem bài viết thành công");
-          }
-          if(count == numLikes){
-              logger('Xong like !');
-              loopLike++;
-              await delay(3000);
-              break;
-          }
-        } catch (error) {
-         logger(error);
-        }
-      }
+    const rs = await scrollSmooth(page, getRandomIntBetween(1, 5));
+    if(rs == -2) {
+      break;
     }
-
-    if (news.isShare == true && loopShare == 0) {
-      let count = 0;
-      let numShares = getRandomIntBetween(news.shareStart, news.shareEnd);
-      logger('Cần share ' + numShares + ' bài');
-      for (let i = 0; i < numShares * 2; i++) {
-        try {
-          let temp = 0;
-          await returnHomePage(page);
-          await delay(2000);
-          await scrollSmooth(page,getRandomIntBetween(1,5));
-          await delay(2000);
-          let shareBtns = await findBtns(page, "share");
-          if (!shareBtns || shareBtns.length == 0) {
-              logger("Debug" + "|" + "NewsFeed" + "|" + "Can not find any share buttons");
-              break;
-          };
-          for(let i = 0 ; i <  shareBtns.length; i++) {
-            const onScreen = await checkExistElementOnScreen(shareBtns[i]);
-            if(onScreen == 0){
-              const rd = getRandomIntBetween(0,100);
-              if(rd < 50){
-                await delay(randomDelay);
-                await scrollSmoothIfElementNotExistOnScreen(page, shareBtns[i]);
-                await delay(1000);
-                await shareBtns[i].click();
-                await delay(2000);
-                if(news.typeShare == "randomShare"){
-                  const isShare = await randomShare(page, news);
-                  if(isShare) {
-                    count++;
-                    logger("Share thành công " + count + " bài");
-                    break;
-                  } else {
-                    const closeBtn = await getElement(page, "polyline");
-                    if(!closeBtn) {
-                      await page.goto("https://www.instagram.com", {
-                      waitUntil: 'networkidle2',
-                      timeout: 30000,
-                      })
-                    }
-                    await delay(2000);
-                    await closeBtn.click();
-                    await delay(2000);
-                    temp = 1;
-                  }
-                }
-                if(news.typeShare == "user"){
-                  const isShare = await userShare(page, news);
-                  if(isShare) {
-                    await delay(2000);
-                    count++;
-                    logger("Share thành công " + count + " bài");
-                    break;
-                  } else {
-                    const closeBtn = await getElement(page, "polyline");
-                    if(!closeBtn) {
-                      await page.goto("https://www.instagram.com", {
-                      waitUntil: 'networkidle2',
-                      timeout: 60000,
-                      })
-                    }
-                    await delay(2000);
-                    await closeBtn.click();
-                    await delay(2000);
-                    temp = 1;
-                  }
-                }
-              } else {
-                temp = 1;
-                break;
-              }
-            }
-          }
-          if(temp == 1){
-            logger("Xem bài viết thành công");
-            await delay(2000);
-            i--;
-          }
-          if (count == numShares) {
-            logger('Xong share!');
-            loopShare++;
-            await delay(3000);
-            break;
-          }
-        } catch (error) {
-          logger(error);
-        }
-      }
-    }
-
-if (news.isComment == true && loopComment == 0) {
-  if (!news.commentText.length) {
-    logger(
-      "Debug" + "|" + "NewsFeed" + "|" + "Cannot comment with empty content!"
-    );
-    return false;
-  }
-  let numComments = getRandomIntBetween(news.commentStart, news.commentEnd);
-  logger("Cần comment " + numComments + " bài");
-  let count = 0;
-  for (let i = 0; i < numComments * 2; i++) {
-    try {
-      let temp = 0;
-      await returnHomePage(page);
-      await delay(2000);
-      await scrollSmooth(page,getRandomIntBetween(1,5));
-      await delay(2000);
-      let commentBtns = await findBtns(page, "comment");
-      if (!commentBtns || commentBtns.length == 0) {
-        logger(
-          "Debug" + "|" + "NewsFeed" + "|" + "Can not find any comment buttons"
-        );
-        return false;
-      }
-      for (let i = 0; i < commentBtns.length; i++) {
-        const onScreen = await checkExistElementOnScreen(commentBtns[i]);
-        if (onScreen == 0) {
-          const rd = getRandomIntBetween(0, 100);
-          if (rd < 50) {
-            await delay(randomDelay);
-            await commentBtns[i].click();
-            await delay(2000);
-            let content = news.commentText;
-            let randomString = content[getRandomInt(content.length)];
-            await delay(2000);
-            await page.keyboard.type(randomString, { delay: 100 });
-            await delay(2000);
-            await page.keyboard.press("Enter");
-            await delay(3000);
-            count++;
-            logger("Comment thành công " + count + " bài");
-            break;
-          } else {
-            temp = 1;
-            await delay(2000);
-            break;
-          }
-        }
-      }
-      if(temp == 1){
-        logger("Xem bài viết thành công");
-        await delay(2000);
-        i--;
-      }
-      if (count == numComments) {
-        logger("Xong comment!");
-        await delay(3000);
-        loopComment++;
-        break;
-      }
-    } catch (error) {
-      logger(error);
-    }
-  }
-}
-  if(news.isLike == false && news.isShare == false && news.isComment == false) {
-        await returnHomePage(page);
+    await delay(2000);
+    let rd = getRandomIntBetween(0, 100);
+    logger(rd);
+    if (news.isLike == true && rd <= 34 && like < numLikes) {
+      try {
+        let likeBtns = await findBtns(page, "like");
         await delay(1000);
-        const result =  await scrollSmooth(page, 3);
-        if(result == -2){
+        if (likeBtns.length == 0 || !likeBtns) {
+          logger(
+            "Debug" + "|" + "NewsFeed" + "|" + "Cannot find any like buttons"
+          );
+          numLikes = 0;
+        }
+        for (let i = 0; i < likeBtns.length - 1; i++) {
+          const onScreen = await checkExistElementOnScreen(likeBtns[i]);
+          if (onScreen == 0) {
+            const rd = getRandomIntBetween(0, 100);
+            if (rd < 50) {
+              await delay(randomDelay);
+              await scrollSmoothIfElementNotExistOnScreen(page, likeBtns[i]);
+              await delay(2000);
+              await likeBtns[i].click();
+              await delay(2000);
+              like++;
+              logger("Like thành công " + like + " bài");
+              break;
+            } else {
+              logger("Xem bài viết thành công");
+              break;
+            }
+          }
+          if (like == numLikes) {
+            logger("Xong like!");
+            break;
+          }
+        }
+      } catch (error) {
+        logger(error);
+      }
+    } else if (news.isShare == true && rd <= 68 && share < numShares) {
+      try {
+        let shareBtns = await findBtns(page, "share");
+        if (!shareBtns || shareBtns.length == 0) {
+          logger(
+            "Debug" + "|" + "NewsFeed" + "|" + "Cannot find any share buttons"
+          );
+          numShares = 0;
+        }
+        for (let i = 0; i < shareBtns.length; i++) {
+          const onScreen = await checkExistElementOnScreen(shareBtns[i]);
+          if (onScreen == 0) {
+            const rd = getRandomIntBetween(0, 100);
+            if (rd < 50) {
+              await delay(randomDelay);
+              await scrollSmoothIfElementNotExistOnScreen(page, shareBtns[i]);
+              await delay(1000);
+              await shareBtns[i].click();
+              await delay(2000);
+              if (news.typeShare == "randomShare") {
+                const isShare = await randomShare(page, news);
+                if (isShare) {
+                  share++;
+                  logger("Share thành công " + share + " bài");
+                  break;
+                } else {
+                  const closeBtn = await getElement(page, "polyline");
+                  if (!closeBtn) {
+                    await page.goto("https://www.instagram.com", {
+                      waitUntil: "networkidle2",
+                      timeout: 30000,
+                    });
+                  }
+                  await delay(2000);
+                  await closeBtn.click();
+                  await delay(2000);
+                  logger(
+                   "Debug" + "|" + "NewsFeed" + "|" + "Share failed!"
+                  );
+                  break;
+                }
+              }
+              if (news.typeShare == "user") {
+                const isShare = await userShare(page, news);
+                if (isShare) {
+                  await delay(2000);
+                  share++;
+                  logger("Share thành công " + share + " bài");
+                  break;
+                } else {
+                  const closeBtn = await getElement(page, "polyline");
+                  if (!closeBtn) {
+                    await page.goto("https://www.instagram.com", {
+                      waitUntil: "networkidle2",
+                      timeout: 60000,
+                    });
+                  }
+                  await delay(2000);
+                  await closeBtn.click();
+                  await delay(2000);
+                  logger(
+                   "Debug" + "|" + "NewsFeed" + "|" + "Share failed!"
+                  );
+                  break;
+                }
+              }
+            } else {
+              logger("Xem bài viết thành công");
+              break;
+            }
+            if (share == numShares) {
+              logger("Xong shares!");
+              break;
+            }
+          }
+        }
+      } catch (error) {
+        logger(error);
+      }
+    } else if (news.isComment == true && comment < numComments && rd < 100) {
+      try {
+        if (!news.commentText.length) {
+        logger(
+          "Debug" +
+            "|" +
+            "NewsFeed" +
+            "|" +
+            "Cannot comment with empty content!"
+        );
+        numComments = 0;
+      }
+        let commentBtns = await findBtns(page, "comment");
+        if (!commentBtns || commentBtns.length == 0) {
+          logger(
+            "Debug" +
+              "|" +
+              "NewsFeed" +
+              "|" +
+              "Can not find any comment buttons"
+          );
+          numComments = 0;
+        }
+        for (let i = 0; i < commentBtns.length; i++) {
+          const onScreen = await checkExistElementOnScreen(commentBtns[i]);
+          if (onScreen == 0) {
+            const rd = getRandomIntBetween(0, 100);
+            if (rd < 50) {
+              await delay(randomDelay);
+              await commentBtns[i].click();
+              await delay(2000);
+              let content = news.commentText;
+              let randomString = content[getRandomInt(content.length)];
+              await delay(2000);
+              await page.keyboard.type(randomString, { delay: 100 });
+              await delay(2000);
+              await page.keyboard.press("Enter");
+              await delay(3000);
+              comment++;
+              logger("Comment thành công " + comment + " bài");
+              break;
+            } else {
+              logger("Xem bài viết thành công");
+              await delay(2000);
+              break;
+            }
+          }
+        if (comment == numComments) {
+          logger("Xong comment!");
           break;
         }
-        if(Math.random() < 0.3){
+        }
+        
+      } catch (error) {
+        logger(error);
+      }
+    } else {
+      try {
+        if (Math.random() < 0.3) {
           await delay(randomDelay);
         }
+      } catch (error) {
+        logger(error);
+      }
     }
     let endTime = Date.now();
     scrollTime -= endTime - startTime;
+    logger(scrollTime);
+  } catch (err) {
+    logger(err);
   }
-  catch(e){
-    scrollTime = 0;
-    break;
-  }
-  }
-} catch (err) {
-  logger(err);
 }
     `;
 };

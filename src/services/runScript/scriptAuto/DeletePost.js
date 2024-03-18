@@ -39,6 +39,9 @@ export const deletePost = (setting) => {
           await delay(3000);
           const buttons = await getElements(page, 'div[role="dialog"] button');
           if(buttons.length == 0 || !buttons) {
+             logger(
+            "Debug" + "|" + "Delete Post" + "|" + "Cannot find any buttons"
+          );
             break;
           }
           if(buttons.length <= 6){
@@ -50,6 +53,9 @@ export const deletePost = (setting) => {
           await delay(3000);
           const deleteBtns = await getElements(page, 'div[role="dialog"] button');
           if(deleteBtns.length == 0 || !deleteBtns) {
+            logger(
+            "Debug" + "|" + "Delete Post" + "|" + "Cannot find delete buttons"
+            );
             break;
           }
           await delay(2000);

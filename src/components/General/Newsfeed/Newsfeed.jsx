@@ -193,7 +193,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
               <p>Newsfeed</p>
             </div>
             <div className="component-item scrollTime">
-              <p className="component-item__header">Browsing time (s):</p>
+              <p className="component-item__header">View time (s):</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
                   <img

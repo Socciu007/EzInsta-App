@@ -295,6 +295,9 @@
     "randomMessage": []
   },
   "updateProfile": {
+    "isUpdateAvatar": false,
+    "isUpdateBio": false,
+    "isUpdateGender": false,
     "gender": "male",
     "customGender": [],
     "bio": [],
