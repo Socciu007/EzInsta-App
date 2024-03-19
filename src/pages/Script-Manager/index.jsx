@@ -269,6 +269,10 @@ const ScriptManager = () => {
       script.tag = row.tag
         .toString()
         .split(',')
+        .filter((e) => {
+          if (e.trim() !== '') return true;
+          return false;
+        })
         .map((e) => {
           if (e && e.length && !e.startsWith('#')) {
             return '#' + e.toString().trim();
