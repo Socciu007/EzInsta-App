@@ -11,6 +11,6 @@
   "maxCpu": 90,
   "maxDisk": 90,
   "proxies": [],
-  "assignProxy": true,
+  "assignProxy": false,
   "apiChange": true
 }

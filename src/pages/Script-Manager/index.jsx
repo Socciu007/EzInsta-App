@@ -329,16 +329,17 @@ const ScriptManager = () => {
       render: (status, script) => {
         return (
           <>
-            <div
-              onClick={() => {
-                dispatch(setScriptAuto(script.name));
-                setItemSelect(script);
-                setIsRunScript(true);
-                setAnchorEl(null);
-              }}
-            >
+            <div>
               {status && status.total ? (
-                <div className="statusRunning">
+                <div
+                  className="statusRunning"
+                  onClick={() => {
+                    dispatch(setScriptAuto(script.name));
+                    setItemSelect(script);
+                    setIsRunScript(true);
+                    setAnchorEl(null);
+                  }}
+                >
                   <img src={running} alt="run profile icon" />
                   <span>
                     <span className="profileRunning">{status.done}</span>

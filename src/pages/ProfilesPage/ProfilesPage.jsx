@@ -882,10 +882,14 @@ const ProfilesPage = () => {
             </div>
             <div className="-wrapper-option-profiles">
               <span className="-option-profiles" onClick={handleReloadPage}>
-                <img src={refresh} alt="image-refresh"></img>
+                <Popover content={<>Refresh</>}>
+                  <img src={refresh} alt="image-refresh"></img>
+                </Popover>
               </span>
               <span className="-option-profiles" onClick={handleOpenDisplaySetting}>
-                <img src={display} alt="display-setting"></img>
+                <Popover content={<>Display settings</>}>
+                  <img src={display} alt="display-setting"></img>
+                </Popover>
               </span>
               <PopupDisplaySetting
                 onSaveDisplaySettings={onSaveDisplaySettings}
@@ -894,17 +898,25 @@ const ProfilesPage = () => {
                 handleCloseDisplaySetting={handleCloseDisplaySetting}
               ></PopupDisplaySetting>
               <span className="-option-profiles" onClick={handleSettings}>
-                <img src={settings} alt="image-settings"></img>
+                <Popover content={<>Settings</>}>
+                  <img src={settings} alt="image-settings"></img>
+                </Popover>
               </span>
               <span className="-option-profiles" onClick={handleScript}>
-                <img src={yourScript} alt="icon-yourscripts"></img>
+                <Popover content={<>Script manager</>}>
+                  <img src={yourScript} alt="icon-yourscripts"></img>
+                </Popover>
               </span>
               <span className="-option-profiles" onClick={handleOpenProfiles}>
-                <img src={addPerson} alt="image-addPerson"></img>
+                <Popover content={<>Add account</>}>
+                  <img src={addPerson} alt="image-addPerson"></img>
+                </Popover>
               </span>
-              <span className="-option-profiles" onClick={() => {}}>
-                <img src={addFile} alt="image-addFile"></img>
-              </span>
+              {/* <span className="-option-profiles" onClick={() => {}}>
+                <Popover content={<>Add profiles</>}>
+                  <img src={addFile} alt="image-addFile"></img>
+                </Popover>
+              </span> */}
               <PopupProfile
                 openProfiles={openProfiles}
                 handleCloseProfiles={handleCloseProfiles}

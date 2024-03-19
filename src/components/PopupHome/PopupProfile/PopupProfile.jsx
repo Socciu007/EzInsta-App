@@ -321,6 +321,7 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                           value={values.option}
                         >
                           <MenuItem value="http">HTTP</MenuItem>
+                          <MenuItem value="ssh">SSH</MenuItem>
                           <MenuItem value="socks4">Socks 4</MenuItem>
                           <MenuItem value="socks5">Socks 5</MenuItem>
                         </Select>
@@ -342,21 +343,23 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                             }}
                           />
                         </div>
-                        <div
-                          onClick={handleDivClickProxy}
-                          className={`placeholder placehoderProxy ${proxyContent ? 'hide' : ''}`}
-                        >
-                          <p>
-                            <span style={{ marginRight: '22px' }}>1</span>Enter the proxy here
-                          </p>
-                          <p>
-                            <span>2</span>
-                            <strong>Proxy format:</strong> Host:Port:Username:Password
-                          </p>
-                          <p>
-                            <span>3</span>
-                            Proxy will be assigned to the new profiles in turn from top to bottom
-                          </p>
+                        <div style={{ position: 'relative' }}>
+                          <div
+                            onClick={handleDivClickProxy}
+                            className={`placeholder placehoderProxy ${proxyContent ? 'hide' : ''}`}
+                          >
+                            <p>
+                              <span style={{ marginRight: '22px' }}>1</span>Enter the proxy here
+                            </p>
+                            <p>
+                              <span>2</span>
+                              <strong>Proxy format:</strong> Host:Port:Username:Password
+                            </p>
+                            <p>
+                              <span>3</span>
+                              Proxy will be assigned to the new profiles in turn from top to bottom
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>

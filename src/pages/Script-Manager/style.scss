@@ -279,6 +279,9 @@ body {
           height: 30px !important;
           display: flex;
           align-items: center;
+          span {
+            line-height: 22px;
+          }
         }
         div.stt {
           justify-content: center;
@@ -395,6 +398,7 @@ body {
       color: #01162b;
       font-family: 'Google Sans';
       font-size: 15px;
+      cursor: pointer;
       .profileRunning {
         font-weight: 700;
       }
