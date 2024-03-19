@@ -1,5 +1,5 @@
 export const getInfor = (profile) => {
-  if (!profile.fllower) {
+  if (!profile.fllower || !profile.fllowing) {
     return `{
         try {
           const checkPageIsLive = checkIsLive(page);

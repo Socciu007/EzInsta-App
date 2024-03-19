@@ -71,7 +71,10 @@ export const loginFacebook = (account) => {
             account.password &&
             account.password.length))
       ) {
-        await returnHomePage(page);
+        await page.goto("https://www.instagram.com/accounts/login", {
+          waitUntil: "networkidle2",
+          timeout: 60000,
+        });
         const email = await getElementEmail(page, 15);
         const password = await getElementPassword(page);
         if (email && password) {

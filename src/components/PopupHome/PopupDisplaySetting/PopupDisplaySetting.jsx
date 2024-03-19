@@ -109,6 +109,22 @@ const PopupDisplaySetting = ({
                 </span>
                 <p>Email's password</p>
               </li>
+
+              <li>
+                <span>
+                  <input
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+                      const newSettings = { ...settings, proxy: checked };
+                      setSettings(newSettings);
+                    }}
+                    checked={settings.proxy}
+                    type="checkbox"
+                  ></input>
+                </span>
+                <p>Proxy</p>
+              </li>
+
               <li>
                 <span>
                   <input

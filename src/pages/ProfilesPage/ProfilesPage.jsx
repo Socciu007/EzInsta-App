@@ -113,8 +113,12 @@ const ProfilesPage = () => {
     if (index >= 0) {
       let profile = newData[index];
       let follow = '';
-      const followers = follower.split('\n');
-      const followings = following.split('\n');
+      let followers = follower.split('\n');
+      let followings = following.split('\n');
+      if (followers.length < 2) {
+        followers = follower.split(' ');
+        followings = following.split(' ');
+      }
       follow += /\d/.test(followers[0]) ? followers[0] : followers[1];
       follow += '/';
       follow += /\d/.test(followings[0]) ? followings[0] : followings[1];
