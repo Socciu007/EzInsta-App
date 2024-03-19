@@ -94,7 +94,8 @@ export const seedingPostInteraction = (setting) => {
       }
       logger("Complete post interaction");
     } catch (error) {
-      logger("Err access" + error.message);
+      logger("Debug|PostInteraction|Err access " + error.message);
+      return;
     }
   };
   
@@ -171,19 +172,6 @@ export const seedingPostInteraction = (setting) => {
           await delay(getRandomIntBetween(1000, 3000));
           logger("Comment post success");
           return true;
-          // const postCommentEle = await getElement(
-          //   page,
-          //   '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x1ypdohk x1f6kntn xwhw2v2 xl56j7k x17ydfre x2b8uid xlyipyv x87ps6o x14atkfc xcdnw81 x1i0vuye xjbqb8w xm3z3ea x1x8b98j x131883w x16mih1h x972fbf xcfux6l x1qhh985 xm0m39n xt0psk2 xt7dq6l xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x1n5bzlp x173jzuc x1yc6y37"]'
-          // );
-          // if (postCommentEle) {
-          //   await clickElement(postCommentEle);
-          //   await delay(getRandomIntBetween(1000, 3000));
-          //   logger("Comment post success");
-          //   return true;
-          // } else {
-          //   logger("Can not send comment");
-          //   return false;
-          // }
         } else {
           logger("Can not find comment element");
           return false;
@@ -209,11 +197,11 @@ export const seedingPostInteraction = (setting) => {
         );
         shareEle = listShareEle[1];
       }
-      if (shareEle && postInteractionObj.userList.length > 0) {
-        const userShare =
-          postInteractionObj.userList[
-            getRandomIntBetween(0, postInteractionObj.userList.length)
-          ];
+      const userShare =
+        postInteractionObj.userList[
+          getRandomIntBetween(0, postInteractionObj.userList.length)
+        ];
+      if (shareEle && postInteractionObj.typeShare === 'user') {
         await scrollSmoothIfNotExistOnScreen1(shareEle);
         await clickElement(shareEle);
         await delay(getRandomIntBetween(1000, 3000));
@@ -288,22 +276,16 @@ export const seedingPostInteraction = (setting) => {
         await scrollSmoothIfNotExistOnScreen1(shareEle);
         await clickElement(shareEle);
         await delay(getRandomIntBetween(1000, 3000));
+        //select user
         const selectUserEle = await getElements(
           page,
           'input[name="ContactSearchResultCheckbox"]'
         );
-        let closeEle = await getElement(
-          page,
-          '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [points="20.643 3.357 12 12 3.353 20.647"]'
-        );
-        if (!closeEle) {
-          closeEle = await getElement(
-            page,
-            '[points="20.643 3.357 12 12 3.353 20.647"]'
-          );
-        }
         if (selectUserEle.length > 0) {
-          await clickElement(selectUserEle[getRandomInt(selectUserEle.length)]);
+          const index = getRandomInt(selectUserEle.length)
+          await scrollSmoothIfNotExistOnScreen1(selectUserEle[index]);
+          await delay(getRandomIntBetween(1000, 3000));
+          await clickElement(selectUserEle[index]);
           await delay(getRandomIntBetween(1000, 3000));
           // import content share
           if (postInteractionObj.shareContent.length > 0) {
@@ -342,10 +324,72 @@ export const seedingPostInteraction = (setting) => {
             return false
           }
         } else {
-          await clickElement(closeEle);
-          await delay(getRandomIntBetween(3000, 5000));
-          console.log("No find user to share");
-          return true
+          //search user and click user need share
+          const searchUserShare = await getElement(page, 'input[name="queryBox"]');
+          if (!searchUserShare) {
+            logger("Can not find search input");
+          }
+          await searchUserShare.type(userShare, { delay: 200 });
+          await delay(getRandomIntBetween(1000, 3000));
+          const selectUserEle = await getElement(
+            page,
+            'input[name="ContactSearchResultCheckbox"]'
+          );
+          let closeEle = await getElement(
+            page,
+            '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [points="20.643 3.357 12 12 3.353 20.647"]'
+          );
+          if (!closeEle) {
+            closeEle = await getElement(
+              page,
+              '[points="20.643 3.357 12 12 3.353 20.647"]'
+            );
+          }
+          if (selectUserEle) {
+            await clickElement(selectUserEle);
+            await delay(getRandomIntBetween(1000, 3000));
+            // import content share
+            if (postInteractionObj.shareContent.length > 0) {
+              const contentShare =
+                postInteractionObj.shareContent[
+                  getRandomInt(postInteractionObj.shareContent.length)
+                ];
+              const importShareEle = await getElement(
+                page,
+                'input[name="shareCommentText"]'
+              );
+              await delay(getRandomIntBetween(3000, 5000));
+              await importShareEle.type(contentShare, { delay: 500 });
+              await delay(getRandomIntBetween(3000, 5000));
+            }
+            //send share post
+            let sendButtonEle = await getElement(
+              page,
+              '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w x972fbf xcfux6l x1qhh985 xm0m39n xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x18d9i69 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x9bdzbf x1ypdohk x1f6kntn xwhw2v2 x10w6t97 xl56j7k x17ydfre x1swvt13 x1pi30zi x1n2onr6 x2b8uid xlyipyv x87ps6o xcdnw81 x1i0vuye xh8yej3 x1tu34mt xzloghq x3nfvp2"]'
+            );
+            if (!sendButtonEle) {
+              sendButtonEle = await getElement(
+                page,
+                '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xktsk01 x1yztbdb x1d52u69 xdj266r x1uhb9sk x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'
+              );
+            }
+            if (sendButtonEle) {
+              await clickElement(sendButtonEle);
+              await delay(getRandomIntBetween(1000, 3000));
+              logger("Share post success");
+              return true;
+            } else {
+              await clickElement(closeEle);
+              await delay(getRandomIntBetween(3000, 5000));
+              logger("No send share post interaction");
+              return false;
+            }
+          } else {
+            await clickElement(closeEle);
+            await delay(getRandomIntBetween(3000, 5000));
+            logger("No find user to share");
+            return true;
+          }
         }
       }
     } catch (error) {
@@ -412,7 +456,7 @@ export const seedingPostInteraction = (setting) => {
  try {
    const isLive = await checkIsLive(page);
    if (!isLive) {
-     logger("Page is die");
+     logger("Debug|PostInteract|Page is die");
      return;
     }
     await returnHomePage(page);
@@ -434,55 +478,69 @@ export const seedingPostInteraction = (setting) => {
     postInteractionObj.shareEnd
   );
 
-  if (numsLike < postInteractionObj["postUID"].length) {
-    while (numsLike > 0) {
-      const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
-      if (arrLike.includes(index)) {
-        continue;
-      }
-      arrLike.push(index);
-      numsLike--;
-    }
-  } else {
-    for (let i = 0; i < postInteractionObj.postUID.length; i++) {
-      arrLike.push(i);
-    }
+  if (!postInteractionObj.postUID.length || postInteractionObj.postUID.length < 1) {
+    logger("Debug|PostInteraction|Post UID is null. You need re-enter");
+    return;
   }
-  logger("Need like " + arrLike.length + " post");
-  if (numsComment < postInteractionObj.postUID.length) {
-    while (numsComment > 0) {
-      const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
-      if (arrComment.includes(index)) {
-        continue;
+
+  if (postInteractionObj.isLike) {
+    if (numsLike < postInteractionObj["postUID"].length) {
+      while (numsLike > 0) {
+        const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
+        if (arrLike.includes(index)) {
+          continue;
+        }
+        arrLike.push(index);
+        numsLike--;
       }
-      arrComment.push(index);
-      numsComment--;
-    }
-  } else {
-    for (let i = 0; i < postInteractionObj.postUID.length; i++) {
-      arrComment.push(i);
-    }
-  }
-  logger("Need comment " + arrComment.length + " post");
-  if (numsShare < postInteractionObj.postUID.length) {
-    while (numsShare > 0) {
-      const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
-      if (arrShare.includes(index)) {
-        continue;
+    } else {
+      for (let i = 0; i < postInteractionObj.postUID.length; i++) {
+        arrLike.push(i);
       }
-      arrShare.push(index);
-      numsShare--;
     }
-  } else {
-    for (let i = 0; i < postInteractionObj.postUID.length; i++) {
-      arrShare.push(i);
-    }
+    logger("Need like " + arrLike.length + " post");
   }
-  logger("Need share " + arrShare.length + " post");
+
+  if (postInteractionObj.isComment) {
+    if (numsComment < postInteractionObj.postUID.length) {
+      while (numsComment > 0) {
+        const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
+        if (arrComment.includes(index)) {
+          continue;
+        }
+        arrComment.push(index);
+        numsComment--;
+      }
+    } else {
+      for (let i = 0; i < postInteractionObj.postUID.length; i++) {
+        arrComment.push(i);
+      }
+    }
+    logger("Need comment " + arrComment.length + " post");
+  }
+
+  if (postInteractionObj.isShare) {
+    if (numsShare < postInteractionObj.postUID.length) {
+      while (numsShare > 0) {
+        const index = getRandomIntBetween(0, postInteractionObj.postUID.length);
+        if (arrShare.includes(index)) {
+          continue;
+        }
+        arrShare.push(index);
+        numsShare--;
+      }
+    } else {
+      for (let i = 0; i < postInteractionObj.postUID.length; i++) {
+        arrShare.push(i);
+      }
+    }
+    logger("Need share " + arrShare.length + " post");
+  }
+
   await delay(getRandomIntBetween(1000, 3000));
   await accessPost(page, postInteractionObj, arrComment, arrLike, arrShare);
 } catch (error) {
-  logger("Err post interaction " + error.message);
+  logger("Debug|PostInteract|Err post interaction " + error.message);
   return;
 }
   `;

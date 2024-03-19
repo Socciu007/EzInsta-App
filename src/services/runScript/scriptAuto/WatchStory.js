@@ -21,6 +21,7 @@ export const watchStory = (setting) => {
       typeShare: ${JSON.stringify(setting.typeShare)},
       userList: ${JSON.stringify(setting.userList)},
       shareText: ${JSON.stringify(setting.shareText)},
+      isMessage: ${setting.isMessage},
     }`;
   console.log(strSetting);
   return `
@@ -89,25 +90,6 @@ export const watchStory = (setting) => {
           await page.keyboard.press("Enter");
           logger("Comment story success");
           return true;
-          // let sendEle = await getElement(
-          //   page,
-          //   '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1emribx x1n2onr6 x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"] [role="button"]'
-          // );
-          // if (!sendEle) {
-          //   sendEle = await getElement(
-          //     page,
-          //     '[class="x1i10hfl xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x9f619 x1ypdohk x1f6kntn xwhw2v2 xl56j7k x17ydfre x2b8uid xlyipyv x87ps6o x14atkfc xcdnw81 x1i0vuye xc58f59 xm71usk x19hv4p6 xfn85t x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x9bdzbf xjbqb8w xm3z3ea x1x8b98j x131883w x16mih1h x972fbf xcfux6l x1qhh985 xm0m39n xt0psk2 xt7dq6l xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x1n5bzlp"]'
-          //   );
-          // }
-          // if (sendEle) {
-          //   await clickElement(sendEle);
-          //   await delay(getRandomIntBetween(3000, 5000));
-          //   logger("Send comment success");
-          //   return true;
-          // } else {
-          //   logger("Comments have not been sent yet");
-          //   return false;
-          // }
         } else {
           logger("No find comment input");
           return true;
@@ -154,7 +136,7 @@ export const watchStory = (setting) => {
               await clickElement(selectEle);
               await delay(getRandomIntBetween(3000, 5000));
               // import content share
-              if (watchStoryObj.shareText.length > 0) {
+              if (watchStoryObj.isMessage && watchStoryObj.shareText.length > 0) {
                 const contentShare =
                   watchStoryObj.shareText[
                     getRandomInt(watchStoryObj.shareText.length)
@@ -220,10 +202,17 @@ export const watchStory = (setting) => {
           '[class="x1lliihq x1n2onr6 x5n08af"] [points="20.643 3.357 12 12 3.353 20.647"]'
         );
         if (selectEle.length > 0) {
-          await clickElement(selectEle[getRandomInt(selectEle.length)]);
+          const index = getRandomInt(selectEle.length);
+          await selectEle[index].scrollIntoView({
+            behavior: "smooth",
+            inline: "nearest",
+            block: "center",
+          });
+          await delay(3000);
+          await clickElement(selectEle[index]);
           await delay(getRandomIntBetween(3000, 5000));
           // import content share
-          if (watchStoryObj.shareText.length > 0) {
+          if (watchStoryObj.isMessage && watchStoryObj.shareText.length > 0) {
             const contentShare =
               watchStoryObj.shareText[
                 getRandomInt(watchStoryObj.shareText.length)
@@ -259,9 +248,69 @@ export const watchStory = (setting) => {
             return false;
           }
         } else {
-          await clickElement(closeEle);
-          await delay(getRandomIntBetween(3000, 5000));
-          return true;
+          for (let i = 0; i < watchStoryObj.userList.length; i++) {
+            const searchEle = await getElement(page, '[name="queryBox"]');
+            const closeEle = await getElement(
+              page,
+              '[class="x1lliihq x1n2onr6 x5n08af"] [points="20.643 3.357 12 12 3.353 20.647"]'
+            );
+            if (searchEle) {
+              await searchEle.type(watchStoryObj.userList[i], { delay: 200 });
+              await delay(getRandomIntBetween(3000, 5000));
+              const selectEle = await getElement(
+                page,
+                '[name="ContactSearchResultCheckbox"]'
+              );
+              if (selectEle) {
+                await clickElement(selectEle);
+                await delay(getRandomIntBetween(3000, 5000));
+                // import content share
+                if (watchStoryObj.isMessage && watchStoryObj.shareText.length > 0) {
+                  const contentShare =
+                    watchStoryObj.shareText[
+                      getRandomInt(watchStoryObj.shareText.length)
+                    ];
+                  const importShareEle = await getElement(
+                    page,
+                    'input[name="shareCommentText"]'
+                  );
+                  await delay(getRandomIntBetween(3000, 5000));
+                  await importShareEle.type(contentShare, { delay: 200 });
+                  await delay(getRandomIntBetween(3000, 5000));
+                }
+                //send share post
+                let sendButtonEle = await getElement(
+                  page,
+                  '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w x972fbf xcfux6l x1qhh985 xm0m39n xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x18d9i69 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x9bdzbf x1ypdohk x1f6kntn xwhw2v2 x10w6t97 xl56j7k x17ydfre x1swvt13 x1pi30zi x1n2onr6 x2b8uid xlyipyv x87ps6o xcdnw81 x1i0vuye xh8yej3 x1tu34mt xzloghq x3nfvp2"]'
+                );
+                if (!sendButtonEle) {
+                  sendButtonEle = await getElement(
+                    page,
+                    '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xktsk01 x1yztbdb x1d52u69 xdj266r x1uhb9sk x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'
+                  );
+                }
+                if (sendButtonEle) {
+                  await clickElement(sendButtonEle);
+                  await delay(getRandomIntBetween(1000, 3000));
+                  logger("Share post success");
+                  return true;
+                } else {
+                  await clickElement(closeEle);
+                  await delay(getRandomIntBetween(3000, 5000));
+                  logger("No send share post interaction");
+                  return false;
+                }
+              } else {
+                await clickElement(closeEle);
+                await delay(getRandomIntBetween(3000, 5000));
+                return true;
+              }
+            } else {
+              await clickElement(closeEle);
+              await delay(getRandomIntBetween(3000, 5000));
+              return true;
+            }
+          }
         }
       }
     } catch (error) {
@@ -344,52 +393,65 @@ export const watchStory = (setting) => {
       watchStoryObj.shareStart,
       watchStoryObj.shareEnd
     );
+
+    if(numsStory < 1) {
+      logger("Debug|WatchStory|Quantity of story less than 1.You need re-enter.")
+      return
+    }
     logger("Need watch " + numsStory + " story");
-    if (numsLike < numsStory) {
-      while (numsLike > 0) {
-        const index = getRandomIntBetween(0, numsStory);
-        if (arrLike.includes(index)) {
-          continue;
+
+    if (watchStoryObj.isLike) {
+      if (numsLike < numsStory) {
+        while (numsLike > 0) {
+          const index = getRandomIntBetween(0, numsStory);
+          if (arrLike.includes(index)) {
+            continue;
+          }
+          arrLike.push(index);
+          numsLike--;
         }
-        arrLike.push(index);
-        numsLike--;
-      }
-    } else {
-      for (let i = 0; i < numsStory; i++) {
-        arrLike.push(i);
-      }
-    }
-    logger("Need like " + arrLike.length + " story");
-    if (numsComment < numsStory) {
-      while (numsComment > 0) {
-        const index = getRandomIntBetween(0, numsStory);
-        if (arrComment.includes(index)) {
-          continue;
+      } else {
+        for (let i = 0; i < numsStory; i++) {
+          arrLike.push(i);
         }
-        arrComment.push(index);
-        numsComment--;
       }
-    } else {
-      for (let i = 0; i < numsStory; i++) {
-        arrComment.push(i);
-      }
+      logger("Need like " + arrLike.length + " story");
     }
-    logger("Need comment " + arrComment.length + " story");
-    if (numsShare < numsStory) {
-      while (numsShare > 0) {
-        const index = getRandomIntBetween(0, numsStory);
-        if (arrShare.includes(index)) {
-          continue;
+
+    if (watchStoryObj.isComment) {
+      if (numsComment < numsStory) {
+        while (numsComment > 0) {
+          const index = getRandomIntBetween(0, numsStory);
+          if (arrComment.includes(index)) {
+            continue;
+          }
+          arrComment.push(index);
+          numsComment--;
         }
-        arrShare.push(index);
-        numsShare--;
+      } else {
+        for (let i = 0; i < numsStory; i++) {
+          arrComment.push(i);
+        }
       }
-    } else {
-      for (let i = 0; i < numsStory; i++) {
-        arrShare.push(i);
-      }
+      logger("Need comment " + arrComment.length + " story");
     }
-    logger("Need share " + arrShare.length + " story");
+    if (watchStoryObj.isShare) {
+      if (numsShare < numsStory) {
+        while (numsShare > 0) {
+          const index = getRandomIntBetween(0, numsStory);
+          if (arrShare.includes(index)) {
+            continue;
+          }
+          arrShare.push(index);
+          numsShare--;
+        }
+      } else {
+        for (let i = 0; i < numsStory; i++) {
+          arrShare.push(i);
+        }
+      }
+      logger("Need share " + arrShare.length + " story");
+    }
 
     const isGotoStory = await gotoStory(page);
     if (isGotoStory) {
@@ -402,15 +464,21 @@ export const watchStory = (setting) => {
           page,
           '[d="M5.888 22.5a3.46 3.46 0 0 1-1.721-.46l-.003-.002a3.451 3.451 0 0 1-1.72-2.982V4.943a3.445 3.445 0 0 1 5.163-2.987l12.226 7.059a3.444 3.444 0 0 1-.001 5.967l-12.22 7.056a3.462 3.462 0 0 1-1.724.462Z"]'
         );
-        if (pauseEle) {
-          await clickElement(pauseEle);
+        if (!pauseEle) {
+          pauseEle = await getElement(
+            page,
+            '[d="M15 1c-3.3 0-6 1.3-6 3v40c0 1.7 2.7 3 6 3s6-1.3 6-3V4c0-1.7-2.7-3-6-3zm18 0c-3.3 0-6 1.3-6 3v40c0 1.7 2.7 3 6 3s6-1.3 6-3V4c0-1.7-2.7-3-6-3z"]'
+          );
         }
         await delay(timeWatch);
         logger("Done watch story");
-        pauseEle = await getElement(
-          page,
-          '[d="M15 1c-3.3 0-6 1.3-6 3v40c0 1.7 2.7 3 6 3s6-1.3 6-3V4c0-1.7-2.7-3-6-3zm18 0c-3.3 0-6 1.3-6 3v40c0 1.7 2.7 3 6 3s6-1.3 6-3V4c0-1.7-2.7-3-6-3z"]'
-        );
+        const isUrlStory = await checkUrlPage(page, "instagram.com/stories");
+        await delay(getRandomIntBetween(3000, 5000));
+        if (!isUrlStory) {
+          await gotoStory(page);
+          await delay(getRandomIntBetween(3000, 5000));
+          continue;
+        } 
         if (pauseEle) {
           await clickElement(pauseEle);
         }

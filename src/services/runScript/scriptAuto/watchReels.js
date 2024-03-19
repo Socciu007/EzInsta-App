@@ -19,6 +19,7 @@ export const watchReels = (setting) => {
         commentText: ${JSON.stringify(setting.commentText)},
         commentStart: ${setting.commentStart},
         commentEnd: ${setting.commentEnd},
+        isMessage: ${setting.isMessage},
         
       }`;
   console.log(strSetting);
@@ -30,6 +31,81 @@ export const watchReels = (setting) => {
       return false;
     } catch (error) {
       logger(error.message);
+      return false;
+    }
+  };
+  const testScroll = async (page, element, container) => {
+    try {
+      await page.evaluate(async (element, container) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 10 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+ 
+        if (!container) return; // Kiểm tra xem container có tồn tại không
+
+        if (!element || isInViewport(element, container)) return;
+  
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+  
+        const elementRect = element.getBoundingClientRect();
+        const viewportHeight =
+          container.innerHeight || document.documentElement.clientHeight;
+        const targetPosition =
+          container.scrollTop +
+          elementRect.top -
+          (elementRect.top > viewportHeight ? viewportHeight : 0);
+        let currentPosition = container.scrollTop;
+        while (
+          Math.abs(currentPosition - targetPosition) > 0 &&
+          !isInViewport(element, container)
+        ) {
+          const stepSize =
+            getRandomIntBetween(100, 200) *
+            (currentPosition > targetPosition ? -1 : 1);
+          const durationPerStep = getRandomIntBetween(1000, 2000);
+          const nextPosition = currentPosition + stepSize;
+          smoothScrollByStep(nextPosition, durationPerStep, container);
+          await delay(getRandomIntBetween(1000, 2000));
+          if (Math.random() < 0.3) {
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+          currentPosition = container.scrollTop; // Sử dụng container.scrollTop thay vì window.scrollTop
+        }
+      }, element, container);
+      return true;
+    } catch (error) {
+      logger(error);
       return false;
     }
   };
@@ -242,36 +318,24 @@ export const watchReels = (setting) => {
               '[class="xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee xw2csxc x1odjw0f x1n2onr6 x1hnll1o xs3hnx8 x1db89rt xyfr5zc x7xwk5j xpqswwc xl565be x5dp1im xdj266r x11i5rnm xat24cr x1mh8g0r x1ye3gou xn6708d x5n08af xh8yej3 x13faqbe"]'
             );
           }
-          await delay(getRandomIntBetween(3000, 5000));
+          await delay(getRandomIntBetween(1000, 3000));
           if (importComment) {
             await importComment.type(contentComment, { delay: 200 });
-            await delay(getRandomIntBetween(3000, 3000));
+            await delay(getRandomIntBetween(1000, 3000));
             await page.keyboard.press("Enter");
+            await delay(getRandomIntBetween(5000, 7000));
+            //close
+          const closeEle = await getElement(
+            page,
+            '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [class="x1lliihq x1n2onr6 x5n08af"] line'
+          );
+          if (closeEle) {
+            await clickElement(closeEle);
+            await delay(getRandomIntBetween(3000, 5000));
+          }
             logger("Comment post success");
             return true;
           }
-          // const postCommentEle = await getElement(
-          //   page,
-          //   '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x1ypdohk x1f6kntn xwhw2v2 xl56j7k x17ydfre x2b8uid xlyipyv x87ps6o x14atkfc xcdnw81 x1i0vuye xjbqb8w xm3z3ea x1x8b98j x131883w x16mih1h x972fbf xcfux6l x1qhh985 xm0m39n xt7dq6l xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x1n5bzlp x173jzuc x1yc6y37 x3nfvp2"]'
-          // );
-          // if (postCommentEle) {
-          //   await clickElement(postCommentEle);
-          //   await delay(getRandomIntBetween(3000, 5000));
-          //   //close
-          // const closeEle = await getElement(
-          //   page,
-          //   '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [class="x1lliihq x1n2onr6 x5n08af"] line'
-          // );
-          // if (closeEle) {
-          //   await clickElement(closeEle);
-          //   await delay(getRandomIntBetween(3000, 5000));
-          // }
-          //   logger("Comment post success");
-          //   return true;
-          // } else {
-          //   logger("Can not post comment");
-          //   return false;
-          // }
         } else {
           logger("Can not find comment element");
           return false;
@@ -288,17 +352,17 @@ export const watchReels = (setting) => {
   
   const shareReels = async (page, watchReelsObj, index) => {
     try {
+      const reelsEle = await getElements(page, "div.xgv127d");
+      if (!reelsEle) {
+        logger("NO find reels element")
+        return false;
+      }
+      await delay(getRandomIntBetween(3000, 5000));
+      //select and click button share
+      let shareEle = await reelsEle[index].$(
+        '[points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"]'
+      );
       if (watchReelsObj.typeShare === "user") {
-        const reelsEle = await getElements(page, "div.xgv127d");
-        if (!reelsEle) {
-          logger("NO find reels element")
-          return false;
-        }
-        await delay(getRandomIntBetween(3000, 5000));
-        //select and click button share
-        let shareEle = await reelsEle[index].$(
-          '[points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"]'
-        );
         if (shareEle && watchReelsObj.userList.length > 0) {
           const userShare =
             watchReelsObj.userList[getRandomInt(watchReelsObj.userList.length)];
@@ -324,17 +388,11 @@ export const watchReels = (setting) => {
             page,
             '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [class="x1lliihq x1n2onr6 x5n08af"] line'
           );
-          // if (!closeEle) {
-          //   closeEle = await getElement(
-          //     page,
-          //     '[points="20.643 3.357 12 12 3.353 20.647"]'
-          //   );
-          // }
           if (selectUserEle) {
             await clickElement(selectUserEle);
             await delay(getRandomIntBetween(3000, 5000));
             // import content share
-            if (watchReelsObj.shareText.length > 0) {
+            if (watchReelsObj.isMessage && watchReelsObj.shareText.length > 0) {
               const contentShare =
                 watchReelsObj.shareText[
                   getRandomInt(watchReelsObj.shareText.length)
@@ -405,10 +463,16 @@ export const watchReels = (setting) => {
             '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [class="x1lliihq x1n2onr6 x5n08af"] line'
           );
           if (selectUserEle.length > 0) {
-            await clickElement(selectUserEle[getRandomInt(selectUserEle.length)]);
+            const index = getRandomInt(selectUserEle.length);
+            const container = await getElement(page, '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1pi30zi x1swvt13 x1uhb9sk x6ikm8r x1rife3k x1iyjqo2 x2lwn1j xeuugli xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]')
+            if (container) {
+              await testScroll(page, selectUserEle[index], container);
+              await delay(getRandomIntBetween(3000, 5000));
+            }
+            await clickElement(selectUserEle[index]);
             await delay(getRandomIntBetween(1000, 3000));
             // import content share
-            if (watchReelsObj.shareText.length > 0) {
+            if (watchReelsObj.isMessage && watchReelsObj.shareText.length > 0) {
               const contentShare =
                 watchReelsObj.shareText[
                   getRandomInt(watchReelsObj.shareText.length)
@@ -444,10 +508,77 @@ export const watchReels = (setting) => {
               return false;
             }
           } else {
-            await clickElement(closeEle);
-            await delay(getRandomIntBetween(3000, 5000));
-            logger("No find user to share");
-            return true;
+            if (shareEle && watchReelsObj.userList.length > 0) {
+              const userShare =
+                watchReelsObj.userList[getRandomInt(watchReelsObj.userList.length)];
+              await scrollSmoothIfNotExistOnScreen1(shareEle);
+              await clickElement(shareEle);
+              await delay(getRandomIntBetween(3000, 5000));
+              //search user and click user need share
+              const searchUserShare = await getElement(
+                page,
+                'input[name="queryBox"]'
+              );
+              if (!searchUserShare) {
+                logger("Can not find search input");
+                return false;
+              }
+              await searchUserShare.type(userShare, { delay: 200 });
+              await delay(getRandomIntBetween(3000, 5000));
+              const selectUserEle = await getElement(
+                page,
+                'input[name="ContactSearchResultCheckbox"]'
+              );
+              let closeEle = await getElement(
+                page,
+                '[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k"] [class="x1lliihq x1n2onr6 x5n08af"] line'
+              );
+              if (selectUserEle) {
+                await clickElement(selectUserEle);
+                await delay(getRandomIntBetween(3000, 5000));
+                // import content share
+                if (watchReelsObj.isMessage && watchReelsObj.shareText.length > 0) {
+                  const contentShare =
+                    watchReelsObj.shareText[
+                      getRandomInt(watchReelsObj.shareText.length)
+                    ];
+                  const importShareEle = await getElement(
+                    page,
+                    'input[name="shareCommentText"]'
+                  );
+                  await delay(getRandomIntBetween(3000, 5000));
+                  await importShareEle.type(contentShare, { delay: 200 });
+                  await delay(getRandomIntBetween(3000, 5000));
+                }
+                //send share post
+                let sendButtonEle = await getElement(
+                  page,
+                  '[class="x1i10hfl xjqpnuy xa49m3k xqeqjp1 x2hbi6w x972fbf xcfux6l x1qhh985 xm0m39n xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x18d9i69 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1ejq31n xd10rxx x1sy0etr x17r0tee x9f619 x9bdzbf x1ypdohk x1f6kntn xwhw2v2 x10w6t97 xl56j7k x17ydfre x1swvt13 x1pi30zi x1n2onr6 x2b8uid xlyipyv x87ps6o xcdnw81 x1i0vuye xh8yej3 x1tu34mt xzloghq x3nfvp2"]'
+                );
+                if (!sendButtonEle) {
+                  sendButtonEle = await getElement(
+                    page,
+                    '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh xktsk01 x1yztbdb x1d52u69 xdj266r x1uhb9sk x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]'
+                  );
+                }
+                if (sendButtonEle) {
+                  await clickElement(sendButtonEle);
+                  await delay(getRandomIntBetween(3000, 5000));
+                  logger("Share post success");
+                  return true;
+                } else {
+                  await clickElement(closeEle);
+                  await delay(getRandomIntBetween(3000, 5000));
+                  logger("No send share post interaction");
+                  return false;
+                }
+              } else {
+                await clickElement(closeEle);
+                await delay(getRandomIntBetween(3000, 5000));
+                logger("No find user to share");
+                return true;
+              }
+            }
           }
         } else {
           logger("Can not find share button or user list none");
@@ -520,6 +651,11 @@ export const watchReels = (setting) => {
       watchReelsObj.videoStart,
       watchReelsObj.videoEnd
     );
+
+    if (numsReels < 1) {
+      logger("Debug|WatchReels|Number of reels less than 1. You need re-enter")
+      return;
+    }
     let arrLike = [];
     let arrComment = [];
     let arrShare = [];
@@ -536,51 +672,59 @@ export const watchReels = (setting) => {
       watchReelsObj.shareEnd
     );
 
-    if (numsLike < numsReels) {
-      while (numsLike > 0) {
-        const index = getRandomIntBetween(0, numsReels);
-        if (arrLike.includes(index)) {
-          continue;
+    if(watchReelsObj.isLike) {
+      if (numsLike < numsReels) {
+        while (numsLike > 0) {
+          const index = getRandomIntBetween(0, numsReels);
+          if (arrLike.includes(index)) {
+            continue;
+          }
+          arrLike.push(index);
+          numsLike--;
         }
-        arrLike.push(index);
-        numsLike--;
-      }
-    } else {
-      for (let i = 0; i < numsReels; i++) {
-        arrLike.push(i);
-      }
-    }
-    logger("Need like " + arrLike.length + " reels");
-    if (numsComment < numsReels) {
-      while (numsComment > 0) {
-        const index = getRandomIntBetween(0, numsReels);
-        if (arrComment.includes(index)) {
-          continue;
+      } else {
+        for (let i = 0; i < numsReels; i++) {
+          arrLike.push(i);
         }
-        arrComment.push(index);
-        numsComment--;
       }
-    } else {
-      for (let i = 0; i < numsReels; i++) {
-        arrComment.push(i);
-      }
+      logger("Need like " + arrLike.length + " reels");
     }
-    logger("Need comment " + arrComment.length + " reels");
-    if (numsShare < numsReels) {
-      while (numsShare > 0) {
-        const index = getRandomIntBetween(0, numsReels);
-        if (arrComment.includes(index)) {
-          continue;
+
+    if(watchReelsObj.isComment) {
+      if (numsComment < numsReels) {
+        while (numsComment > 0) {
+          const index = getRandomIntBetween(0, numsReels);
+          if (arrComment.includes(index)) {
+            continue;
+          }
+          arrComment.push(index);
+          numsComment--;
         }
-        arrShare.push(index);
-        numsShare--;
+      } else {
+        for (let i = 0; i < numsReels; i++) {
+          arrComment.push(i);
+        }
       }
-    } else {
-      for (let i = 0; i < numsReels; i++) {
-        arrShare.push(i);
-      }
+      logger("Need comment " + arrComment.length + " reels");
     }
-    logger("Need share " + arrShare.length + " reels");
+
+    if(watchReelsObj.isShare) {
+      if (numsShare < numsReels) {
+        while (numsShare > 0) {
+          const index = getRandomIntBetween(0, numsReels);
+          if (arrComment.includes(index)) {
+            continue;
+          }
+          arrShare.push(index);
+          numsShare--;
+        }
+      } else {
+        for (let i = 0; i < numsReels; i++) {
+          arrShare.push(i);
+        }
+      }
+      logger("Need share " + arrShare.length + " reels");
+    }
     await delay(getRandomIntBetween(3000, 5000));
     const isAccess = await accessReels(page);
     await delay(getRandomIntBetween(3000, 5000));
