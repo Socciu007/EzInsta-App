@@ -45,7 +45,7 @@ export const watchReels = (setting) => {
         const isInViewport = (elem, container) => {
           const bounding = elem.getBoundingClientRect();
           return (
-            bounding.top >= 10 &&
+            bounding.top >= 0 &&
             bounding.left >= 0 &&
             bounding.bottom <=
               (container.innerHeight || document.documentElement.clientHeight) &&
@@ -53,6 +53,7 @@ export const watchReels = (setting) => {
               (container.innerWidth || document.documentElement.clientWidth)
           );
         };
+        console.log('container.scrollTop', container.scrollTop)
  
         if (!container) return; // Kiểm tra xem container có tồn tại không
 
@@ -79,6 +80,7 @@ export const watchReels = (setting) => {
         };
   
         const elementRect = element.getBoundingClientRect();
+        console.log("check1");
         const viewportHeight =
           container.innerHeight || document.documentElement.clientHeight;
         const targetPosition =

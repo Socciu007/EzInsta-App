@@ -268,6 +268,7 @@ const ProfilesPage = () => {
       settingsColumns.push({
         title: 'Follower/ Following',
         dataIndex: 'follower',
+        className: 'followInsta',
         width: 170,
         ellipsis: {
           showTitle: false,

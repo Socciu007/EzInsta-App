@@ -108,6 +108,11 @@
             padding: 10px 3px !important;
             text-align: center;
           }
+          .ant-table-thead > tr > th.followInsta,
+          .ant-table-tbody > tr > td.followInsta {
+            // padding: 10px 3px !important;
+            text-align: center;
+          }
         }
         .ant-table-content::-webkit-scrollbar {
           height: 5px;

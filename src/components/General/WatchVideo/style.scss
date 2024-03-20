@@ -312,17 +312,20 @@
         display: none;
       }
       .Like .component-item__content.show {
-        display: flex;
+        display: flex !important;
       }
 
       .share .component-item__content {
         display: none;
       }
       .share .component-item__content.show {
-        display: flex;
+        display: flex !important;
       }
       .comment .commentContent {
         display: none;
+        .Text {
+          margin-top: 0px !important;
+        }
       }
       .comment,
       .comment .commentContent.show {
@@ -347,6 +350,9 @@
 .top {
   justify-content: space-between;
   display: flex;
+  .show {
+    display: flex !important;
+  }
 }
 .component-item__header {
   width: 45% !important;
