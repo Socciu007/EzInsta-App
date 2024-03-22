@@ -5,7 +5,10 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import Dialog from '@mui/material/Dialog';
 import img_debug from '../../../assets/images/img_debug.png';
-const PopupDebug = ({ openDebug, handleCloseDebug, debugs }) => {
+
+const PopupDebug = ({ openDebug, handleCloseDebug, debugs, profiles, debugScript }) => {
+  const [listDebug, setListDebug] = useState([]);
+
   const makeCopyDebug = {
     position: 'fixed',
     maxWidth: '100%',
@@ -36,6 +39,60 @@ const PopupDebug = ({ openDebug, handleCloseDebug, debugs }) => {
   const MuiDialogContainerDebug = {
     display: 'block',
   };
+
+  useEffect(() => {
+    const arrDebug = [];
+    if (debugs && debugs.length) {
+      console.log(profiles);
+      let newDebugs = debugs;
+      if (debugScript) {
+        if (profiles) {
+          newDebugs = debugs.filter((e) => {
+            const check = profiles.find((o) => o.id.toString() == e.id.toString());
+            if (check) return true;
+            return false;
+          });
+          newDebugs.forEach((e) => {
+            const index = arrDebug.findIndex((o) => o.name === e.name);
+            if (index >= 0) {
+              arrDebug[index].scripts.push(e.script);
+              arrDebug[index].errs.push(e.err);
+            } else {
+              const scripts = [];
+              const errs = [];
+              scripts.push(e.script);
+              errs.push(e.err);
+              arrDebug.push({
+                name: e.name,
+                scripts,
+                errs,
+              });
+            }
+          });
+        }
+      } else {
+        newDebugs.forEach((e) => {
+          const index = arrDebug.findIndex((o) => o.name === e.name);
+          if (index >= 0) {
+            arrDebug[index].scripts.push(e.script);
+            arrDebug[index].errs.push(e.err);
+          } else {
+            const scripts = [];
+            const errs = [];
+            scripts.push(e.script);
+            errs.push(e.err);
+            arrDebug.push({
+              name: e.name,
+              scripts,
+              errs,
+            });
+          }
+        });
+      }
+    }
+    setListDebug(arrDebug);
+  }, [debugs, profiles]);
+
   return (
     <>
       <Dialog
@@ -66,14 +123,18 @@ const PopupDebug = ({ openDebug, handleCloseDebug, debugs }) => {
               </div>
             </div>
             <div className="-layout-debug__container__debugs">
-              {debugs && debugs.length ? (
-                debugs.map((e, index) => (
+              {listDebug && listDebug.length ? (
+                listDebug.map((e, index) => (
                   <div key={index}>
                     <p style={{ fontWeight: '700' }}>{e.name}</p>
-                    <div className="contentDebugs" key={index}>
-                      <p style={{ color: 'gray' }}>{e.script ? e.script + ':' : ''}</p>
-                      <p style={{ color: 'red', marginLeft: 4 }}>{e.err}</p>
-                    </div>
+                    {e.errs.map((o, indexErr) => {
+                      return (
+                        <div className="contentDebugs" key={indexErr}>
+                          <p style={{ color: 'gray' }}>{e.scripts[indexErr] ? e.scripts[indexErr] + ':' : ''}</p>
+                          <p style={{ color: 'red', marginLeft: 4 }}>{o}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 ))
               ) : (

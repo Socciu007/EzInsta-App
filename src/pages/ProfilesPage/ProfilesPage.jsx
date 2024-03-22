@@ -100,6 +100,7 @@ const ProfilesPage = () => {
     const name = profile ? (profile.nameAccount ? profile.nameAccount : uid) : '';
     dispatch(
       setDebug({
+        id: profile.id,
         name,
         err,
         script,

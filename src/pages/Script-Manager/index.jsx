@@ -7,6 +7,7 @@ import back from '../../assets/icon/icon-back.svg';
 import pin from '../../assets/icon/icon-pin.svg';
 import pinBlack from '../../assets/icon/icon-pinBlack.svg';
 import iconEdit from '../../assets/icon/icon-editBlack.svg';
+import debug from '../../assets/icon/debug_icon.svg';
 import iconDuplicate from '../../assets/icon/icon-duplicate.svg';
 import iconDelete from '../../assets/icon/icon-remove.svg';
 import option from '../../assets/icon/icon-options.svg';
@@ -28,6 +29,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setScriptAuto } from '../../redux/scriptAutoSlice';
 import PopupRunScript from '../../components/PopupHome/PopupRunScript/PopupRunScript';
 import { EditableCell, EditableRow } from '../../components/EditableTable/EditableTable';
+import PopupDebug from '../../components/PopupHome/PopupDebug/PopupDebug';
 const ScriptManager = () => {
   const navigate = useNavigate();
 
@@ -81,7 +83,10 @@ const ScriptManager = () => {
   const [itemSelect, setItemSelect] = useState(null);
   const [nameCoppy, setNameCoppy] = useState('');
   const [isRunScript, setIsRunScript] = useState(false);
+  const [openDebug, setOpenDebug] = useState(false);
+  const [profileDebug, setProfilesDebug] = useState(null);
   const profiles = useSelector((state) => state.profile);
+  const debugs = useSelector((state) => state.debug);
   const dispatch = useDispatch();
   useEffect(() => {
     getScripts();
@@ -91,11 +96,12 @@ const ScriptManager = () => {
     setListScript(mapStatus(listScript));
   }, [profiles]);
 
-  // useEffect(() => {
-  //   if (contentArray && contentArray.length) {
-  //     setListScript();
-  //   }
-  // }, [contentArray]);
+  const handleOpenDebug = () => {
+    setOpenDebug(true);
+  };
+  const handleCloseDebug = () => {
+    setOpenDebug(false);
+  };
 
   const mapStatus = (newList) => {
     if (!profiles || profiles.length == 0) return newList;
@@ -106,7 +112,7 @@ const ScriptManager = () => {
 
       newArr[index] = {
         ...newArr[index],
-        status: total.length > 0 ? { done: scriptDone.length, total: total.length } : null,
+        status: total.length > 0 ? { done: scriptDone, total: total } : null,
       };
     });
     return newArr;
@@ -333,23 +339,22 @@ const ScriptManager = () => {
       render: (status, script) => {
         return (
           <>
-            <div>
-              {status && status.total ? (
-                <div
-                  className="statusRunning"
-                  onClick={() => {
-                    dispatch(setScriptAuto(script.name));
-                    setItemSelect(script);
-                    setIsRunScript(true);
-                    setAnchorEl(null);
-                  }}
-                >
+            <div
+              onClick={() => {
+                dispatch(setScriptAuto(script.name));
+
+                setItemSelect(script);
+                setIsRunScript(true);
+                setAnchorEl(null);
+              }}
+            >
+              {status && status.total && status.total.length ? (
+                <div className="statusRunning">
                   <img src={running} alt="run profile icon" />
                   <span>
-                    <span className="profileRunning">{status.done}</span>
+                    <span className="profileRunning">{status.done.length}</span>
                     <span className="totalProfile">
-                      {' '}
-                      / {status.total} {status.total == 1 ? 'profile' : 'profiles'}
+                      / {status.total.length} {status.total.length == 1 ? 'profile' : 'profiles'}
                     </span>
                   </span>
                 </div>
@@ -465,6 +470,16 @@ const ScriptManager = () => {
                         <li onClick={handleEditClick}>
                           <img src={iconEdit} alt="icon edit" />
                           Edit
+                        </li>
+                        <li
+                          onClick={() => {
+                            setProfilesDebug(script.status && script.status.total ? script.status.total : null);
+                            handleClose();
+                            handleOpenDebug();
+                          }}
+                        >
+                          <img style={{ width: 10 }} src={debug} alt="icon edit" />
+                          Debug
                         </li>
                         <li onClick={() => handleOptionClick('makeCopy', script)}>
                           <img src={iconDuplicate} alt="icon duplicate" />
@@ -614,6 +629,14 @@ const ScriptManager = () => {
               </div>
             </div>
           </Dialog>
+
+          <PopupDebug
+            debugs={debugs}
+            openDebug={openDebug}
+            debugScript={true}
+            handleCloseDebug={handleCloseDebug}
+            profiles={profileDebug}
+          ></PopupDebug>
 
           <Dialog
             open={deleteDialogOpen}

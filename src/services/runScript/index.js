@@ -20,6 +20,7 @@ import { updateProfileScript } from './scriptAuto/updateProfile';
 import { followInteraction } from './scriptAuto/followInteraction';
 import { hashtagInteraction } from './scriptAuto/hashtagInteraction';
 import { getInfor } from './scriptAuto/GetInfo';
+import { removeProfile } from '../../redux/debugSlice';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -190,9 +191,10 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
         mem = infor.mem;
       }
       const browserData = await getBrowserData(profile.id, proxyConvert);
-      console.log(browserData);
+
       if (browserData && browserData.data) {
         dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'running' }));
+        dispatch(removeProfile(profile));
         const positionBrowser = await getPosition(index);
         const strCode = `
 let browser;

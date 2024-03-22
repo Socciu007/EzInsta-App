@@ -13,7 +13,6 @@ import Follow from '../../components/Group/Follow/Follow.jsx';
 import PostInteraction from '../../components/Group/PostInteraction/PostInteraction.jsx';
 import DirectMsg from '../../components/Group/DirectMsg/DirectMsg.jsx';
 import WatchVideo from '../../components/General/WatchVideo/WatchVideo.jsx';
-import AddFriend from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
 import HashtagInteraction from '../../components/General/Hashtag_Interaction/HashtagInteraction.jsx';
 import FollowInteraction from '../../components/General/Follow_Interaction/FollowInteraction.jsx';
 import search from '../../assets/icon/icon-search.svg';
@@ -43,13 +42,11 @@ import { Store } from 'react-notifications-component';
 import notification from '../../resources/notification.json';
 import PopupChooseProfile from '../../components/PopupHome/PopupChooseProfile/PopupChooseProfile.jsx';
 import PopupDebug from '../../components/PopupHome/PopupDebug/PopupDebug.jsx';
-import { useSelector, useDispatch } from 'react-redux';
-import { removeDebug } from '../../redux/debugSlice.js';
+import { useSelector } from 'react-redux';
 import UpdateProfile from '../../components/General/UpdateProfile/UpdateProfile.jsx';
 const CreateScript = () => {
   const DnDFlowRef = useRef();
   const { state } = useLocation();
-  const dispatch = useDispatch();
   const [component, setComponent] = useState('default');
   const [nameScript, setNameScript] = useState('');
   const [noteScript, setNoteScript] = useState('');
@@ -65,12 +62,9 @@ const CreateScript = () => {
   const [currentSetup, setCurrentSetup] = useState(null);
   const [activeCategory, setActiveCategory] = useState(1);
   const [openProfiles, setOpenProfiles] = useState(false);
+  const [profileSelected, setProfileSelected] = useState(null);
   const navigate = useNavigate();
   const debugs = useSelector((state) => state.debug);
-
-  useEffect(() => {
-    dispatch(removeDebug());
-  }, []);
 
   useEffect(() => {
     setDefaultScript();
@@ -83,6 +77,9 @@ const CreateScript = () => {
     }
   };
 
+  const selectProfile = (profiles) => {
+    setProfileSelected(profiles);
+  };
   const handleMessageChange = (component, id) => {
     const setup = designScript.script.find((e) => e.id == id);
 
@@ -493,11 +490,18 @@ const CreateScript = () => {
                   <button className="debug" onClick={handleOpenDebug}>
                     <img src={debug} alt="Debug" />
                   </button>
-                  <PopupDebug debugs={debugs} openDebug={openDebug} handleCloseDebug={handleCloseDebug}></PopupDebug>
+                  <PopupDebug
+                    profiles={profileSelected}
+                    debugScript={true}
+                    debugs={debugs}
+                    openDebug={openDebug}
+                    handleCloseDebug={handleCloseDebug}
+                  ></PopupDebug>
                   <button className="test" onClick={handleOpenProfiles}>
                     <img src={runTest} alt="run test" />
                   </button>
                   <PopupChooseProfile
+                    selectProfile={selectProfile}
                     designScript={designScript}
                     openProfiles={openProfiles}
                     handleCloseProfiles={handleCloseProfiles}
