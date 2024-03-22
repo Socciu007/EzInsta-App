@@ -12,6 +12,83 @@ export const seedingFollow = (setting) => {
       }`;
   console.log(strSetting);
   return `
+  const testScroll = async (page, element, container) => {
+    try {
+      await page.evaluate(async (element, container) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+        console.log('container.scrollTop', container.scrollTop)
+ 
+        if (!container) return; // Kiểm tra xem container có tồn tại không
+
+        if (!element || isInViewport(element, container)) return;
+  
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+  
+        const elementRect = element.getBoundingClientRect();
+        console.log("check1");
+        const viewportHeight =
+          container.innerHeight || document.documentElement.clientHeight;
+        const targetPosition =
+          container.scrollTop +
+          elementRect.top -
+          (elementRect.top > viewportHeight ? viewportHeight : 0);
+        let currentPosition = container.scrollTop;
+        while (
+          Math.abs(currentPosition - targetPosition) > 0 &&
+          !isInViewport(element, container)
+        ) {
+          const stepSize =
+            getRandomIntBetween(100, 200) *
+            (currentPosition > targetPosition ? -1 : 1);
+          const durationPerStep = getRandomIntBetween(1000, 2000);
+          const nextPosition = currentPosition + stepSize;
+          smoothScrollByStep(nextPosition, durationPerStep, container);
+          await delay(getRandomIntBetween(1000, 2000));
+          if (Math.random() < 0.3) {
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+          currentPosition = container.scrollTop; // Sử dụng container.scrollTop thay vì window.scrollTop
+        }
+      }, element, container);
+      return true;
+    } catch (error) {
+      logger(error);
+      return false;
+    }
+  };
   const accessProfile = async page => {
     try {
       const profileEle = await getElement(page, 'span a [role="link"]');
@@ -23,7 +100,7 @@ export const seedingFollow = (setting) => {
       await delay(getRandomIntBetween(3000, 5000));
       let followingEle = await selectorHref(page, "/followers/");
       if (!followingEle) {
-        logger("Err find following button");
+        logger("Err find followers button");
         return false;
       }
       await clickElement(followingEle);
@@ -63,8 +140,11 @@ export const seedingFollow = (setting) => {
           );
           if (listFollowEles.length > 0) {
             const index = getRandomInt(listFollowEles.length);
-            // await scrollSmoothIfElementNotExistOnScreen1(page, listFollowEles[index], '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1uhb9sk x6ikm8r x10wlt62 x1iyjqo2 x2lwn1j xeuugli xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]');
-            await scrollSmoothIfNotExistOnScreen1(listFollowEles[index])
+            const container = await getElement(page, '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1pi30zi x1swvt13 x1uhb9sk x6ikm8r x1rife3k x1iyjqo2 x2lwn1j xeuugli xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]')
+            if (container) {
+              await testScroll(page, listFollowEles[index], container);
+              await delay(getRandomIntBetween(3000, 5000));
+            }
             await delay(getRandomIntBetween(3000, 5000));
             await clickElement(listFollowEles[index]);
             await delay(getRandomIntBetween(3000, 5000));
@@ -96,7 +176,11 @@ export const seedingFollow = (setting) => {
         return;
       } else if (numsFollow >= listFollower.length) {
         for (let i = 0; i < listFollower.length; i++) {
-          await scrollSmoothIfNotExistOnScreen1(listFollower[i]);
+          const container = await getElement(page, '[class="_aano"]')
+            if (container) {
+              await testScroll(page, listFollower[i], container);
+              await delay(getRandomIntBetween(3000, 5000));
+            }
           await delay(getRandomIntBetween(3000, 5000));
           await clickElement(listFollower[i]);
           await delay(getRandomIntBetween(3000, 5000));
@@ -111,7 +195,11 @@ export const seedingFollow = (setting) => {
         for (let i = 0; i < numsFollow; i++) {
           const index = getRandomInt(listFollower.length);
           if (listFollower[index]) {
-            await scrollSmoothIfNotExistOnScreen1(listFollower[index]);
+            const container = await getElement(page, '[class="_aano"]')
+            if (container) {
+              await testScroll(page, listFollower[index], container);
+              await delay(getRandomIntBetween(3000, 5000));
+            }
             await delay(getRandomIntBetween(3000, 5000));
             await clickElement(listFollower[index]);
             await delay(getRandomIntBetween(3000, 5000));
@@ -141,19 +229,23 @@ export const seedingFollow = (setting) => {
           if (typeFollow === "byUserFollower") {
             let followingEle = await selectorHref(page, "/followers/");
             if (!followingEle) {
-              logger("Err find following button");
-              return false;
+              err["err"] = "Debug|Follow|Err find follower button or account private"
+              return;
             }
             await clickElement(followingEle);
             await delay(getRandomIntBetween(3000, 5000));
             while (count < numsFollow) {
               const listFollowEles = await getElements(
                 page,
-                'button[class=" _acan _acap _acas _aj1- _ap30"]'
+                '[class="_aano"] button[class=" _acan _acap _acas _aj1- _ap30"]'
               );
               if (listFollowEles.length > 0) {
                 const index = getRandomInt(listFollowEles.length);
-                await scrollSmoothIfNotExistOnScreen1(listFollowEles[index]);
+                const container = await getElement(page, '[class="_aano"]')
+                if (container) {
+                  await testScroll(page, listFollowEles[index], container);
+                  await delay(getRandomIntBetween(3000, 5000));
+                }
                 await delay(getRandomIntBetween(3000, 5000));
                 await clickElement(listFollowEles[index]);
                 await delay(getRandomIntBetween(3000, 5000));
@@ -169,19 +261,23 @@ export const seedingFollow = (setting) => {
           if (typeFollow === "byUserFollowing") {
             let followingEle = await selectorHref(page, "/following/");
             if (!followingEle) {
-              logger("Err find following button");
-              return false;
+              err["err"] = "Debug|Follow|Err find following button or account private"
+              return;
             }
             await clickElement(followingEle);
             await delay(getRandomIntBetween(3000, 5000));
             while (count < numsFollow) {
               const listFollowEles = await getElements(
                 page,
-                'button[class=" _acan _acap _acas _aj1- _ap30"]'
+                '[class="_aano"] button[class=" _acan _acap _acas _aj1- _ap30"]'
               );
               if (listFollowEles.length > 0) {
                 const index = getRandomInt(listFollowEles.length);
-                await scrollSmoothIfNotExistOnScreen1(listFollowEles[index]);
+                const container = await getElement(page, '[class="_aano"]')
+                if (container) {
+                  await testScroll(page, listFollowEles[index], container);
+                  await delay(getRandomIntBetween(3000, 5000));
+                }
                 await delay(getRandomIntBetween(3000, 5000));
                 await clickElement(listFollowEles[index]);
                 await delay(getRandomIntBetween(3000, 5000));
@@ -354,7 +450,6 @@ export const seedingFollow = (setting) => {
       );
       if (listKeywords.length > 0) {
         const index = getRandomInt(listKeywords.length);
-        await scrollSmoothIfNotExistOnScreen1(listKeywords[index]);
         await delay(getRandomIntBetween(3000, 5000));
         await listKeywords[index].evaluate(b => b.click());
         await delay(getRandomIntBetween(3000, 5000));
@@ -405,45 +500,6 @@ export const seedingFollow = (setting) => {
       }
     } catch (error) {
       logger("Err access page by href " + error.message);
-      return false;
-    }
-  };
-  
-  const scrollSmoothIfNotExistOnScreen1 = async element => {
-    try {
-      const isExistElementOnScreen = await checkExistElementOnScreen1(element);
-      if (!isExistElementOnScreen) {
-        await element.evaluate(el => {
-          el.scrollIntoView({
-            behavior: "smooth",
-            inline: "nearest",
-            block: "center",
-          });
-        });
-        logger('scroll')
-        await delay(getRandomIntBetween(1000, 3000));
-        return true;
-      }
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
-  
-  const checkExistElementOnScreen1 = async element => {
-    try {
-      const isElementVisible = await element.evaluate(el => {
-        const { top, left, bottom, right } = el.getBoundingClientRect();
-        return (
-          top >= 0 &&
-          left >= 0 &&
-          bottom <=
-            (window.innerHeight || document.documentElement.clientHeight) &&
-          right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
-      });
-      return isElementVisible;
-    } catch (error) {
       return false;
     }
   };
@@ -610,17 +666,30 @@ try {
     );
     await delay(getRandomIntBetween(3000, 5000));
   }
+  let arrSearchKey = followObj.searchByKeyword
+  let arrSearchUser = followObj.searchByUser
+  if(followObj.search === 'searchByKey') {
+    while (arrSearchKey.length < numsFollow) {
+      const indexRandom = getRandomInt(arrSearchKey.length)
+      arrSearchKey.push(arrSearchKey[indexRandom]);
+    }
+  }
+  if(followObj.search === 'searchByUser') {
+    if (arrSearchUser.length > numsFollow) {
+      arrSearchUser = arr.sort(() => Math.random() - 0.5).slice(0, numsFollow)
+    }
+  }
   if (followObj.typeFollow === "search") {
     await followBySearch(
       page,
       followObj.search,
-      followObj.searchByUser,
-      followObj.searchByKeyword,
+      arrSearchUser,
+      arrSearchKey,
       errFollow
     );
     await delay(getRandomIntBetween(3000, 5000));
   }
-  if (errFollow.err != '') {
+  if (errFollow.err != undefined) {
     logger(errFollow.err)
     return;
   }

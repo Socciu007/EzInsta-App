@@ -481,7 +481,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 </div>
 
                 <div className="commentContent">
-                  <div className="Text">
+                  <div className="Text" style={{ marginTop: '0px' }}>
                     <p style={{ fontWeight: 700 }}>User</p>
                     <div style={{ position: 'relative' }} className="component-item box">
                       <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
@@ -514,7 +514,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     </div>
                   </div>
 
-                  <div className="Text" style={{ marginTop: '19px' }}>
+                  <div className="Text">
                     <div className="message">
                       <input
                         type="checkbox"
