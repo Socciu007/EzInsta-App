@@ -321,9 +321,9 @@ const PopupProfile = ({ openProfiles, handleCloseProfiles, onAddProfile }) => {
                           value={values.option}
                         >
                           <MenuItem value="http">HTTP</MenuItem>
-                          <MenuItem value="ssh">SSH</MenuItem>
                           <MenuItem value="socks4">Socks 4</MenuItem>
                           <MenuItem value="socks5">Socks 5</MenuItem>
+                          <MenuItem value="ssh">SSH</MenuItem>
                         </Select>
                       </div>
                       <div className="textProxy">

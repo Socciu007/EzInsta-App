@@ -65,24 +65,23 @@ const PopupRunScript = ({ openRunScript, handleCloseRunScript, script }) => {
   const searchProfiles = (text) => {
     setTextSearch(text);
     if (text == '') {
-      setDataSearch(dataSearch);
+      setDataSearch(dataProfiles);
     } else {
-      const newData = profiles.filter((e) => {
-        const textLowerCase = text.toLowerCase();
-        const mode = e.mode ? e.mode.toLowerCase() : '';
-        const host = e.host ? e.host.toLowerCase() : '';
-        const port = e.port ? e.port.toString().toLowerCase() : '';
-        const username = e.username ? e.username.toLowerCase() : '';
-        const password = e.password ? e.password.toLowerCase() : '';
+      const newProfiles = dataProfiles.filter((e) => {
+        const profile = e.uid.toLowerCase();
+        const mail = e.recoveryEmail ? e.recoveryEmail.toLowerCase() : '';
+        const name = e.nameAccount ? e.nameAccount.toLowerCase() : '';
+        const tags = e.tag ? e.tag.join(',').toLowerCase() : '';
+        const proxy = generateProxyStr(e.proxy, false).toLowerCase();
         return (
-          mode.includes(textLowerCase) ||
-          host.includes(textLowerCase) ||
-          port.includes(textLowerCase) ||
-          username.includes(textLowerCase) ||
-          password.includes(textLowerCase)
+          profile.includes(text.toLowerCase()) ||
+          name.includes(text.toLowerCase()) ||
+          mail.includes(text.toLowerCase()) ||
+          tags.includes(text.toLowerCase()) ||
+          proxy.includes(text.toLowerCase())
         );
       });
-      setDataSearch(newData);
+      setDataSearch(newProfiles);
     }
   };
 
