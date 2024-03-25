@@ -330,6 +330,15 @@
       .Post,
       .Post .PostContent {
         display: block;
+        .Text {
+          margin-top: 5%;
+        }
+        .hide {
+          display: none !important;
+        }
+        .show {
+          display: block !important;
+        }
       }
     }
   }
@@ -351,13 +360,4 @@
   opacity: 0.5;
   font-size: 15px;
   font-weight: 400;
-}
-.hide {
-  display: none !important;
-}
-.show {
-  display: block !important;
-}
-.Text {
-  margin-top: 5%;
 }

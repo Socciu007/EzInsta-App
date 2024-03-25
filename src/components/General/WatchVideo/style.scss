@@ -209,6 +209,7 @@
         border-radius: 5px;
         border: 1px dashed rgba(1, 22, 43, 0.2);
         scrollbar-width: none;
+
         &::-webkit-scrollbar {
           display: none;
         }
@@ -325,6 +326,9 @@
         display: none;
         .Text {
           margin-top: 0px !important;
+          .message {
+            margin-top: 5%;
+          }
         }
       }
       .comment,
@@ -346,6 +350,9 @@
   margin-top: 5%;
   margin-bottom: 15px;
   border-radius: 5px;
+  .message {
+    margin-top: 5%;
+  }
 }
 .top {
   justify-content: space-between;
