@@ -73,7 +73,7 @@ const SignUp = () => {
           Store.addNotification({
             ...notification,
             type: 'success',
-            message: 'Account created successfully. Sign in to use AutoIG!',
+            message: 'Account created successfully. Sign in to use EzInsta!',
           });
           setTimeout(() => {
             navigateLogin();
@@ -122,7 +122,7 @@ const SignUp = () => {
     <div className="signup">
       <div className="signup__content">
         <div className="signup__content-header">
-          <p className="tool-name">AUTOIG</p>
+          <p className="tool-name">EzInsta</p>
           <div className="signup__content_switch-language">
             <Select
               name="languageOption"
@@ -148,7 +148,7 @@ const SignUp = () => {
         <div className="signup__content-form">
           <h1 className="signup__content-form-title">{t('Sign up')}</h1>
           <p className="signup__content-form-describe">
-            {t('Let’s create a new account to log in to AutoIG')}
+            {t('Let’s create a new account to log in to EzInsta')}
             {/* <img style={{ display: 'inline', marginLeft: '1px' }} src={Zeus} alt="" /> */}
           </p>
           <div>

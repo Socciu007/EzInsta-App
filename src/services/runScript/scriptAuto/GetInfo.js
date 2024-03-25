@@ -1,13 +1,13 @@
 export const getInfor = (profile) => {
-  if (!profile.fllower || !profile.fllowing) {
+  if (!profile.fllower) {
     return `{
         try {
+         
           const checkPageIsLive = checkIsLive(page);
           if (!checkPageIsLive) {
             logger("Page null!");
             return false;
           }
-      
           await returnHomePage(page);
           await delay(2000);
           const disibleNoti = await getElement(
@@ -21,7 +21,7 @@ export const getInfor = (profile) => {
           const elProfile = await getElement(page, "a span img");
           if (elProfile) {
             await elProfile.click();
-            await delay(5000);
+            await delay(5000); 
             let follower;
             let following;
             const elLinks = await getElements(page, "a");

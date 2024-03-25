@@ -796,7 +796,7 @@ const ProfilesPage = () => {
     >
       <div className="-container-profiles">
         <div className="profiles_header">
-          <h1 className="-title-profiles">MiniTool Instagram</h1>
+          <h1 className="-title-profiles">EzInsta</h1>
           <div className="user">
             {/* <p className="user_noti">
               Your subscription will be expired in <strong>3 days</strong>. <span>Pay now!</span>

@@ -75,7 +75,17 @@ export const loginFacebook = (account) => {
           waitUntil: "networkidle2",
           timeout: 60000,
         });
-        const email = await getElementEmail(page, 15);
+        let email = await getElementEmail(page, 5);
+
+        if(!email){
+          await page.reload({
+            waitUntil: "networkidle2",
+            timeout: 60000,
+          });
+          await delay(2000);
+          email = await getElementEmail(page, 10);
+        }
+
         const password = await getElementPassword(page);
         if (email && password) {
           await simMoveToAndClick(page, email);
