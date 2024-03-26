@@ -197,7 +197,7 @@ const Edit = () => {
       <div className="wrapper">
         <div className="edit">
           <div className="script-manager__header">
-            <h1>MiniTool Instagram</h1>
+            <h1>EzInsta</h1>
             <div className="title">
               <button onClick={handleReturnClick}>
                 <img src={back} alt="Return" />
