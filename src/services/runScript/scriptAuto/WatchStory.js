@@ -25,6 +25,82 @@ export const watchStory = (setting) => {
     }`;
   console.log(strSetting);
   return `
+  const testScroll = async (page, element, container) => {
+    try {
+      await page.evaluate(async (element, container) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+ 
+        if (!container) return; // Kiểm tra xem container có tồn tại không
+
+        if (!element || isInViewport(element, container)) return;
+  
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+  
+        const elementRect = element.getBoundingClientRect();
+        console.log("check1");
+        const viewportHeight =
+          container.innerHeight || document.documentElement.clientHeight;
+        const targetPosition =
+          container.scrollTop +
+          elementRect.top -
+          (elementRect.top > viewportHeight ? viewportHeight : 0);
+        let currentPosition = container.scrollTop;
+        while (
+          Math.abs(currentPosition - targetPosition) > 0 &&
+          !isInViewport(element, container)
+        ) {
+          const stepSize =
+            getRandomIntBetween(100, 200) *
+            (currentPosition > targetPosition ? -1 : 1);
+          const durationPerStep = getRandomIntBetween(1000, 2000);
+          const nextPosition = currentPosition + stepSize;
+          smoothScrollByStep(nextPosition, durationPerStep, container);
+          await delay(getRandomIntBetween(1000, 2000));
+          if (Math.random() < 0.3) {
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+          currentPosition = container.scrollTop; // Sử dụng container.scrollTop thay vì window.scrollTop
+        }
+      }, element, container);
+      return true;
+    } catch (error) {
+      logger(error);
+      return false;
+    }
+  };
   const checkUrlPage = async (page, urlText) => {
     try {
       const url = page.url();
@@ -203,11 +279,10 @@ export const watchStory = (setting) => {
         );
         if (selectEle.length > 0) {
           const index = getRandomInt(selectEle.length);
-          await selectEle[index].scrollIntoView({
-            behavior: "smooth",
-            inline: "nearest",
-            block: "center",
-          });
+          const container = await getElement(page, '[class="x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1uhb9sk x6ikm8r x1rife3k x1iyjqo2 x2lwn1j xeuugli xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1"]')
+          if (container) {
+            await testScroll(page, selectEle[index], container)
+          }
           await delay(3000);
           await clickElement(selectEle[index]);
           await delay(getRandomIntBetween(3000, 5000));

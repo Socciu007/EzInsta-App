@@ -30,6 +30,83 @@ export const unfollow = (setting) => {
       return false;
     }
   };
+
+  const testScroll = async (page, element, container) => {
+    try {
+      await page.evaluate(async (element, container) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+ 
+        if (!container) return; // Kiểm tra xem container có tồn tại không
+
+        if (!element || isInViewport(element, container)) return;
+  
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+  
+        const elementRect = element.getBoundingClientRect();
+        console.log("check1");
+        const viewportHeight =
+          container.innerHeight || document.documentElement.clientHeight;
+        const targetPosition =
+          container.scrollTop +
+          elementRect.top -
+          (elementRect.top > viewportHeight ? viewportHeight : 0);
+        let currentPosition = container.scrollTop;
+        while (
+          Math.abs(currentPosition - targetPosition) > 0 &&
+          !isInViewport(element, container)
+        ) {
+          const stepSize =
+            getRandomIntBetween(100, 200) *
+            (currentPosition > targetPosition ? -1 : 1);
+          const durationPerStep = getRandomIntBetween(1000, 2000);
+          const nextPosition = currentPosition + stepSize;
+          smoothScrollByStep(nextPosition, durationPerStep, container);
+          await delay(getRandomIntBetween(1000, 2000));
+          if (Math.random() < 0.3) {
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+          currentPosition = container.scrollTop; // Sử dụng container.scrollTop thay vì window.scrollTop
+        }
+      }, element, container);
+      return true;
+    } catch (error) {
+      logger(error);
+      return false;
+    }
+  };
   
   const actionUnFollow = async (page, unFollowObj) => {
     try {
@@ -48,9 +125,10 @@ export const unfollow = (setting) => {
           if (listFollowing.length > 0) {
             const index = getRandomInt(listFollowing.length);
             if (listFollowing[index]) {
-              await listFollowing[index].scrollIntoView({
-                behavior: "smooth", block: "center", inline: "nearest"
-              });
+              const container = await getElement(page, '[class="_aano"]')
+              if (container) {
+                await testScroll(page, listFollowing[index], container)
+              }
         
               await delay(getRandomIntBetween(1000, 3000));
               await clickElement(listFollowing[index]);
@@ -181,98 +259,6 @@ export const unfollow = (setting) => {
     }
   };
 
-  const scrollRight = async (page, element) => {
-    const elem = await page.$('[class="x7r02ix xf1ldfh x131esax xdajt7p xxfnqb6 xb88tzc xw2csxc x1odjw0f x5fp0pe"]');
-    const boundingBox = await elem.boundingBox();
-    await page.mouse.move(
-      boundingBox.x + boundingBox.width / 2, // x
-      boundingBox.y + boundingBox.height / 2 // y
-    );
-    await delay(getRandomIntBetween(1000, 3000));
-    await scrollSmoothIfElementNotExistOnScreens(page, element)
-  
-  //  await page.mouse.wheel({ deltaX: 2500 });
-  }
-  
-  const scrollSmoothIfElementNotExistOnScreens = async (page, element) => {
-    try {
-      await page.evaluate(async element => {
-        const getRandomIntBetween = (min, max) => {
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        };
-        const delay = async time => {
-          return new Promise(resolve => setTimeout(resolve, time));
-        };
-        const smoothScrollByStep = async (targetPosition, duration) => {
-          const startPosition = window.scrollY;
-          const distance = targetPosition - startPosition;
-          let startTime = null;
-  
-          const ease = (t, b, c, d) => {
-            t /= d / 2;
-            if (t < 1) return (c / 2) * t * t + b;
-            t--;
-            return (-c / 2) * (t * (t - 2) - 1) + b;
-          };
-  
-          const animation = currentTime => {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const run = ease(timeElapsed, startPosition, distance, duration);
-            window.scrollTo(0, run);
-            if (timeElapsed < duration) requestAnimationFrame(animation);
-          };
-  
-          requestAnimationFrame(animation);
-        };
-  
-        const isInViewport = elem => {
-          const bounding = elem.getBoundingClientRect();
-          return (
-            bounding.top >= 0 &&
-            bounding.left >= 0 &&
-            bounding.bottom <=
-              (window.innerHeight || document.documentElement.clientHeight) &&
-            bounding.right <=
-              (window.innerWidth || document.documentElement.clientWidth)
-          );
-        };
-  
-        if (element && !isInViewport(element)) {
-          const elementRect = element.getBoundingClientRect();
-          const viewportHeight =
-            window.innerHeight || document.documentElement.clientHeight;
-          const targetPosition =
-            window.scrollY +
-            elementRect.top -
-            (elementRect.top > viewportHeight ? viewportHeight : 0);
-  
-          let currentPosition = window.scrollY;
-          while (
-            Math.abs(currentPosition - targetPosition) > 0 &&
-            !isInViewport(element)
-          ) {
-            const stepSize =
-              getRandomIntBetween(150, 500) *
-              (currentPosition > targetPosition ? -1 : 1);
-            const durationPerStep = getRandomIntBetween(500, 2000);
-            const nextPosition = currentPosition + stepSize;
-            await smoothScrollByStep(nextPosition, durationPerStep);
-            await delay(getRandomIntBetween(1000, 3000));
-            if (Math.random() < 0.3) {
-              await delay(getRandomIntBetween(2000, 4000));
-            }
-            currentPosition = window.scrollY;
-          }
-          await delay(getRandomIntBetween(2000, 3000));
-        }
-      }, element);
-      return true;
-    } catch (error) {
-      logger(error);
-      return false;
-    }
-  };
  let unFollowObj = ${strSetting};
  try {
   const isLive = await checkIsLive(page);

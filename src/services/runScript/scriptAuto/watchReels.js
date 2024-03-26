@@ -53,7 +53,6 @@ export const watchReels = (setting) => {
               (container.innerWidth || document.documentElement.clientWidth)
           );
         };
-        console.log('container.scrollTop', container.scrollTop)
  
         if (!container) return; // Kiểm tra xem container có tồn tại không
 
