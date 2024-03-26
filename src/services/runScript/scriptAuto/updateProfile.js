@@ -212,6 +212,8 @@ export const updateProfileScript = (setting) => {
         if (!isLive) return -1;
         await returnHomePage(page);
         await delay(3000);
+        await turnOffNoti(page);
+        await delay(3000);
         const elProfile = await getElement(page, "a span img");
         if(!elProfile) {
             return false;
@@ -258,15 +260,17 @@ export const updateProfileScript = (setting) => {
             const [fileChooser] = await Promise.all([page.waitForFileChooser(), await clickElement(option)]);
             await fileChooser.accept([updateObj.photos[randomImg]]);
             await delay(10000);
+            logger("Update avatar thành công")
         }
         if(updateObj.bio.length != 0 && updateObj.isUpdateBio){
             const inputValue = await page.$eval('#pepBio', el => el.value);
             // focus on the input field
             await page.click('#pepBio');
-            for (let i = 0; i < inputValue.length; i++) {
-                await page.keyboard.press('Backspace');
-            }
-            await delay(2000);
+            await page.keyboard.down('Control'); 
+            await page.keyboard.press('A');
+            await page.keyboard.up('Control'); 
+            await page.keyboard.press('Backspace');
+            await delay(3000);
             let content = updateObj.bio;
             let randomString = content[getRandomInt(content.length)];
             await delay(2000);
@@ -306,6 +310,7 @@ export const updateProfileScript = (setting) => {
         await delay(3000);
         await clickReturn(page);
         await delay(5000);
+        logger("Update profile thành công");
       } catch (error) {
         logger(error);
       }

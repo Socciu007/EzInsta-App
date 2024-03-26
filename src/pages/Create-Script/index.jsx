@@ -457,7 +457,7 @@ const CreateScript = () => {
       <div className="wrapper">
         <div className="create-script">
           <div className="script-manager__header">
-            <h1>EzInsta</h1>
+            <h1>INSTAGRAM TOOL</h1>
             <div className="title">
               <button onClick={handleReturnClick}>
                 <img src={back} alt="Return" />

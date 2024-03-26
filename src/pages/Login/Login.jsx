@@ -86,7 +86,7 @@ const Login = () => {
     <div className="login">
       <div className="login__content">
         <div className="login__content-header">
-          <p className="tool-name">EzInsta</p>
+          <p className="tool-name"> INSTAGRAM TOOL</p>
           <div className="login__content_switch-language">
             <Select
               name="languageOption"

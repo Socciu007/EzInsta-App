@@ -528,7 +528,7 @@ const ScriptManager = () => {
       >
         <div className="script-manager">
           <div className="script-manager__header">
-            <h1>EzInsta</h1>
+            <h1> INSTAGRAM TOOL</h1>
             <div className="title">
               <button>
                 <img src={back} alt="" onClick={handleBackClick} />

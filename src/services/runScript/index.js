@@ -759,7 +759,9 @@ return new Promise(async (resolve) => {
 const returnHomePage = async (page) => {
 await delay(1000);
 const url = await page.url();
-if (url == 'https://www.instagram.com' || url == 'https://www.instagram.com/') {
+const elProfile = await getElements(page, "a span img");
+await delay(3000)
+if (url == 'https://www.instagram.com/' && elProfile.length > 0) {
   logger('URL is correct');
 } else {
   logger('Redirect to homepage');
@@ -989,6 +991,20 @@ try {
       }
     };
     
+
+const turnOffNoti = async (page) => {
+  try {
+    const turnOffBtns = await getElements(page, '[role="dialog"] button');
+    if(turnOffBtns) {
+      await delay(2000);
+      await turnOffBtns[1].click();
+      await delay(4000);
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
 
 const getElementByID = async  (
 page,

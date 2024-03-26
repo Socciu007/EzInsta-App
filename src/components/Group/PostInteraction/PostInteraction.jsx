@@ -451,7 +451,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                         <span style={{ marginRight: '14px' }}>1</span>Enter the content here
                       </p>
                       <p>
-                        <span>2</span>Each UID/line
+                        <span>2</span>Each content/line
                       </p>
                     </div>
                   </div>
@@ -572,7 +572,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                         <span style={{ marginRight: '14px' }}>1</span>Enter the content here
                       </p>
                       <p>
-                        <span>2</span>Each UID/line
+                        <span>2</span>Each content/line
                       </p>
                     </div>
                   </div>
@@ -606,7 +606,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                         <span style={{ marginRight: '14px' }}>1</span>Enter the content here
                       </p>
                       <p>
-                        <span>2</span>Each UID/line
+                        <span>2</span>Each content/line
                       </p>
                     </div>
                   </div>

@@ -122,7 +122,7 @@ const SignUp = () => {
     <div className="signup">
       <div className="signup__content">
         <div className="signup__content-header">
-          <p className="tool-name">EzInsta</p>
+          <p className="tool-name"> INSTAGRAM TOOL</p>
           <div className="signup__content_switch-language">
             <Select
               name="languageOption"

@@ -70,6 +70,8 @@ try {
   if (!isLive) return -1;
   await returnHomePage(page);
   await delay(3000);
+  await turnOffNoti(page);
+  await delay(3000);
   let randomDelay = getRandomIntBetween(
     notiObject.delayTimeStart * 1000,
     notiObject.delayTimeEnd * 1000

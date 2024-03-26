@@ -515,7 +515,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                     <div className="Text">
                       <div className="usernameWrapper">
                         <div className="username">
-                          <p style={{ fontWeight: 700 }}>Quality user/post</p>
+                          <p style={{ fontWeight: 700 }}>Quantity user/post</p>
                           <div className="component-item__number">
                             <div className="component-item__number__icon">
                               <img
@@ -646,7 +646,7 @@ const Newsfeed = ({ onGoBackClick, id, updateDesignScript, currentSetup, compone
                     <div className="Text">
                       <div className="usernameWrapper">
                         <div className="username">
-                          <p style={{ fontWeight: 700 }}>Quality user/post</p>
+                          <p style={{ fontWeight: 700 }}>Keyword</p>
                           <div className="component-item__number">
                             <div className="component-item__number__icon">
                               <img

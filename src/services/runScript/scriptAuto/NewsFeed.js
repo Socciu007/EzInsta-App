@@ -253,9 +253,15 @@ const newsfeed = ${strSetting};
   logger("Thực hiện chức năng trong " + scrollTime/1000 + " giây");
 while (scrollTime > 0) {
   try {
+    const isLive = checkIsLive(page);
+    if (!isLive) {
+    return -1;
+    }
     let startTime = Date.now();
     await returnHomePage(page);
     await delay(2000);
+    await turnOffNoti(page);
+    await delay(3000)
     const rs = await scrollSmooth(page, getRandomIntBetween(1, 5));
     if(rs == -2) {
       break;
@@ -279,7 +285,9 @@ while (scrollTime > 0) {
             const rd = getRandomIntBetween(0, 100);
             if (rd < 50) {
               await delay(randomDelay);
-              await scrollSmoothIfElementNotExistOnScreen(page, likeBtns[i]);
+                  await page.evaluate((el) => {
+                 el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+              }, likeBtns[i]);
               await delay(2000);
               await likeBtns[i].click();
               await delay(2000);
@@ -314,7 +322,9 @@ while (scrollTime > 0) {
             const rd = getRandomIntBetween(0, 100);
             if (rd < 50) {
               await delay(randomDelay);
-              await scrollSmoothIfElementNotExistOnScreen(page, shareBtns[i]);
+              await page.evaluate((el) => {
+                 el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+              }, shareBtns[i]);
               await delay(1000);
               await shareBtns[i].click();
               await delay(2000);

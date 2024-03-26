@@ -62,7 +62,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
               />
               <p>View notifications</p>
             </div>
-            <div className="component-item numberOfNotifications">
+            {/* <div className="component-item numberOfNotifications">
               <p className="component-item__header">Quantity</p>
               <div className="component-item__number">
                 <div className="component-item__number__icon">
@@ -113,7 +113,7 @@ const View_Notifications = ({ onGoBackClick, id, updateDesignScript, currentSetu
                   onChange={(event) => changeNotificationEnd(event.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="component-item viewTime">
               <p className="component-item__header">
                 View time<span style={{ marginLeft: '2px' }}> (s):</span>

@@ -184,7 +184,7 @@ const ForgotPassword = () => {
     <div className="forgotPass">
       <div className="forgotPass__content">
         <div className="forgotPass__content-header">
-          <p className="tool-name">EzInsta</p>
+          <p className="tool-name">INSTAGRAM TOOL</p>
           <div className="forgotPass__content_switch-language">
             <Select
               name="languageOption"
