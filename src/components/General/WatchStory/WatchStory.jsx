@@ -541,7 +541,7 @@ const WatchStory = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                 </div>
                 <div className="commentContent1">
                   <div className="Text">
-                    <p style={{ fontWeight: 700 }}>User</p>
+                    <p style={{ fontWeight: 700 }}>{values.typeShare == 'suggested' ? 'Keywords' : 'User'}</p>
                     <div style={{ position: 'relative' }} className="component-item box">
                       <div style={{ width: '100%', height: 204, overflow: 'auto' }} className={`text`}>
                         <Editor

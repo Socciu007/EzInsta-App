@@ -87,7 +87,7 @@ const PopupRunScript = ({ openRunScript, handleCloseRunScript, script }) => {
 
   const columnsProxys = [
     {
-      title: 'UID',
+      title: 'User Name',
       width: 200,
       render: (profile) => {
         return (
@@ -98,16 +98,16 @@ const PopupRunScript = ({ openRunScript, handleCloseRunScript, script }) => {
         );
       },
     },
-    {
-      title: 'Name',
-      dataIndex: 'nameAccount',
-      width: 150,
-      render: (nameAccount) => (
-        <Tooltip placement="topLeft" title={nameAccount}>
-          {nameAccount}
-        </Tooltip>
-      ),
-    },
+    // {
+    //   title: 'Name',
+    //   dataIndex: 'nameAccount',
+    //   width: 150,
+    //   render: (nameAccount) => (
+    //     <Tooltip placement="topLeft" title={nameAccount}>
+    //       {nameAccount}
+    //     </Tooltip>
+    //   ),
+    // },
     {
       title: 'Status',
       dataIndex: 'status',

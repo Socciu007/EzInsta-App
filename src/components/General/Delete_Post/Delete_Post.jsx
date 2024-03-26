@@ -189,7 +189,7 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
             </div>
 
             <div className="PostUIDList">
-              <p className="selectComment__header">Post UID list</p>
+              <p className="selectComment__header">Post ID list</p>
               <div style={{ position: 'relative' }} className="component-item">
                 <div className="text" style={{ width: '100%', height: 204, overflow: 'auto' }}>
                   <Editor

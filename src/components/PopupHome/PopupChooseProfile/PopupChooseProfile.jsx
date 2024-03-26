@@ -98,7 +98,7 @@ const PopupChooseProfile = ({ openProfiles, handleCloseProfiles, designScript, s
       render: (text, record, index) => <div>{index + 1}</div>,
     },
     {
-      title: 'UID',
+      title: 'User Name',
       render: (profile) => {
         return (
           <div className="-text-profile">
@@ -122,16 +122,16 @@ const PopupChooseProfile = ({ openProfiles, handleCloseProfiles, designScript, s
         }
       },
     },
-    {
-      title: 'Name',
-      dataIndex: 'nameAccount',
-      width: 100,
-      render: (nameAccount) => (
-        <Tooltip placement="topLeft" title={nameAccount}>
-          {nameAccount}
-        </Tooltip>
-      ),
-    },
+    // {
+    //   title: 'Name',
+    //   dataIndex: 'nameAccount',
+    //   width: 100,
+    //   render: (nameAccount) => (
+    //     <Tooltip placement="topLeft" title={nameAccount}>
+    //       {nameAccount}
+    //     </Tooltip>
+    //   ),
+    // },
     {
       title: 'Status',
       dataIndex: 'status',

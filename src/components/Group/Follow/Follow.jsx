@@ -250,7 +250,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
             {values.typeFollow === 'byUserLikePost' && (
               <div className="UIDContent">
                 <div className="UID_Header">
-                  <p>Post UID list</p>
+                  <p>Post ID list</p>
                   {/* <span>({values.lineCount})</span> */}
                 </div>
                 <div className="component-item " style={{ position: 'relative' }}>

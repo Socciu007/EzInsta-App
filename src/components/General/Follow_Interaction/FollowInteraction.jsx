@@ -671,7 +671,7 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
                     <div className="Text">
                       <div className="usernameWrapper">
                         <div className="username">
-                          <p style={{ fontWeight: 700 }}>Keyword</p>
+                          <p style={{ fontWeight: 700 }}>Quantity user/post</p>
                           <div className="component-item__number">
                             <div className="component-item__number__icon">
                               <img
@@ -805,7 +805,7 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
                     <div className="Text">
                       <div className="usernameWrapper">
                         <div className="username">
-                          <p style={{ fontWeight: 700 }}>Quantity user/post</p>
+                          <p style={{ fontWeight: 700 }}>Keywords</p>
                           <div className="component-item__number">
                             <div className="component-item__number__icon">
                               <img

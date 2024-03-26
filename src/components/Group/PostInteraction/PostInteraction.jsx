@@ -159,7 +159,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
             </div>
             <div className="KeywordContent">
               <div className="Keyword_Header">
-                <p>Post UID list</p>
+                <p>Post ID list</p>
                 {/* <span>({values.line})</span> */}
               </div>
               <div className="component-item " style={{ position: 'relative' }}>
@@ -185,7 +185,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                     <span style={{ marginRight: '13.5px' }}>1</span>Enter the UID list here
                   </p>
                   <p>
-                    <span>2</span>Each UID/line
+                    <span>2</span>Each ID/line
                   </p>
                 </div>
               </div>

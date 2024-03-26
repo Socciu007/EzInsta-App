@@ -744,7 +744,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     <div className="Text">
                       <div className="usernameWrapper">
                         <div className="username">
-                          <p style={{ fontWeight: 700 }}>Keyword</p>
+                          <p style={{ fontWeight: 700 }}>Keywords</p>
                           <div className="component-item__number">
                             <div className="component-item__number__icon">
                               <img
