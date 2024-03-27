@@ -122,12 +122,12 @@ export const seedingFollow = (setting) => {
         await delay(getRandomIntBetween(3000, 5000));
         let likedPersonEle = await getElement(
           page,
-          '[class="x193iq5w xeuugli x1fj9vlw x13faqbe x1vvkbs xt0psk2 x1i0vuye xvs91rp x1s688f x5n08af x10wh9bi x1wdrske x8viiok x18hxmgj"]'
+          '[class="html-span xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1hl2dhg x16tdsg8 x1vvkbs"]'
         );
         if (!likedPersonEle) {
           likedPersonEle = await getElement(
             page,
-            '[class="html-span xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x1hl2dhg x16tdsg8 x1vvkbs"]'
+            '[class="x193iq5w xeuugli x1fj9vlw x13faqbe x1vvkbs xt0psk2 x1i0vuye xvs91rp x1s688f x5n08af x10wh9bi x1wdrske x8viiok x18hxmgj"]'
           );
         }
         await delay(getRandomIntBetween(3000, 5000));
@@ -362,9 +362,9 @@ export const seedingFollow = (setting) => {
               //back home
               let backEle = await getElement(page, 'nav header button[type="button"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
               if (!backEle) {
-                backEle = await getElement(page, '[style="display: inline-block; transform: rotate(270deg);"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                backEle = await getElement(page, '[class="_abm0"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
                 if (!backEle) {
-                  backEle = await getElement(page, '[class="_abm0"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                  backEle = await getElement(page, '[style="display: inline-block; transform: rotate(270deg);"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
                 }
               }
               if (backEle) {
@@ -377,6 +377,22 @@ export const seedingFollow = (setting) => {
               countFollow++;
               logger("Follow " + countFollow + " person");
             } else {
+              //back home
+              let backEle = await getElement(page, 'nav header button[type="button"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+              if (!backEle) {
+                backEle = await getElement(page, '[class="_abm0"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                if (!backEle) {
+                  backEle = await getElement(page, '[style="display: inline-block; transform: rotate(270deg);"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                }
+              }
+              if (backEle) {
+                await clickElement(backEle);
+                await delay(getRandomIntBetween(3000, 5000));
+              } else {
+                await navigateToUrl(page, 'https://www.instagram.com/')
+                await delay(getRandomIntBetween(3000, 5000));
+              }
+              i--;
               continue;
             }
           }
@@ -419,7 +435,7 @@ export const seedingFollow = (setting) => {
           await delay(getRandomIntBetween(3000, 5000));
           return true;
         } else {
-          logger("The user has been followed");
+          logger("No find follow button");
           return false;
         }
       } else {
@@ -669,14 +685,18 @@ try {
   let arrSearchKey = followObj.searchByKeyword
   let arrSearchUser = followObj.searchByUser
   if(followObj.search === 'searchByKey') {
-    while (arrSearchKey.length < numsFollow) {
-      const indexRandom = getRandomInt(arrSearchKey.length)
-      arrSearchKey.push(arrSearchKey[indexRandom]);
+    if (arrSearchKey.length >= numsFollow) {
+      arrSearchKey = arrSearchKey.sort(() => Math.random() - 0.5).slice(0, numsFollow)
+    } else {
+      while (arrSearchKey.length < numsFollow) {
+        const indexRandom = getRandomInt(arrSearchKey.length)
+        arrSearchKey.push(arrSearchKey[indexRandom]);
+      }
     }
   }
   if(followObj.search === 'searchByUser') {
     if (arrSearchUser.length > numsFollow) {
-      arrSearchUser = arr.sort(() => Math.random() - 0.5).slice(0, numsFollow)
+      arrSearchUser = arrSearchUser.sort(() => Math.random() - 0.5).slice(0, numsFollow)
     }
   }
   if (followObj.typeFollow === "search") {

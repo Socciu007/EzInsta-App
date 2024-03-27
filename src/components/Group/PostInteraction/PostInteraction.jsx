@@ -541,14 +541,13 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                         },
                       ]}
                     />
-                    {/* </div> */}
                   </div>
                 </div>
               )}
               {values.isShare && (
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
-                    <p>User list</p>
+                    <p>{values.typeShare === 'suggested' ? 'Keywords' : 'User list'}</p>
                   </div>
                   <div className="component-item " style={{ position: 'relative' }}>
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
