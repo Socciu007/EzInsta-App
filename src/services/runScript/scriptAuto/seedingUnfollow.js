@@ -268,6 +268,7 @@ export const unfollow = (setting) => {
   }
   await returnHomePage(page);
   await delay(2000);
+  await turnOffNoti(page);
   unFollowObj = await checkObject(unFollowObj);
   await delay(getRandomIntBetween(3000, 5000));
   const isAccessProfile = await accessProfile(page);

@@ -541,6 +541,8 @@ export const seedingPostInteraction = (setting) => {
     }
     await returnHomePage(page);
     await delay(2000);
+    await turnOffNoti(page);
+    await delay(2000);
   postInteractionObj = await checkObject(postInteractionObj);
   let arrLike = [];
   let arrComment = [];

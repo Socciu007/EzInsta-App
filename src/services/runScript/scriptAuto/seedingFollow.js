@@ -636,6 +636,8 @@ try {
   }
   await returnHomePage(page);
   await delay(2000);
+  await turnOffNoti(page);
+  await delay(2000);
   followObj = await checkObject(followObj);
   let errFollow = {};
   const numsFollow = getRandomIntBetween(

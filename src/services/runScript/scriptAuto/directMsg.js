@@ -535,6 +535,8 @@ const accessChat = async page => {
     }
     await returnHomePage(page);
   await delay(2000);
+  await turnOffNoti(page);
+  await delay(2000);
     directMsgObj = await checkObject(directMsgObj);
     const quantityChat = getRandomIntBetween(
       directMsgObj.numberStart,

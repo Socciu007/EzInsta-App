@@ -647,6 +647,7 @@ export const watchReels = (setting) => {
     }
     await returnHomePage(page);
     await delay(getRandomIntBetween(3000, 5000));
+    await turnOffNoti(page);
     watchReelsObj = await checkObject(watchReelsObj);
     const numsReels = getRandomIntBetween(
       watchReelsObj.videoStart,
