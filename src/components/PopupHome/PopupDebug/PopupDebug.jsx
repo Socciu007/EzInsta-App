@@ -4,7 +4,7 @@ import './style.scss';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import Dialog from '@mui/material/Dialog';
-import img_debug from '../../../assets/images/img_debug.png';
+import img_debug from '../../../assets/images/img_debug1.png';
 
 const PopupDebug = ({ openDebug, handleCloseDebug, debugs, profiles, debugScript }) => {
   const [listDebug, setListDebug] = useState([]);

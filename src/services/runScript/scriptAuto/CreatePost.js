@@ -30,6 +30,8 @@ const clickClose = async (page) => {
     if (!checkPageIsLive) return -1;
     await returnHomePage(page);
     await delay(2000);
+    await turnOffNoti(page);
+    await delay(2000);
     const iconCreate = await getElement(page, '[d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552Z"]');
     if(!iconCreate){
       logger(
@@ -40,7 +42,14 @@ const clickClose = async (page) => {
     await delay(2000);
     await iconCreate.click();
     await delay(5000);
-    
+    const check = await getElement(page, '[role="dialog"]');
+    if(!check) {
+       const elements = await getElements(page, '[href="#"]');
+       if(!elements) return false;
+       await delay(2000);
+       await elements[1].click();
+       await delay(3000);
+    }
     let arr = [];
     for(let i = 0; i < obj.photos.length; i++){
       const option = await getElement(page, '[role="dialog"] button');

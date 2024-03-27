@@ -154,7 +154,7 @@ const CreateScript = () => {
         Store.addNotification({
           ...notification,
           type: 'success',
-          message: 'Save script done!',
+          message: 'Script saved!',
         });
         handleReturnClick();
       } else {

@@ -770,13 +770,21 @@ return new Promise(async (resolve) => {
 const returnHomePage = async (page) => {
 await delay(1000);
 const url = await page.url();
+if(url !== 'https://www.instagram.com/'){
+   await page.goto('https://www.instagram.com/', {
+    waitUntil: 'networkidle2',
+    timeout: 60000,
+  });
+  await delay(3000)
+}
+
 const elProfile = await getElements(page, "a span img");
-await delay(3000)
+
 if (url == 'https://www.instagram.com/' && elProfile.length > 0) {
   logger('URL is correct');
 } else {
   logger('Redirect to homepage');
-  await page.goto('https://www.instagram.com', {
+  await page.goto('https://www.instagram.com/', {
     waitUntil: 'networkidle2',
     timeout: 60000,
   });

@@ -182,7 +182,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
 
                 <div onClick={handleDivKeywordClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
                   <p>
-                    <span style={{ marginRight: '13.5px' }}>1</span>Enter the UID list here
+                    <span style={{ marginRight: '13.5px' }}>1</span>Enter the ID list here
                   </p>
                   <p>
                     <span>2</span>Each ID/line
@@ -548,7 +548,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
               {values.isShare && (
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
-                    <p>User list</p>
+                    <p>{values.typeShare == 'suggested' ? 'Keywords' : 'User list'}</p>
                   </div>
                   <div className="component-item " style={{ position: 'relative' }}>
                     <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">
