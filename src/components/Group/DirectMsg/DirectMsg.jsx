@@ -202,7 +202,6 @@ const DirectMsg = ({ onGoBackClick, id, updateDesignScript, currentSetup, compon
                 <div className="KeywordContent">
                   <div className="Keyword_Header">
                     <p>User list</p>
-                    {/* <span>({values.lineCount})</span> */}
                   </div>
                 </div>
                 <div style={{ width: '100%', height: 204, overflow: 'auto' }} className="userText">

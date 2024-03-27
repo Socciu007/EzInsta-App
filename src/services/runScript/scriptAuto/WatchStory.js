@@ -546,7 +546,7 @@ export const watchStory = (setting) => {
           );
         }
         await delay(timeWatch);
-        logger("Done watch story");
+        logger("view story");
         const isUrlStory = await checkUrlPage(page, "instagram.com/stories");
         await delay(getRandomIntBetween(3000, 5000));
         if (!isUrlStory) {
