@@ -190,7 +190,18 @@ const runCode = async (profile, profileSelected, index, dispatch, arrfunction, s
         cpu = infor.cpu;
         mem = infor.mem;
       }
-      const browserData = await getBrowserData(profile.id, proxyConvert);
+      let browserData = await getBrowserData(profile.id, proxyConvert);
+
+      if (!browserData || !browserData.data) {
+        for (let i = 0; i < 5; i++) {
+          browserData = await getBrowserData(profile.id, proxyConvert);
+          if (browserData && browserData.data) {
+            break;
+          } else {
+            await delay(2000);
+          }
+        }
+      }
 
       if (browserData && browserData.data) {
         dispatch(updateProfile({ ...profile, script: scriptDesign.id, status: 'running' }));

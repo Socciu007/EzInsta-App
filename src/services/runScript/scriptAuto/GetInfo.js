@@ -1,5 +1,5 @@
 export const getInfor = (profile) => {
-  if (!profile.fllower) {
+  if (!profile.follower) {
     return `{
         try {
          
