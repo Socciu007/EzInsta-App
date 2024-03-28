@@ -307,7 +307,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                     checked={values.isLike}
                     onChange={(event) => handleChangeLike(event.target.checked)}
                   />
-                  <p>Random Like:</p>
+                  <p>Random Like</p>
                 </div>
                 <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
                   <div className="component-item__number">
@@ -369,7 +369,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                     checked={values.isComment}
                     onChange={(event) => handleChangeComment(event.target.checked)}
                   />
-                  <p>Random comment:</p>
+                  <p>Random comment</p>
                 </div>
                 <div className={`component-item__content ${values.isComment ? 'show' : 'hide'}`}>
                   <div className="component-item__number">
@@ -465,7 +465,7 @@ const PostInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup, 
                     checked={values.isShare}
                     onChange={(event) => handleChangeShare(event.target.checked)}
                   />
-                  <p>Share:</p>
+                  <p>Share</p>
                 </div>
                 {values.isShare && (
                   <div className={`component-item__content ${values.isComment ? 'show' : 'hide'}`}>

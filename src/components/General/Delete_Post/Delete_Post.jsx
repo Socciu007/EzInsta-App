@@ -207,7 +207,12 @@ const Delete_Post = ({ onGoBackClick, id, updateDesignScript, currentSetup, comp
                     }}
                   />
                   <div onClick={handleDivClick} className={`placeholder ${textContent ? 'hide' : ''}`}>
-                    <p style={{ marginLeft: '37px', marginTop: ' -3px' }}>Enter the content here</p>
+                    <p>
+                      <span style={{ marginLeft: '2px' }}>1</span>Enter the content here
+                    </p>
+                    <p>
+                      <span>2</span>Each content/line
+                    </p>
                   </div>
                 </div>
               </div>
