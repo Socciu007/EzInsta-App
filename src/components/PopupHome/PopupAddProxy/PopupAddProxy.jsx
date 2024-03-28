@@ -81,7 +81,7 @@ const PopupAddProxy = ({ profilesSelected, openAddProxy, handleCloseAdd, dataPro
           });
         }
       });
-      if (listProxy.length < profilesSelected.length) {
+      if (listProxy.length > 1 && listProxy.length < profilesSelected.length) {
         Store.addNotification({
           ...notification,
           type: 'warning',
@@ -89,8 +89,7 @@ const PopupAddProxy = ({ profilesSelected, openAddProxy, handleCloseAdd, dataPro
         });
       } else {
         for (let i = 0; i < profilesSelected.length; i++) {
-          const res = await updateProfile(profilesSelected[i].id, listProxy[i]);
-
+          const res = await updateProfile(profilesSelected[i].id, listProxy[i % listProxy.length]);
           if (res && res.code == 1) {
             const index = dataProfiles.findIndex((e) => e.id === profilesSelected[i].id);
             const newData = [...dataProfiles];

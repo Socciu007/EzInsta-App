@@ -918,11 +918,6 @@ const ProfilesPage = () => {
                   <img src={addPerson} alt="image-addPerson"></img>
                 </Popover>
               </span>
-              {/* <span className="-option-profiles" onClick={() => {}}>
-                <Popover content={<>Add profiles</>}>
-                  <img src={addFile} alt="image-addFile"></img>
-                </Popover>
-              </span> */}
               <PopupProfile
                 openProfiles={openProfiles}
                 handleCloseProfiles={handleCloseProfiles}
