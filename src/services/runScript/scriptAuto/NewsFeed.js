@@ -38,6 +38,10 @@ const randomShare = async (page, news) => {
   await delay(5000);
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){ 
+    const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
     let search = await getElement(page, '[name="queryBox"]');
     if(!search) {
       logger("Can not find search button")
@@ -111,6 +115,10 @@ const userShare = async (page, news) => {
   await delay(5000);
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){
+    const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
     const search = await getElement(page, '[name="queryBox"]');
     if(!search) {
       logger("Can not find search button")
@@ -240,7 +248,7 @@ const newsfeed = ${strSetting};
   // check page is live return -1, return 1, return 0
   const isLive = checkIsLive(page);
   if (!isLive) {
-    return -1;
+    return false;
   }
   let randomDelay = getRandomIntBetween(newsfeed.delayTimeStart * 1000, newsfeed.delayTimeEnd * 1000);
   let scrollTime = getRandomIntBetween(newsfeed.scrollTimeStart * 1000, newsfeed.scrollTimeEnd * 1000);
@@ -255,7 +263,7 @@ while (scrollTime > 0) {
   try {
     const isLive = checkIsLive(page);
     if (!isLive) {
-    return -1;
+    return false;
     }
     let startTime = Date.now();
     await returnHomePage(page);
@@ -280,6 +288,10 @@ while (scrollTime > 0) {
           numLikes = 0;
         }
         for (let i = 0; i < likeBtns.length - 1; i++) {
+          const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
           const onScreen = await checkExistElementOnScreen(likeBtns[i]);
           if (onScreen == 0) {
             const rd = getRandomIntBetween(0, 100);
@@ -317,6 +329,10 @@ while (scrollTime > 0) {
           numShares = 0;
         }
         for (let i = 0; i < shareBtns.length; i++) {
+          const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
           const onScreen = await checkExistElementOnScreen(shareBtns[i]);
           if (onScreen == 0) {
             const rd = getRandomIntBetween(0, 100);
@@ -412,6 +428,10 @@ while (scrollTime > 0) {
           numComments = 0;
         }
         for (let i = 0; i < commentBtns.length; i++) {
+          const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
           const onScreen = await checkExistElementOnScreen(commentBtns[i]);
           if (onScreen == 0) {
             const rd = getRandomIntBetween(0, 100);

@@ -265,7 +265,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     changeLike(event.target.checked);
                   }}
                 />
-                <p>Random Like :</p>
+                <p>Random Like</p>
               </div>
               <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
@@ -420,7 +420,7 @@ const WatchVideo = ({ onGoBackClick, id, updateDesignScript, currentSetup, compo
                     checked={values.isShare}
                     onChange={(event) => changeShare(event.target.checked)}
                   />
-                  <p>Share :</p>
+                  <p>Share</p>
                 </div>
                 <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
                   <div className="component-item__number">

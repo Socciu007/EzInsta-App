@@ -459,7 +459,7 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
                   checked={values.isLike}
                   onChange={(event) => handleChangeLiked(event.target.checked)}
                 />
-                <p>Random Like :</p>
+                <p>Random Like</p>
               </div>
               <div className={`component-item__content ${values.isLike ? 'show' : 'hide'}`}>
                 <div className="component-item__number">
@@ -607,7 +607,7 @@ const FollowInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetup
                     checked={values.isShare}
                     onChange={(event) => handleChangeShared(event.target.checked)}
                   />
-                  <p>Share :</p>
+                  <p>Share</p>
                 </div>
                 <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
                   <div className="component-item__number">

@@ -27,7 +27,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
         setTextContent(currentSetup.commentText.join('\n'));
       }
       if (currentSetup.hashtag && currentSetup.hashtag.length) {
-        setshareUserContent(currentSetup.hashtag.join('\n'));
+        setHashtag(currentSetup.hashtag.join('\n'));
       }
       if (currentSetup.shareUserText && currentSetup.shareUserText.length) {
         setshareUserContent(currentSetup.shareUserText.join('\n'));
@@ -546,7 +546,7 @@ const HashtagInteraction = ({ onGoBackClick, id, updateDesignScript, currentSetu
                     checked={values.isShare}
                     onChange={(event) => handleChangeShared(event.target.checked)}
                   />
-                  <p>Share :</p>
+                  <p>Share</p>
                 </div>
                 <div className={`component-item__content ${values.isShare ? 'show' : 'hide'}`}>
                   <div className="component-item__number">

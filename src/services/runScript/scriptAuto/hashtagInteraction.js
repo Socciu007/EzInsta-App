@@ -39,6 +39,10 @@ const randomShare = async (page, obj) => {
   }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){ 
+    const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
     let search = await getElement(page, '[name="queryBox"]');
     if(!search) {
       logger("Can not find search button")
@@ -111,6 +115,10 @@ const userShare = async (page, obj) => {
   }
   let count = 0;
   for(let i = 0; i < numsUser * 2 ; i++){
+    const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
     const search = await getElement(page, '[name="queryBox"]');
     if(!search) {
       logger("Can not find search button")
@@ -352,7 +360,17 @@ const interactWithHashtag = async (page, obj, numPosts) => {
             return false;
         }
         let arr = [];
-        for(let i = 0 ; i < posts.length; i++){
+        if(numPosts > posts.length) {
+          numPosts = posts.length;
+        }
+        let countLike = 0;
+        let countComment = 0;
+        let countShare = 0;
+        for(let i = 0 ; i < numPosts; i++){
+          const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
             posts = await getElements(page, 'a[role="link"] img');
               let randomIndex = getRandomIntBetween(1, posts.length);
               if(arr.indexOf(randomIndex) == -1){
@@ -383,9 +401,16 @@ const interactWithHashtag = async (page, obj, numPosts) => {
               const likeBtn = await getElement(page, '[d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z"]');
               if(likeBtn){
                 await likeBtn.click();
-                await delay(randomDelay);
+                countLike++;
+                logger("đã like được " + countLike + " bài");
                 numLikes--;
-                logger("còn phải like " + numLikes + " bài")
+                if(numLikes == 0) {
+                  logger("xong like!");
+                } else {
+                  logger("còn phải like " + numLikes + " bài");
+                }
+                
+                await delay(randomDelay);
               }
             }
             if(obj.isShare == true && numShares > 0){
@@ -396,8 +421,15 @@ const interactWithHashtag = async (page, obj, numPosts) => {
                 if(obj.typeShare == "randomShare"){
                   const isShare = await randomShare(page, obj);
                   if(isShare){
+                    countShare++;
+                    logger("đã share được " + countShare + " bài");
+                    await delay(1000);
                     numShares--;
-                    logger("còn phải share " + numShares + " bài");
+                    if(numShares == 0) {
+                      logger("xong share!");
+                    } else {
+                      logger("còn phải share " + numShares + " bài");
+                    }
                     await delay(5000);
                   } else {
                     await clickClose(page);
@@ -410,8 +442,15 @@ const interactWithHashtag = async (page, obj, numPosts) => {
                 if(obj.typeShare == "user"){
                   const isShare = await userShare(page, obj);
                   if(isShare){
+                    countShare++;
+                    logger("đã share được " + countShare + " bài");
+                    await delay(1000);
                     numShares--;
-                    logger("còn phải share " + numShares + " bài");
+                    if(numShares == 0) {
+                      logger("xong share!");
+                    } else {
+                      logger("còn phải share " + numShares + " bài");
+                    }
                     await delay(5000);
                   } else {
                     await clickClose(page);
@@ -424,9 +463,13 @@ const interactWithHashtag = async (page, obj, numPosts) => {
               }
             }
             if(obj.isComment == true && numComments > 0){
-              const commentBtn = await getElement(page, 'textarea');
+              let commentBtn = await getElement(page, 'textarea');
               if(commentBtn){
-                await commentBtn.click();
+                await page.evaluate((el) => {
+                  el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+                }, commentBtn);
+                await delay(2000);
+                await clickElement(commentBtn);
                 await delay(3000);
                 let content = obj.commentText;
                 let randomString = content[getRandomInt(content.length)];
@@ -435,18 +478,26 @@ const interactWithHashtag = async (page, obj, numPosts) => {
                 await delay(2000);
                 await page.keyboard.press("Enter");
                 await delay(randomDelay);
+                countComment++;
+                logger("đã comment được " + countComment + " bài");
+                await delay(1000);
                 numComments--;
-                logger("còn phải comment " + numComments + " bài");
+                if(numComments == 0) {
+                  logger("xong comment!");
+                } else {
+                  logger("còn phải comment " + numComments + " bài");
+                }
+                
                 await delay(5000);
               }
             }
             await clickClose(page);
             await delay(3000);
+            count++;
         }
           await delay(3000);
           await clickReturn(page);
           await delay(3000);
-          count++;
           await delay(2000);
           if(count == numPosts) {
             isInteract = true;
@@ -468,7 +519,7 @@ try {
   // check page is live return -1, return 1, return 0
   const isLive = checkIsLive(page);
   if (!isLive) {
-    return -1;
+    return false;
   }
 
     await returnHomePage(page);
@@ -484,6 +535,10 @@ try {
     await elProfile.click();
     await delay(6000);
     for(let i = 0 ; i < obj.hashtag.length; i++){
+      const isLive = checkIsLive(page);
+          if (!isLive) {
+            return false;
+          }
         if(page.url() != 'https://www.instagram.com/explore/'){
             await page.goto('https://www.instagram.com/explore/', {
                 waitUntil: 'networkidle2',
@@ -515,9 +570,11 @@ try {
         await hashtagBtns[0].click();
         await delay(5000);
         let numPosts = getRandomIntBetween(obj.postStart, obj.postEnd);
+        logger("số lượng posts random: " + numPosts)
         const rs = await interactWithHashtag(page, obj, numPosts);
         if(rs){
-            logger("đã tương tác đủ bài");
+            logger("đã tương tác đủ bài với hashtag đã chọn");
+            await delay(3000);
         } else {
             logger(
             "Debug" + "|" + "Hashtag Interaction" + "|" + "Interact failed"
