@@ -17,8 +17,13 @@ export const loginFacebook = (account) => {
       logger("Page null!");
       return false;
     }
-    await returnHomePage(page);
-    await delay(2000);
+    if(!page.url().includes("https://www.instagram.com")){
+        await page.goto("https://www.instagram.com", {
+          waitUntil: "networkidle2",
+          timeout: 60000,
+        });
+      await delay(2000);
+    }
     let loginDone = false;
   
     const { isLogin, error } = await checkLogin(page);
@@ -76,7 +81,6 @@ export const loginFacebook = (account) => {
           timeout: 60000,
         });
         let email = await getElementEmail(page, 5);
-
         if(!email){
           await page.reload({
             waitUntil: "networkidle2",
@@ -85,7 +89,6 @@ export const loginFacebook = (account) => {
           await delay(2000);
           email = await getElementEmail(page, 10);
         }
-
         const password = await getElementPassword(page);
         if (email && password) {
           await simMoveToAndClick(page, email);
