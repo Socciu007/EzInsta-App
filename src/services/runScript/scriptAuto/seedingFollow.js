@@ -336,6 +336,21 @@ export const seedingFollow = (setting) => {
               countFollow++;
               logger("Follow " + countFollow + " person");
             } else {
+              //back home
+              let backEle = await getElement(page, 'nav header button[type="button"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+              if (!backEle) {
+                backEle = await getElement(page, '[style="display: inline-block; transform: rotate(270deg);"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                if (!backEle) {
+                  backEle = await getElement(page, '[class="_abm0"] [d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"]')
+                }
+              }
+              if (backEle) {
+                await clickElement(backEle);
+                await delay(getRandomIntBetween(3000, 5000));
+              } else {
+                await navigateToUrl(page, 'https://www.instagram.com/')
+                await delay(getRandomIntBetween(3000, 5000));
+              }
               continue;
             }
           }
@@ -425,10 +440,16 @@ export const seedingFollow = (setting) => {
       if (userSearchEle) {
         await userSearchEle.evaluate(b => b.click());
         await delay(getRandomIntBetween(3000, 5000));
-        const followButtonEle = await getElement(
+        let followButtonEle = await getElement(
           page,
-          'button[class=" _acan _acap _acas _aj1- _ap30"]'
+          '[type="button"] [dir="auto"]'
         );
+        if (!followButtonEle) {
+          followButtonEle = await getElement(
+            page,
+            'button[class=" _acan _acap _acaq _acas _aj1- _ap30"]'
+          );
+        }
         if (followButtonEle) {
           await clickElement(followButtonEle);
           await delay(getRandomIntBetween(3000, 5000));
