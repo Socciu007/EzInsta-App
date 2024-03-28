@@ -218,7 +218,7 @@ export const seedingFollow = (setting) => {
   
   const followByUserFollowerOrFollowing = async (page, typeFollow, numsFollow, listUsers, err) => {
     try {
-      if (listUsers.length && listUsers.length > 0) {
+      if (listUsers && listUsers.length > 0) {
         for (let i = 0; i < listUsers.length; i++) {
           let count = 0;
           await delay(getRandomIntBetween(3000, 5000));
@@ -228,8 +228,10 @@ export const seedingFollow = (setting) => {
           if (typeFollow === "byUserFollower") {
             let followingEle = await selectorHref(page, "/followers/");
             if (!followingEle) {
-              err["err"] = "Debug|Follow|Err find follower button or account private"
-              return;
+              logger("Err find follower button or account private")
+              continue;
+              // err["err"] = "Debug|Follow|Err find follower button or account private"
+              // return;
             }
             await clickElement(followingEle);
             await delay(getRandomIntBetween(3000, 5000));
@@ -260,8 +262,10 @@ export const seedingFollow = (setting) => {
           if (typeFollow === "byUserFollowing") {
             let followingEle = await selectorHref(page, "/following/");
             if (!followingEle) {
-              err["err"] = "Debug|Follow|Err find following button or account private"
-              return;
+              logger("Err find following button or account private")
+              continue;
+              // err["err"] = "Debug|Follow|Err find following button or account private"
+              // return;
             }
             await clickElement(followingEle);
             await delay(getRandomIntBetween(3000, 5000));
@@ -297,7 +301,7 @@ export const seedingFollow = (setting) => {
         return;
       }
     } catch (error) {
-      err["err"] = "Debug|Follow|Err follow by user follower/ user following " + error.message
+      err["err"] = "Debug|Follow|Err follow by user follower/ user following " + error.message;
       return;
     }
   };
@@ -489,6 +493,16 @@ export const seedingFollow = (setting) => {
         await delay(getRandomIntBetween(3000, 5000));
         await listKeywords[index].evaluate(b => b.click());
         await delay(getRandomIntBetween(3000, 5000));
+        let followButtonEle = await getElement(
+          page,
+          '[type="button"] [dir="auto"]'
+        );
+        if (!followButtonEle) {
+          followButtonEle = await getElement(
+            page,
+            'button[class=" _acan _acap _acaq _acas _aj1- _ap30"]'
+          );
+        }
         const followButtonEle = await getElement(
           page,
           'button[class=" _acan _acap _acas _aj1- _ap30"]'

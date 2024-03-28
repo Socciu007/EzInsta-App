@@ -195,7 +195,7 @@ const Follow = ({ onGoBackClick, id, updateDesignScript, currentSetup, component
                     },
                     {
                       value: 'byUserLikePost',
-                      label: "Follow user's liking posts",
+                      label: 'Follow users liking posts',
                     },
                     {
                       value: 'byUserFollower',
