@@ -10,6 +10,83 @@ export const directMsg = (setting) => {
       }`;
   console.log(strSetting);
   return `
+
+  const testScroll = async (page, element, container) => {
+    try {
+      await page.evaluate(async (element, container) => {
+        const getRandomIntBetween = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        const isInViewport = (elem, container) => {
+          const bounding = elem.getBoundingClientRect();
+          return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <=
+              (container.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <=
+              (container.innerWidth || document.documentElement.clientWidth)
+          );
+        };
+ 
+        if (!container) return; // Kiểm tra xem container có tồn tại không
+
+        if (!element || isInViewport(element, container)) return;
+  
+        const smoothScrollByStep = (targetPosition, duration, container) => {
+          const startPosition = container.scrollTop;
+          const distance = targetPosition - startPosition;
+          let startTime = null;
+          const ease = (t, b, c, d) => {
+            t /= d / 2;
+            if (t < 1) return (c / 2) * t * t + b;
+            t--;
+            return (-c / 2) * (t * (t - 2) - 1) + b;
+          };
+          const animation = (currentTime) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = ease(timeElapsed, startPosition, distance, duration);
+            container.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+          };
+          requestAnimationFrame(animation);
+        };
+  
+        const elementRect = element.getBoundingClientRect();
+        console.log("check1");
+        const viewportHeight =
+          container.innerHeight || document.documentElement.clientHeight;
+        const targetPosition =
+          container.scrollTop +
+          elementRect.top -
+          (elementRect.top > viewportHeight ? viewportHeight : 0);
+        let currentPosition = container.scrollTop;
+        while (
+          Math.abs(currentPosition - targetPosition) > 0 &&
+          !isInViewport(element, container)
+        ) {
+          const stepSize =
+            getRandomIntBetween(100, 200) *
+            (currentPosition > targetPosition ? -1 : 1);
+          const durationPerStep = getRandomIntBetween(1000, 2000);
+          const nextPosition = currentPosition + stepSize;
+          smoothScrollByStep(nextPosition, durationPerStep, container);
+          await delay(getRandomIntBetween(1000, 2000));
+          if (Math.random() < 0.3) {
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+          currentPosition = container.scrollTop; // Sử dụng container.scrollTop thay vì window.scrollTop
+        }
+      }, element, container);
+      return true;
+    } catch (error) {
+      logger(error);
+      return false;
+    }
+  };
   
 const accessChat = async page => {
     try {
@@ -176,23 +253,27 @@ const accessChat = async page => {
           followingEle = await getElements(page, '[class="_aarh"]');
         }
         await delay(getRandomIntBetween(3000, 5000));
+        const listFollowing = await getElements(
+          page,
+          'button[class=" _acan _acap _acat _aj1- _ap30"]'
+        );
        
-        if (followingEle.length > 0) {
-          let index = getRandomInt(followingEle.length);  
-          const loopIndex = Math.ceil(quantityChat / followingEle.length);
+        if (listFollowing && listFollowing.length && followingEle && followingEle.length > 0) {
+          let index = getRandomInt(listFollowing.length);  
+          const loopIndex = Math.ceil(quantityChat / listFollowing.length);
           let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
           while (isDuplicate) {
-            index = getRandomInt(followingEle.length);
+            index = getRandomInt(listFollowing.length);
             isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
           }
           
           arrIndex.push(index);
-          await followingEle[index].scrollIntoView({
-            behavior: "smooth",
-            // block: "center",
-            inline: "center",
-          });
-          await delay(getRandomIntBetween(3000, 5000));
+          const container = await getElement(page, '[class="_aano"]')
+          if (container) {
+            await testScroll(page, followingEle[index], container);
+            await delay(getRandomIntBetween(3000, 5000));
+          }
+    
           await clickElement(followingEle[index]);
           await delay(getRandomIntBetween(3000, 5000));
           let messageEle = await getElement(
@@ -280,8 +361,8 @@ const accessChat = async page => {
         }
       } 
     } catch (error) {
-      logger("Debug|DirectMessage|Err action chat with user " + error.message);
-      return ;
+      logger("Debug|DirectMessage|Err no find following " + error.message);
+      return;
     }
   };
   
@@ -303,21 +384,20 @@ const accessChat = async page => {
           '[class="_ap3a _aaco _aacw _aacx _aad7 _aade"]'
         );
         await delay(getRandomIntBetween(3000, 5000));
-        if (listFollower.length > 0 && followingEle.length > 0) {
+        if (listFollower && listFollower.length > 0 && followingEle.length > 0) {
           let index = getRandomInt(listFollower.length);
           const loopIndex = Math.ceil(quantityChat / listFollower.length);
-          logger('loop', loopIndex)
           let isDuplicate = await checkDuplicate(arrIndex, index, loopIndex - 1);
           while (isDuplicate) {
             index = getRandomInt(listFollower.length);
             isDuplicate = await checkDuplicate(arrIndex, index, loopIndex -1 );
           }
           arrIndex.push(index);
-          await followingEle[index].scrollIntoView({
-            behavior: "smooth",
-            // block: "center",
-            inline: "center",
-          });
+          const container = await getElement(page, '[class="_aano"]')
+          if (container) {
+            await testScroll(page, followingEle[index], container);
+            await delay(getRandomIntBetween(3000, 5000));
+          }
           await delay(getRandomIntBetween(3000, 5000));
           await clickElement(followingEle[index]);
           await delay(getRandomIntBetween(3000, 5000));
@@ -427,7 +507,7 @@ const accessChat = async page => {
         }
       } 
     } catch (error) {
-      logger("Debug|DirectMessage|Err action chat with user " + error.message);
+      logger("Debug|DirectMessage|Err no find follower " + error.message);
       return;
     }
   };

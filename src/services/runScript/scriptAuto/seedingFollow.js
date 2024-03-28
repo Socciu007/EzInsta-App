@@ -177,11 +177,10 @@ export const seedingFollow = (setting) => {
       } else if (numsFollow >= listFollower.length) {
         for (let i = 0; i < listFollower.length; i++) {
           const container = await getElement(page, '[class="_aano"]')
-            if (container) {
-              await testScroll(page, listFollower[i], container);
-              await delay(getRandomIntBetween(3000, 5000));
-            }
-          await delay(getRandomIntBetween(3000, 5000));
+          if (container) {
+            await testScroll(page, listFollower[i], container);
+            await delay(getRandomIntBetween(3000, 5000));
+          }
           await clickElement(listFollower[i]);
           await delay(getRandomIntBetween(3000, 5000));
           logger("Follow " + i + 1 + " person");

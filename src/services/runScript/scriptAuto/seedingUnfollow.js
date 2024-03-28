@@ -122,14 +122,14 @@ export const unfollow = (setting) => {
             '[class=" _acan _acap _acat _aj1- _ap30"]'
           );
           await delay(getRandomIntBetween(3000, 5000));
-          if (listFollowing.length > 0) {
+          if (listFollowing && listFollowing.length > 0) {
             const index = getRandomInt(listFollowing.length);
             if (listFollowing[index]) {
               const container = await getElement(page, '[class="_aano"]')
               if (container) {
                 await testScroll(page, listFollowing[index], container)
               }
-        
+              
               await delay(getRandomIntBetween(1000, 3000));
               await clickElement(listFollowing[index]);
               await delay(getRandomIntBetween(3000, 5000));
