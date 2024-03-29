@@ -20,6 +20,31 @@
   .-container-profiles {
     padding: 36px 24px 0 24px;
     height: 100%;
+    .noData {
+      width: fit-content;
+      margin: 125px auto 0 auto;
+      .noDataContent {
+        font-size: 18px;
+        line-height: 22.89px;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .noDataBtn {
+        text-align: center;
+        button {
+          cursor: pointer;
+          font-weight: 700;
+          height: 40px;
+          width: 142px;
+          background: #2a86ff;
+          color: #fff;
+          border-radius: 8px;
+          border: none;
+          font-size: 15px;
+          line-height: 19.07px;
+        }
+      }
+    }
     .ant-spin-container {
       display: flex;
       flex: 1 1;
