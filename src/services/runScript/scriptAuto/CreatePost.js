@@ -122,6 +122,8 @@ const clickClose = async (page) => {
       break;
     }      
     await clickClose(page);
+    await delay(2000);
+    logger("Đăng bài thành công");
   } catch (error) {
     logger(error);
   }

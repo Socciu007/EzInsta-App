@@ -463,13 +463,9 @@ const interactWithHashtag = async (page, obj, numPosts) => {
               }
             }
             if(obj.isComment == true && numComments > 0){
-              let commentBtn = await getElement(page, 'textarea');
+              let commentBtn = await getElements(page, 'textarea');
               if(commentBtn){
-                await page.evaluate((el) => {
-                  el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
-                }, commentBtn);
-                await delay(2000);
-                await clickElement(commentBtn);
+                await clickElement(commentBtn[commentBtn.length - 1]);
                 await delay(3000);
                 let content = obj.commentText;
                 let randomString = content[getRandomInt(content.length)];
@@ -524,6 +520,7 @@ try {
 
     await returnHomePage(page);
     await delay(3000);
+    await turnOffNoti(page);
     const elProfile = await getElement(page, 'a[href="/explore/"]');
     if(!elProfile) {
         await page.goto('https://www.instagram.com/explore/', {
