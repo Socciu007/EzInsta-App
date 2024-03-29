@@ -503,10 +503,7 @@ export const seedingFollow = (setting) => {
             'button[class=" _acan _acap _acaq _acas _aj1- _ap30"]'
           );
         }
-        const followButtonEle = await getElement(
-          page,
-          'button[class=" _acan _acap _acas _aj1- _ap30"]'
-        );
+
         if (followButtonEle) {
           await clickElement(followButtonEle);
           await delay(getRandomIntBetween(3000, 5000));
