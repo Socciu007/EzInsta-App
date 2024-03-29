@@ -780,7 +780,7 @@ if(url !== 'https://www.instagram.com/'){
 
 const elProfile = await getElements(page, "a span img");
 
-if (url == 'https://www.instagram.com/' && elProfile.length > 0) {
+if (url == 'https://www.instagram.com/' && elProfile) {
   logger('URL is correct');
 } else {
   logger('Redirect to homepage');
